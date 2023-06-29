@@ -5,8 +5,8 @@ import { AppBar, Box, Toolbar, Container } from '@mui/material/'
 
 import Logo from './Logo';
 import GNB from './GNB';
-import TemporaryDrawer from '../body/drawer/Drawer';
-import BasicMenu from './basicMenu';
+import TemporaryDrawer from './Drawer';
+import BasicMenu from './Basic';
 
 
 function Header() {
