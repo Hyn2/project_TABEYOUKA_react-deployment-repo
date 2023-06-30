@@ -1,13 +1,14 @@
-import { Button } from "@mui/material";
+import './App.css'
+import MainPage from './pages'
 
 function App() {
+  
+
   return (
-    <div>
-      <Button variant="contained" color="primary">
-        Hello, Material-UI
-      </Button>
-    </div>
-  );
+    <>
+      <MainPage></MainPage>
+    </>
+  )
 }
 
-export default App;
+export default App
