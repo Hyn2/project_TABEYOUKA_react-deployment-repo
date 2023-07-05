@@ -3,6 +3,7 @@ import './App.css'
 import Header from './components/layout/header'
 import LoginPage from './pages/LoginPage'
 import MainPage from './pages/MainPage'
+import ProfilePage from './pages/ProfilePage'
 
 
 const Layout = () => {
@@ -25,6 +26,7 @@ function App() : JSX.Element {
         <Route path="/" element={<Layout />}>
           <Route path='/main' element={<MainPage />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path='/profile' element={<ProfilePage />} />
         </Route>
       </Routes>
     
