@@ -1,6 +1,6 @@
 import { Button } from '@mui/material';
-import { GoogleOAuthProvider, GoogleLogin, googleLogout, useGoogleLogin } from '@react-oauth/google'
-import { useNavigate } from 'react-router-dom';
+import { GoogleOAuthProvider, GoogleLogin, googleLogout, useGoogleOneTapLogin } from '@react-oauth/google'
+
 
 
 interface props {
@@ -10,26 +10,36 @@ interface props {
 
 const GoogleLoginButton = ({id, width} : props) => {
 
+
   const handleLoginSuccess = (credentialResponse : any) => {
-      localStorage.setItem('isloggedin', 'true');
-      // 페이지 새로고침
-      Navigate('/main');
-      window.location.reload();
+    console.log(credentialResponse) 
+    console.log(credentialResponse.credential)
+    
   };
 
-  const onError = (error : any) => {
-    console.log(error);
+  const onError = () => {
+    console.log("error");
   };
+
+  const logout = () => {
+    googleLogout();
+    console.log("googleLogout");
+}
+
   
-  const Navigate = useNavigate();
+  
   return (
-      
-      <GoogleOAuthProvider clientId={id}>
-        <Button>
-          <GoogleLogin onSuccess={handleLoginSuccess} onError={onError as any} width={width} />
-        </Button>
+    <>     
+      <GoogleOAuthProvider clientId={id} data-auto_select={false} >
+          <GoogleLogin
+            onSuccess={handleLoginSuccess}
+            onError={() => {
+              console.log('Login Failed');
+            }}
+          />
       </GoogleOAuthProvider> 
-    
+        <Button onClick={logout}>로그아웃</Button>
+    </>
   )
 }
 

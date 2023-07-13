@@ -1,5 +1,6 @@
 import type { IProps } from "../../types/common.interface"
 import Body from "./body"
+import Header from "./header"
 
 // interface Props extends IProps {
 
@@ -8,6 +9,7 @@ import Body from "./body"
 const Layout = ({children} : IProps) => {
     return(
         <>
+          <Header />
           <Body >
             {children}
           </Body>

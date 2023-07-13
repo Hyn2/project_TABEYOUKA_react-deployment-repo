@@ -1,8 +1,7 @@
 import { Box, Button, Modal, Typography } from "@mui/material"
 
 import type { UseToggle } from "../../../types/hooks.interface";
-import { useEffect, useState } from "react";
-import axios from 'axios';
+import { useState } from "react";
 
 const modalStyle = {
     position: 'absolute',
@@ -52,22 +51,18 @@ const categoryImage : categoryType = {
 }
 
 
-export default function CategoryModal(props: Omit<UseToggle, "setTrue">) {
+export default function CategoryModal(props: Omit<UseToggle, "setTrue"> & { setCategory: (category: string) => void }) {
   const [selectedCategory, setSelectedCategory] = useState("");
 
   const handleCategoryClick = (category: string) => {
     setSelectedCategory(category);
   };
 
-  useEffect(() => {
-    axios.get('http://localhost:8000/api/search?genre=G001&large_area=Z011&middle_area=Y010&name=個室居酒屋 いろり屋 iroriya 東京駅八重洲店')
-      .then(response => {
-        console.log(response.data)
-      })
-      .catch(error => {
-        console.error('Error fetching users:', error);
-      });
-  }, []);
+  const onClickCategory = (event: React.MouseEvent<HTMLButtonElement>) => {
+    const category = event.currentTarget.innerText;
+    props.setCategory(category);
+    props.setFalse();
+  };
 
   return (
     <Modal
@@ -85,7 +80,7 @@ export default function CategoryModal(props: Omit<UseToggle, "setTrue">) {
             <Typography>모든 요리 장르</Typography>
           </Box>
           <Box sx={{ display: "flex", flexDirection: "column", maxHeight: "100%", overflow: "auto" }}>
-            {Object.keys(categoryTitle).map((category, index) => (
+            {Object.keys(categoryTitle).map((category) => (
               <Box key={category} sx={{ my: 1, width: "100%",  }}>
                 <Button variant="contained" onClick={() => handleCategoryClick(category)} sx={{ bgcolor: "rgb(0,0,0,0.2)", width : "250px", height : "50px", p : 0, display : "flex", justifyContent : "flex-start" }}>
                   {categoryImage[category]?.map((image, imageIndex) => (
@@ -98,7 +93,7 @@ export default function CategoryModal(props: Omit<UseToggle, "setTrue">) {
                     <Box sx={{ display: "flex", flexWrap: "wrap" }}>
                       {categoryTitle[category].map((subCategory) => (
                         <Box key={subCategory}>
-                          <Button sx={{ whiteSpace: "nowrap" }}>{subCategory}</Button>
+                          <Button onClick={onClickCategory} sx={{ whiteSpace: "nowrap" }}>{subCategory}</Button>
                         </Box>
                       ))}
                     </Box>

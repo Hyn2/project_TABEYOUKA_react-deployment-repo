@@ -2,28 +2,24 @@ import { AppBar, Box, Toolbar, Container, Button} from '@mui/material/'
 import Logo from './Logo';
 import GNB from './GNB';
 import TemporaryDrawer from './Drawer';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import React from 'react';
 
-// const Navigate = useNavigate();
-// onClick={() => {Navigate('/login')}}
 function Header() {
+  const [mode, setMode] = React.useState('Products');
   
-  const logOut = () => {
-    localStorage.setItem('isloggedin', '');
-    // 페이지 새로고침
-    window.location.reload();
+  const Navigate = useNavigate();
+  const login = () => {
+    Navigate('/login');
   }
-  
-  const isLoggedIn = () => {return !!localStorage.getItem('isloggedin')};
-  
+  const pages = [{key : 'Products', onClick :()=> {console.log("Products")}}, {key : 'Pricing', onClick :()=> {console.log("Pricing")}}, {key : 'Blog', onClick : ()=> {console.log("Blog")}}];
   return (
     <AppBar color='default'>
-      <Container maxWidth="md">
-        <Toolbar disableGutters>
+      <Container maxWidth="lg">
+        <Toolbar >
           <Logo src="/tabeyoukaLogo.png"/>
-          <GNB/>
-            {isLoggedIn() ?
-            ( <Button onClick={logOut} sx={{ color : "black" }}>로그아웃</Button> ) : ( <Button><Link to="/login" style={{ textDecoration : "none", color : "black" }}>로그인</Link></Button> ) }
+          <GNB pages={pages} onClick={setMode}/>
+          <Button onClick={login}>로그인</Button>
           <Box sx={{ flexGrow: 0, display : "flex" }}>
             <TemporaryDrawer />
           </Box>
