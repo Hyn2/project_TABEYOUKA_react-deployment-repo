@@ -16,7 +16,6 @@ function ProfilePage() {
             <Categories />
             <hr style={{margin: 0}}/>
             <UserTab /> 
-
           </Box>
           <Box sx={{flexBasis: "auto"}} />
         </Box>
