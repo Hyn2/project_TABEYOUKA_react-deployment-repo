@@ -5,7 +5,11 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import AddStoryModal from "../modals/AddStoryModal";
 
-const Categories = () => {
+interface categoriesProps {
+  id : string,
+}
+
+const Categories = ({id} : categoriesProps) => {
   const [modal, setModal] = useState(false);
   const [addModal, setAddModal] = useState(false);
   const [storyList, setStoryList] = useState([]);
@@ -43,7 +47,7 @@ const Categories = () => {
   }
   
   useEffect(() => {
-    axios.get('http://localhost:8000/api/storylist?user_id=justin010129@gmail.com')
+    axios.get(`http://localhost:8000/api/storylist?user_id=${id}`)
     .then(response => {
       setStoryList(response.data);
     })

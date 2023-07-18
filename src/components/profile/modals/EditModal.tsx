@@ -1,9 +1,11 @@
-import { Avatar, Box, Button, TextField, Typography } from "@mui/material";
+import { Avatar, Box, Button, Modal, TextField, Typography } from "@mui/material";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
 interface editModalProps {
-  onClick: () => void;
+  userId : string,
+  open : boolean,
+  onClose: () => void;
 }
 
 const EditModal = (props : editModalProps) => {
@@ -17,7 +19,7 @@ const EditModal = (props : editModalProps) => {
   // 현재 유저의 정보
   useEffect(() => {
     axios
-      .get("http://localhost:8000/api/user?id=justin010129@gmail.com")
+      .get(`http://localhost:8000/api/user?id=${props.userId}`)
       .then(response => {
         setUserData(response.data);
         setName(response.data.nickname);
@@ -76,7 +78,8 @@ const EditModal = (props : editModalProps) => {
     })
       .then(response => {
         // 요청 성공 시 작업
-        console.log(response.data);
+        alert('수정이 완료되었습니다.');
+        props.onClose();
       })
       .catch(error => {
         // 요청 실패 시 작업
@@ -85,39 +88,41 @@ const EditModal = (props : editModalProps) => {
   }
   
   return (
-    <>
+    
+    <Modal open={props.open} onClose={props.onClose}  sx={{ alignItems: "center", display: "flex", justifyContent: "center" }}>
       <Box sx={{ width: "500px", padding: "30px", bgcolor: "white",display: "flex", flexDirection: 'column', borderRadius: "1%"}}>
-        <Box sx={{display: "flex", flexDirection: "column"}}>
-          <Typography sx={{my: "10px"}} id="modal-modal-title" variant="h6" component="h2">
-            프로필 수정
-          </Typography>
-          <Avatar sx={{my: "10px", width: "100px", height: "100px"}} src={previewUrl} />
-          <TextField
-            id="filled-helperText"
-            label="Nickname"
-            helperText="닉네임을 입력해주세요."
-            variant="standard"
-            onChange={nameHandleChange}
-            margin="normal"
-            value={name}
-            />
-          <TextField
-            id="filled-helperText"
-            label="Description"
-            helperText="한 줄 소개를 입력해주세요."
-            variant="standard"
-            onChange={bioHandleChange}
-            margin="normal"
-            value={bio}
-            />
-          <input type="file" onChange={handleFileChange} />
+          <Box sx={{display: "flex", flexDirection: "column"}}>
+            <Typography sx={{my: "10px"}} id="modal-modal-title" variant="h6" component="h2">
+              프로필 수정
+            </Typography>
+            <Avatar sx={{my: "10px", width: "100px", height: "100px"}} src={previewUrl} />
+            <TextField
+              id="filled-helperText"
+              label="Nickname"
+              helperText="닉네임을 입력해주세요."
+              variant="standard"
+              onChange={nameHandleChange}
+              margin="normal"
+              value={name}
+              />
+            <TextField
+              id="filled-helperText"
+              label="Description"
+              helperText="한 줄 소개를 입력해주세요."
+              variant="standard"
+              onChange={bioHandleChange}
+              margin="normal"
+              value={bio}
+              />
+            <input type="file" onChange={handleFileChange} />
+          </Box>
+          <Box sx={{textAlign: "right"}}>
+            <Button onClick={patchSubmit} sx={{width: "50px", float: "right"}}>수정</Button>
+            <Button onClick={props.onClose} sx={{width: "50px", float: "right"}}>취소</Button>
+          </Box>
         </Box>
-        <Box sx={{textAlign: "right"}}>
-          <Button onClick={patchSubmit} sx={{width: "50px", float: "right"}}>수정</Button>
-          <Button onClick={props.onClick} sx={{width: "50px", float: "right"}}>취소</Button>
-        </Box>
-      </Box>
-    </>
+    </Modal>
+      
   )
 }
 

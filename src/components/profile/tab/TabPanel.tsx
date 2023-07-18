@@ -1,4 +1,4 @@
-import { Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 
 interface tabPanelProps {
   value : number,
@@ -9,7 +9,7 @@ interface tabPanelProps {
 const TabPanel = ({ value, index, children } : tabPanelProps) => {
 
   return (
-    <Typography hidden={value !== index}>{children}</Typography>
+    <Box sx={{height:"900px", padding: "1%"}} hidden={value !== index}>{children}</Box>
   );
 }
 

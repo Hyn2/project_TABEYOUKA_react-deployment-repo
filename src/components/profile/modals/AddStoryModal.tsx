@@ -7,10 +7,19 @@ interface AddStoryModalProps {
   onClose : ()=>void,
 }
 
+const checkBoxStyles = {
+  position: "absolute", 
+  top: 0, 
+  left: 0, 
+  paddingRight: "100%", 
+  paddingBottom:"100%"
+}
+
 const AddStoryModal = ({open, onClose} : AddStoryModalProps) => {
 
   const [review, setReview] = useState([]);
   const [reviewList, setReviewList] =useState<string[]>([]);
+  const [storyListName, setStoryListName] = useState('');
 
   const checkboxHandler = (event: ChangeEvent<HTMLInputElement>) => {
     const id: string = event.target.id;
@@ -19,20 +28,20 @@ const AddStoryModal = ({open, onClose} : AddStoryModalProps) => {
       
     } else if (event.target.checked) {
       setReviewList(reviewList => [...reviewList, id]);
-      console.log(reviewList);
     }
   };
   
-  const [storyListName, setStoryListName] = useState('');
 
   const storyListChange = (e : React.ChangeEvent<HTMLInputElement>) => {
     setStoryListName(e.target.value);
-  }
+  };
 
   const submitFunc = () => {
     console.log('추가');
+    console.log(storyListName);
+    console.log(reviewList)
     axios.post('http://localhost:8000/api/storylist', {
-      user_id: 'justin010129@gmail.com',
+      user_id: 'tabeyouka@gmail.com',
       story_name : storyListName,
       review_list : reviewList,
     })
@@ -47,7 +56,7 @@ const AddStoryModal = ({open, onClose} : AddStoryModalProps) => {
 
   useEffect(() => {
     axios
-    .get("http://localhost:8000/api/review?user_id=justin010129@gmail.com", )
+    .get("http://localhost:8000/api/review?user_id=tabeyouka@gmail.com", )
     .then(response => {
       setReview(response.data);
     })
@@ -55,6 +64,7 @@ const AddStoryModal = ({open, onClose} : AddStoryModalProps) => {
       console.error(error);
     });
   }, []);
+
   return (
     <Modal open={open} onClose={onClose}  sx={{ alignItems: "center", display: "flex", justifyContent: "center" }}>
       <Box sx={{
@@ -68,8 +78,10 @@ const AddStoryModal = ({open, onClose} : AddStoryModalProps) => {
         <Box sx={{ height: "500px", overflow: "scroll"}}>
           <Box sx={{ display: "flex", flexWrap: "wrap", justifyContent: "flex-start"}}>
             {review.map((review) => (
-              <Box key={review['id']} sx={{ flexBasis: "33.3%", width: "100%", height: "0px", paddingBottom: "33.3%", backgroundImage: "url('./public/steak.webp')", backgroundSize: "cover"}}>
-                <Checkbox id={String(review['id'])} onChange={checkboxHandler} />
+              <Box key={review['id']} sx={{ position: "relative", overflow:"hidden", 
+              flexBasis: "33.3%", width: "100%", height: "0px", paddingBottom: "33.3%", 
+              backgroundImage: `url(${review['review_image']})`, backgroundSize: "cover"}}>
+                <Checkbox sx={checkBoxStyles} id={String(review['id'])} onChange={checkboxHandler} />
               </Box>
             ))}
           </Box>

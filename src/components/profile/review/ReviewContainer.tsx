@@ -3,13 +3,17 @@ import Review from "./Review";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-const ReviewContainer = () => {
+interface reviewContainerProps {
+  userId : string,
+}
+
+const ReviewContainer = ({userId} : reviewContainerProps) => {
 
   const [review, setReview] = useState([]);
   
   useEffect(() => {
     // 현재 유저의 정보
-    axios.get('http://localhost:8000/api/reviews?user_id=justin010129@gmail.com')
+    axios.get(`http://localhost:8000/api/reviews?user_id=${userId}`)
       .then(response => {
         setReview(response.data);
       })

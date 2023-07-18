@@ -18,7 +18,7 @@ const Review = ({src} : reviewProps) => {
     left: 0,
     width: "100%",
     height: "100%",
-    objectFit: "cover",}} src={src} alt='aa' />
+    objectFit: "cover",}} src={src} alt='Review_Image' />
     {/* 리뷰에 오ㅔ 사진이 없노 */}
     </ButtonBase>
   );
