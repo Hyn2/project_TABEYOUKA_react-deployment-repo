@@ -10,7 +10,7 @@ interface editModalProps {
 
 const EditModal = (props : editModalProps) => {
   // State
-  const [userData, setUserData] = useState({ nickname: "", profile_image: "", bio: "" });
+  const [userData, setUserData] = useState({ idToken: window.localStorage.getItem('idToken'), nickname: " ", profile_image: " ", bio: " " });
   const [name, setName] = useState(userData.nickname);
   const [bio, setBio] = useState(userData.bio);
   const [selectedFile, setSelectedFile] = useState<File | undefined>(undefined);
@@ -19,17 +19,22 @@ const EditModal = (props : editModalProps) => {
   // 현재 유저의 정보
   useEffect(() => {
     axios
-      .get(`http://localhost:8000/api/user?id=${props.userId}`)
+      .get(`http://localhost:8000/api/user`, {
+        params : {
+          idToken: window.localStorage.getItem('id_token'),
+          user_id : props.userId,
+        }
+      })
       .then(response => {
-        setUserData(response.data);
-        setName(response.data.nickname);
-        setBio(response.data.bio);
-        setPreviewUrl(response.data.profile_image);
+        setUserData(response.data|| " ");
+        setName(response.data.nickname|| " ");
+        setBio(response.data.bio|| " ");
+        setPreviewUrl(response.data.profile_image|| " ");
       })
       .catch(error => {
         console.error(error);
       });
-  }, []);
+  }, [open]);
 
 
   const nameHandleChange = (e : React.ChangeEvent<HTMLInputElement>) => {
@@ -58,7 +63,7 @@ const EditModal = (props : editModalProps) => {
   // 수정 요청 보내기
   const patchSubmit = () => {
     const formData = new FormData();
-    formData.append('id', 'justin010129@gmail.com')
+    formData.append('id', 'justin010129@gmail.com');
     formData.append('nickname', name);
     formData.append('bio', bio);
     if(selectedFile) {
@@ -74,6 +79,9 @@ const EditModal = (props : editModalProps) => {
     axios.post('http://localhost:8000/api/user', formData, {
       headers: {
         'Content-Type': 'multipart/form-data'
+      },
+      params: {
+        'idToken' : window.localStorage.getItem('id_token'),
       }
     })
       .then(response => {

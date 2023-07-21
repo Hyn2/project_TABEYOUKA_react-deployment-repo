@@ -3,6 +3,7 @@ import { ChangeEvent, useEffect, useState } from "react";
 import axios from "axios";
 
 interface AddStoryModalProps {
+  userId : string,
   open : boolean,
   onClose : ()=>void,
 }
@@ -15,7 +16,7 @@ const checkBoxStyles = {
   paddingBottom:"100%"
 }
 
-const AddStoryModal = ({open, onClose} : AddStoryModalProps) => {
+const AddStoryModal = ({userId, open, onClose} : AddStoryModalProps) => {
 
   const [review, setReview] = useState([]);
   const [reviewList, setReviewList] =useState<string[]>([]);
@@ -41,6 +42,7 @@ const AddStoryModal = ({open, onClose} : AddStoryModalProps) => {
     console.log(storyListName);
     console.log(reviewList)
     axios.post('http://localhost:8000/api/storylist', {
+      idToken: window.localStorage.getItem('id_token'),
       user_id: 'tabeyouka@gmail.com',
       story_name : storyListName,
       review_list : reviewList,
@@ -56,7 +58,12 @@ const AddStoryModal = ({open, onClose} : AddStoryModalProps) => {
 
   useEffect(() => {
     axios
-    .get("http://localhost:8000/api/review?user_id=tabeyouka@gmail.com", )
+    .get("http://localhost:8000/api/review",{
+     params : {
+      idToken: window.localStorage.getItem('id_token'),
+      user_id : userId,
+     }
+    })
     .then(response => {
       setReview(response.data);
     })

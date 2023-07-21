@@ -47,7 +47,12 @@ const Categories = ({id} : categoriesProps) => {
   }
   
   useEffect(() => {
-    axios.get(`http://localhost:8000/api/storylist?user_id=${id}`)
+    axios.get(`http://localhost:8000/api/storylist`,{
+      params: {
+        user_id: id,
+        idToken : localStorage.getItem('id_token'),
+      }   
+    })
     .then(response => {
       setStoryList(response.data);
     })
@@ -59,7 +64,7 @@ const Categories = ({id} : categoriesProps) => {
   return (
     <>
       <Stack direction="row" spacing={4} sx={{mb: "30px"}}>
-        <Story id="new" onClick={openAddModal} src="/public/ramen.jpeg" alt="createImage" title="새 목록" />
+        <Story id="new" onClick={openAddModal} src="/public/tabeyoukaMiniLogo.png" alt="createImage" title="새 목록" />
         {storyList.map((list) => (
         <Story key={list['id']} id={list['id']} onClick={()=>{openModal({
           id : list['id'], 
@@ -75,7 +80,7 @@ const Categories = ({id} : categoriesProps) => {
           image = {listInfo.image}
         />
       )}
-      <AddStoryModal open={addModal} onClose={closeAddModal} />
+      <AddStoryModal userId={id} open={addModal} onClose={closeAddModal} />
     </>
 
   );

@@ -22,10 +22,14 @@ const Map = ({userId} : mapProps) => {
   });
 
   useEffect(()=> {
-    axios.get(`http://localhost:8000/api/map?user_id=${userId}`)
+    axios.get(`http://localhost:8000/api/map`, {
+      params: {
+        user_id : userId,
+        idToken : localStorage.getItem('id_token'),
+      }   
+    })
     .then(response => {
       setRestaurant(response.data);
-      console.log(response.data);
     })
     .catch(error => {
       console.error(error);

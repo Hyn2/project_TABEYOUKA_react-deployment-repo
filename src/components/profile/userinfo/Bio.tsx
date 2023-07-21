@@ -7,9 +7,7 @@ interface bioProps {
 
 const Bio = ({children} : bioProps) => {
   return (
-    <Box>
       <Typography variant="body2" sx={{my: "7px"}}>{children}</Typography>
-    </Box>
   );
 }
 

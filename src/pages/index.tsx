@@ -65,7 +65,6 @@ function MainPage() {
   }, [location, category, restaurant]);
 
   return (
-    <Layout>
       <Container maxWidth={false} sx={{display:"flex",flexDirection:"column", justifyContent:"center",alignItems:"center",px : "0 !important",backgroundImage : `url(${"https://www.exploretravel.com.au/images/transform/v1/crop/frm/130854433/1b6a6656-f316-4d72-ba10-2067288e49b7.jpg/r0_138_2700_1662_w1200_h678_fmax.jpg"})`, height : "75vh", backgroundRepeat : "no-repeat", backgroundSize : "cover", position : "relative"}}>
         <Typography color={"white"} fontSize={"48px"} sx={{fontWeight : "bold", textAlign : "center", my : 7}}>가고 싶은 가게를 지금바로 찾아보세요!</Typography>
         <Box sx={{width: "100%", height : "23%",display : "flex", justifyContent : "center"}}>
@@ -95,7 +94,6 @@ function MainPage() {
           </Box>
         </Box>
       </Container>
-    </Layout>
   );
 }
 
