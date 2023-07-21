@@ -76,15 +76,15 @@ const StoryModal = ({id, open, onClose, image} : modalProps) => {
                 <Typography component={"a"} href="#" sx={{ textDecoration: "none", color: "grey", fontSize: "10px" }}>{review[indexCounter].restaurant_name}</Typography>
               </Box>
             </Box>
-            <Box sx={{paddingTop : "10px"}}>
+            <Box sx={{paddingTop : "10px",}}>
                 <ButtonBase onClick={clickMoreButton}><MoreHoriz/></ButtonBase>
             </Box>
           </Box>
-          <Box sx={{ marginTop: "20px" }}>
+          <Box sx={{ my: "15px", borderBottom: "0.5px solid grey" }}>
             <img style={{ width: "100%" }} src={review[indexCounter].review_image} />
           </Box>
           <Box>
-            <Typography>{review[indexCounter].content}</Typography>
+            <Typography variant="body2">{review[indexCounter].content}</Typography>
           </Box>
         </Box>
         <MyButton disabled={ indexCounter == review.length-1 ? true : false} onClick={onClickButton} id="forward" variant="contained" disableTouchRipple><ArrowForwardIos /></MyButton>

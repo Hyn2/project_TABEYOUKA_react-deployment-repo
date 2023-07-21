@@ -5,7 +5,11 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import AddStoryModal from "../modals/AddStoryModal";
 
-const Categories = () => {
+interface categoriesProps {
+  id : string,
+}
+
+const Categories = ({id} : categoriesProps) => {
   const [modal, setModal] = useState(false);
   const [addModal, setAddModal] = useState(false);
   const [storyList, setStoryList] = useState([]);
@@ -43,7 +47,12 @@ const Categories = () => {
   }
   
   useEffect(() => {
-    axios.get('http://localhost:8000/api/storylist?user_id=justin010129@gmail.com')
+    axios.get(`http://localhost:8000/api/storylist`,{
+      params: {
+        user_id: id,
+        idToken : localStorage.getItem('id_token'),
+      }   
+    })
     .then(response => {
       setStoryList(response.data);
     })
@@ -55,7 +64,7 @@ const Categories = () => {
   return (
     <>
       <Stack direction="row" spacing={4} sx={{mb: "30px"}}>
-        <Story id="new" onClick={openAddModal} src="/public/ramen.jpeg" alt="createImage" title="새 목록" />
+        <Story id="new" onClick={openAddModal} src="/public/tabeyoukaMiniLogo.png" alt="createImage" title="새 목록" />
         {storyList.map((list) => (
         <Story key={list['id']} id={list['id']} onClick={()=>{openModal({
           id : list['id'], 
@@ -71,7 +80,7 @@ const Categories = () => {
           image = {listInfo.image}
         />
       )}
-      <AddStoryModal open={addModal} onClose={closeAddModal} />
+      <AddStoryModal userId={id} open={addModal} onClose={closeAddModal} />
     </>
 
   );

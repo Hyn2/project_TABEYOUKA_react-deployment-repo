@@ -11,6 +11,7 @@ const MyButton = styled(Button)({
   },
   '&.Mui-disabled': {
     backgroundColor: 'inherit', // 이전 스타일을 덮어쓰기
+    color: "rgba(0,0,0,1)"
   },
 });
 

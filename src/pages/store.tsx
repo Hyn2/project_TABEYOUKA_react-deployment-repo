@@ -8,7 +8,6 @@ function store() {
   // 이 페이지의 모든 요소는 현재 임시로 작성되었음
 
   return (
-      <Layout>
         <Box sx={{ height : "auto", pt : 9 }}>
           <Box sx={{ width : "100%", height : "30px", borderBottom : "#C2C2C2 1px dashed" }}>
             <Container maxWidth="lg" sx={{ height : "100%" }}>
@@ -64,7 +63,6 @@ function store() {
             </Container>
           </Box>
         </Box>
-      </Layout>
   )
 }
 

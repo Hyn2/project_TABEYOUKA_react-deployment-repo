@@ -28,7 +28,6 @@ function SearchResultPage() {
     }, [location, category, restaurant]);
 
     return (
-        <Layout>
           <Box sx={{ height : "auto", pt : 9}}>
             <Container maxWidth="lg" sx={{ height : "130px" }}>
               <Box sx={{ width : "100%", height : "90%", display : "flex", flexWrap : "wrap" }}>
@@ -81,7 +80,6 @@ function SearchResultPage() {
                 <ActionCard src={"https://i0.wp.com/www.fukuoka-now.com/wp-content/uploads/2019/12/fn253-gourmet-rakutenchi-WEB-001.jpg?fit=1400%2C931&ssl=1"} title={"モツ鍋うまい"} tag={"＃モツ鍋"} />
             </Box>
           </Box>
-        </Layout>
     )
 }
 
