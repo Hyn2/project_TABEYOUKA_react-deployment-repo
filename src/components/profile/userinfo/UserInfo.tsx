@@ -1,6 +1,5 @@
 import { Box, useMediaQuery } from "@mui/material";
 import ProfileImage from "./ProfileImage";
-import Counter from "./Counter";
 import Bio from "./Bio";
 import Name from "./Name";
 import axios from "axios";
@@ -18,16 +17,13 @@ const UserInfo = ({userId} : userInfoProps) => {
     id: '', 
     nickname: '', 
     profile_image: '', 
-    bio: '',
-    reviews: 0,
-    follower: 0, 
-    following: 0 });
+    bio: '' });
 
   useEffect(() => {
     // 현재 유저의 정보
     axios.get(`http://localhost:8000/api/user`, {
       params : {
-        idToken : window.localStorage.getItem('id_token'),
+        access_token : window.localStorage.getItem('access_token'),
         user_id : userId,
       }
     })
@@ -37,32 +33,30 @@ const UserInfo = ({userId} : userInfoProps) => {
           nickname: response.data.nickname,
           profile_image:response.data.profile_image,
           bio:response.data.bio,
-          reviews:response.data.reviews,
-          follower: response.data.follower,
-          following: response.data.following,
         })
       })
       .catch(error => {
         console.error(error);
-        // if(error.response.status == 401) {
-        //   navigate('/unauthorized');
-        // } else {
-        //   navigate('/');
-        // }
+        window.localStorage.removeItem('refresh_token');
+        window.localStorage.removeItem('access_token');
+        window.localStorage.removeItem('id');
+        if(error.response.status == 401) {
+          navigate('/unauthorized');
+        } else {
+          window.alert('올바르지 않은 접근');
+          return navigate('/');
+        }
       });
-  }, []);
+  }, [userId]);
   return (
     <Box sx={{height: "230px", display: "flex", flexDirection: "row", alignItems : "center", justifyContent: "space-around"}}>
     <Box sx={{height:"150px", width: "150px"}}>
       <ProfileImage src={userData.profile_image} alt="Hyun"/>
     </Box>
     <Box sx={{ paddingTop: "0.2%", width: "50%", display: "flex", flexDirection: "column"}}>
-      <Name userId={userId}>{userData.nickname}</Name>
-      <Box sx={{ display: "flex", justifyContent: mobileScreenJustifyContent ? "center" : "left", my: "7px"}}>
-        <Counter userId={userId} counterType="reviews" title="ポスト" count={userData.reviews}/>
-        <Counter userId={userId} counterType="follower" title="ファロワー" count={userData.follower}/>
-        <Counter userId={userId} counterType="following" title="ファロー中" count={userData.following}/>
-      </Box>
+      <Name userId={userId}>
+        {userData.nickname}
+      </Name>
       <Box sx={{display: "flex", justifyContent: mobileScreenJustifyContent ? "center" : "left",}}>
         <Bio>{userData.bio}</Bio>
       </Box>
