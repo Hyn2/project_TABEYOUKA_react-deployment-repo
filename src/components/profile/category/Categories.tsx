@@ -50,7 +50,7 @@ const Categories = ({id} : categoriesProps) => {
     axios.get(`http://localhost:8000/api/storylist`,{
       params: {
         user_id: id,
-        idToken : localStorage.getItem('id_token'),
+        access_token : localStorage.getItem('access_token'),
       }   
     })
     .then(response => {

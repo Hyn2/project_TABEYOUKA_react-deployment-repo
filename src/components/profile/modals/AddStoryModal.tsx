@@ -42,12 +42,12 @@ const AddStoryModal = ({userId, open, onClose} : AddStoryModalProps) => {
     console.log(storyListName);
     console.log(reviewList)
     axios.post('http://localhost:8000/api/storylist', {
-      idToken: window.localStorage.getItem('id_token'),
-      user_id: 'tabeyouka@gmail.com',
+      access_token: window.localStorage.getItem('access_token'),
+      user_id: window.localStorage.getItem('id'),
       story_name : storyListName,
       review_list : reviewList,
     })
-    .then(response => {
+    .then(() => {
       alert('스토리가 성공적으로 등록되었습니다.');
       onClose();
     })
@@ -60,7 +60,7 @@ const AddStoryModal = ({userId, open, onClose} : AddStoryModalProps) => {
     axios
     .get("http://localhost:8000/api/review",{
      params : {
-      idToken: window.localStorage.getItem('id_token'),
+      access_token : localStorage.getItem('access_token'),
       user_id : userId,
      }
     })
