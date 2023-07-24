@@ -1,5 +1,6 @@
-import { Button } from '@mui/material';
-import { GoogleOAuthProvider, GoogleLogin, googleLogout, useGoogleOneTapLogin } from '@react-oauth/google'
+import { GoogleOAuthProvider, GoogleLogin, googleLogout } from '@react-oauth/google'
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -8,23 +9,31 @@ interface props {
   width : string
 }
 
+
 const GoogleLoginButton = ({id, width} : props) => {
+  const navigate = useNavigate();
 
 
-  const handleLoginSuccess = (credentialResponse : any) => {
-    console.log(credentialResponse) 
-    console.log(credentialResponse.credential)
-    
+  const handleLoginSuccess = (response : any) => {
+    console.log(response);
+    const idToken = response.credential;
+    axios.post('http://localhost:8000/api/user', {
+      idToken : idToken,
+    })
+    .then(() => {
+      window.localStorage.setItem('id_token',idToken);
+      console.log(window.localStorage.getItem('id_token'));
+    })
+    .then(() => {
+      navigate('/');
+    })
+    .catch(error => {
+      alert('다시 시도하세요');
+      navigate('/login');
+      return error;
+    })
   };
 
-  const onError = () => {
-    console.log("error");
-  };
-
-  const logout = () => {
-    googleLogout();
-    console.log("googleLogout");
-}
 
   
   
@@ -32,13 +41,13 @@ const GoogleLoginButton = ({id, width} : props) => {
     <>     
       <GoogleOAuthProvider clientId={id} data-auto_select={false} >
           <GoogleLogin
+            width={width}
             onSuccess={handleLoginSuccess}
             onError={() => {
               console.log('Login Failed');
             }}
           />
       </GoogleOAuthProvider> 
-        <Button onClick={logout}>로그아웃</Button>
     </>
   )
 }

@@ -1,11 +1,10 @@
-import { Height } from "@mui/icons-material";
-import { Box, ButtonBase, Paper } from "@mui/material";
+import { ButtonBase } from "@mui/material";
 
 interface reviewProps {
-  alt: string,
+  src: string,
 }
 
-const Review = ({alt} : reviewProps) => {
+const Review = ({src} : reviewProps) => {
   return (
     
 
@@ -19,7 +18,8 @@ const Review = ({alt} : reviewProps) => {
     left: 0,
     width: "100%",
     height: "100%",
-    objectFit: "cover",}} src="/public/fukuoka.jpeg" alt={alt} />
+    objectFit: "cover",}} src={src} alt='Review_Image' />
+    {/* 리뷰에 오ㅔ 사진이 없노 */}
     </ButtonBase>
   );
 }

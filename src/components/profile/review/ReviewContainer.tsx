@@ -1,21 +1,58 @@
-import { Box } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import Review from "./Review";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
-const ReviewContainer = () => {
+interface reviewContainerProps {
+  userId : string,
+}
 
-  const [count, setCount]  = useState("0");
+const reviewContainerStyle = {
+  display: "flex", 
+  flexWrap: "wrap",
+  justifyContent: "flex-start"
+}
 
-  const increaseCount = () => {
-    // 리뷰 갯수 하나당 위 함수를 실행해줘야함
-    setCount(count + 1);
-  }
+const textContainerStyle = {
+  display: "flex", 
+  flexWrap: "wrap", 
+  marginTop : "20px",
+  justifyContent: "center"
+}
+
+const ReviewContainer = ({userId} : reviewContainerProps) => {
+  const [review, setReview] = useState([]);
+  
+  useEffect(() => {
+    // 현재 유저의 정보
+    axios.get(`http://localhost:8000/api/review`, {
+      params: {
+        user_id: userId,
+        idToken : localStorage.getItem('id_token'),
+      }   
+    })
+      .then(response => {
+        setReview(response.data);
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }, []); 
 
   return (
-    <Box sx={{display: "flex", flexWrap: "wrap", justifyContent: "space-between"}}>
-      <Review alt={count}/>
-      <Review alt={count}/>
-      <Review alt={count}/>
+    <Box sx={review.length == 0 ? textContainerStyle : reviewContainerStyle }>
+
+    {
+    review.length == 0 ? (
+      <Box sx={{textAlign : "center"}}>
+        <Typography variant="h2"> 리뷰가 없어요 </Typography>
+      </Box>
+    ) : (
+      review.map((user) => (
+        <Review key={user['id']} src={user['review_image']}/>
+      ))
+    )}
     </Box>
   )
 }
