@@ -1,7 +1,7 @@
 import { Box, Button, Modal, Typography } from "@mui/material"
-
 import type { UseToggle } from "../../../types/hooks.interface";
-import { useState } from "react";
+import categoryData from "../../../categoryData.json";
+import useGetCode from "../../../hooks/useGetCode";
 
 const modalStyle = {
     position: 'absolute',
@@ -9,59 +9,58 @@ const modalStyle = {
     left: '50%',
     transform: 'translate(-50%, -50%)',
     width: "50%",
-    height: "80%",
+    height: "70%",
     bgcolor: 'background.paper',
     border: '2px solid #000',
     boxShadow: 24,
     p: 8,
+    overflow: 'auto'
 };
-
-const centerStyle = {
-  display : "flex", justifyContent : "center", alignItems : "center"
-}
 
 type categoryType = {
     [key : string] : string[]
 }
 
-// 하나의 카테고리 객체에 하위로 카테고리가 있는 객체가 여러개 있음
-const categoryTitle : categoryType = {
-    "초밥 /해산물" : ["전체", "초밥", "회전 초밥", "회 / 해물요리", "게 요리", "복어 요리", "자라 요리", "장어 요리", "미꾸라지 요리", "겟장어 요리", "해산물 요리", "굴 전문 요리점", "고래 요리", "초빕 / 생선요리그외", "해물 덮밥", "굴 요리", "붕장어 요리"],
-    "중식" : ["전체", "오코노미야키", "오코노미야키(히로시마 스타일)", "몬자야키", "타코야키", "아카시야키(효교현 아카시시의 향토 요리)", "야키소바", "오코노미야키 / 밀가루음식그외"],
-    "고기구이 / 곱창" : ["전체", "고기구이", "곱창", "징기스칸 (양고기 구이)", "삼겹살"],
-    "이자카야" : ["전체", "이자카야"],
-    "다이닝 바 / 바 / 맥주홀" : ["전체", "다이닝 바", "음식점 또는 바", "맥주 레스토랑", "비어홀", "바", "샷 바", "아일랜드풍 주점", "와인 바", "소주 바", "스탠딩 바", "다트 바 / 골프 바", "펍", "라운지 바", "스페인풍 바 / 이탈리안풍 바"],
-    "카레" : ["전체", "인도 카레", "태국 카레", "수프 카레", "카레라이스", "카레 그 외"],
-    "라면 / 면요리" : ["전체", "메밀국수", "우동", "사누키 우동", "카레 우동", "나가사키 짬뽕", "오키나와 소바", "냉면", "라면", "츠케멘(국물과 면이 따로)", "라면 / 면요리그외", "탄탄면(매콤한 깨소스 라면)", "도삭면(칼로 깎아낸 면)"],
-    "전골 요리" : ["전체", "전골 요리", "창코나베(스모 선수들이 주로 먹는 모둠전골)", "미즈타키(일본식 닭 백숙)", "곱창 전골", "훠궈(중국식 전골 요리: 홍탕 & 백탕)", "냄비 요리 그 외"],
-    "일식" : ["전체", "정식(세트 메뉴)", "가정 요리", "오뎅", "튀김(덴푸라)", "돈가스", "덮밥류(소고기 덮밥 / 튀김 덮밥 / 닭고기 달걀 덮밥 / 돈가스 덮밥 등)", "오야코동(닭고기 달걀 덮밥)", "규동(소고기 덮밥)", "텐동(튀김 덮밥)", "돈가스 덮밥", "두부 요리", "두부 전골", "도시락", "일본 요리 그 외", "유바 요리(두부 껍질 요리)"]
-}
-
-
+// 해상도 낮은 이미지로 변경할 필요가있음 (불러오는데 오래걸림)
 const categoryImage : categoryType = {
-  "초밥 /해산물" : ["https://gurunavi.com/static/img/all_category/01_sushi.png"],
-  "중식" : ["https://gurunavi.com/static/img/all_category/02_okonomiyaki.png"],
-  "고기구이 / 곱창" : ["https://gurunavi.com/static/img/all_category/03_yakiniku.png"],
-  "이자카야" : ["https://gurunavi.com/static/img/all_category/04_izakaya.png"],
-  "다이닝 바 / 바 / 맥주홀" : ["https://gurunavi.com/static/img/all_category/05_dining_bars.png"],
-  "카레" : ["https://gurunavi.com/static/img/all_category/06_curry.png"],
-  "라면 / 면요리" : ["https://gurunavi.com/static/img/all_category/07_noodles.png"],
-  "전골 요리" : ["https://gurunavi.com/static/img/all_category/08_nabe.png"],
-  "일식" : ["https://gurunavi.com/static/img/all_category/09_modern_japanese_cuisine.png"]
-}
+    "居酒屋" : ["https://tatsuno-tourism.jp/wp-content/uploads/2021/07/DSC5221.jpg"],
+    "ダイニングバー・バル" : ["https://assets.st-note.com/production/uploads/images/45918775/picture_pc_163d84135477f574f21172a0f45f3f65.jpg?width=2000&height=2000&fit=bounds&quality=85"],
+    "創作料理" : ["https://www.notoya.co.jp/image/cuisine/aw_sousaku/sd_img01.jpg"],
+    "和食" : ["https://www.kobayashi-foods.co.jp/washoku-no-umami/wp-content/uploads/2019/01/wasyoku-scaled.jpeg"],
+    "洋食" : ["https://chefkuru.jp/media/wp-content/uploads/2023/02/CHEF2301008-1.png"],
+    "中華" : ["https://cdn-ak.f.st-hatena.com/images/fotolife/k/kinniku39/20190514/20190514165819.jpg"],
+    "焼肉・ホルモン" : ["https://www.mannoya.com/mannoyawp/wp-content/themes/mannoya_ver1904/img/shop/shop_the_man_mv@2x.jpg"],
+    "韓国料理" : ["https://a.cdn-hotels.com/gdcs/production12/d29/cc49915a-a856-4e94-9ba4-c7e89a652d2e.jpg"],
+    "アジア・エスニック料理" : ["https://tabizine.jp/wp-content/uploads/2019/03/247147-01.jpg"],
+    "各国料理" : ["https://prcdn.freetls.fastly.net/release_image/101028/90/101028-90-83a88b00ff6ba48b35c7576a9d594d99-1800x1200.jpg?format=jpeg&auto=webp&quality=85%2C65&width=1950&height=1350&fit=bounds"],
+    "カラオケ・パーティ" : ["https://www.spacemarket.com/wp-content/uploads/2018/11/26225934/e49de1c809713d6a4b9467de81e61053_m.jpg"],
+    "バー・カクテル" : ["https://assets-www.leon.jp/image/2018/02/16110948588216/0/shutterstock_225472294_a.jpg"],
+    "ラーメン" : ["https://tabizine.jp/wp-content/uploads/2022/03/456100-01.jpg"],
+    "お好み焼き・もんじゃ" : ["https://images.keizai.biz/takasaki_keizai/tieup/1666848025/1666848095.jpg"],
+    "カフェ・スイーツ" : ["https://san-tatsu.jp/assets/uploads/2022/12/16145320/latte1.jpg"],
+    "その他グルメ" : ["https://hugkum.sho.jp/wp-content/uploads/2020/06/23271805_m.jpg"]
+  }
 
+const categorys = ["居酒屋", "ダイニングバー・バル", "創作料理", "和食", "洋食", "中華", "焼肉・ホルモン", "韓国料理", "アジア・エスニック料理", "各国料理", "カラオケ・パーティ", "バー・カクテル", "ラーメン", "お好み焼き・もんじゃ", "カフェ・スイーツ", "その他グルメ"];
 
-export default function CategoryModal(props: Omit<UseToggle, "setTrue"> & { setCategory: (category: string) => void }) {
-  const [selectedCategory, setSelectedCategory] = useState("");
-
+export default function MiddleLocation(props: Omit<UseToggle, "setTrue"> & {
+  setCategory: (category: string) => void,
+  setCategoryCode : (value : string) => void,
+  }) {
+  
   const handleCategoryClick = (category: string) => {
-    setSelectedCategory(category);
+    props.setCategory(category);
+    const code = useGetCode(categoryData, category);
+    props.setCategoryCode(code);
+    props.setFalse();
   };
 
-  const onClickCategory = (event: React.MouseEvent<HTMLButtonElement>) => {
-    const category = event.currentTarget.innerText;
-    props.setCategory(category);
-    props.setFalse();
+
+  const getImageForCategory = (category : string) => {
+    if (category in categoryImage) {
+      return categoryImage[category][0];
+    }
+    return "";
   };
 
   return (
@@ -76,29 +75,24 @@ export default function CategoryModal(props: Omit<UseToggle, "setTrue"> & { setC
           요리 장르
         </Typography>
         <Box sx={modalStyle}>
-          <Box sx={{ width: "100%", height: "80px", borderTop: "black dashed 0.7px", borderBottom: "black dashed 0.7px", ...centerStyle, justifyContent: "flex-start" }}>
-            <Typography>모든 요리 장르</Typography>
-          </Box>
-          <Box sx={{ display: "flex", flexDirection: "column", maxHeight: "100%", overflow: "auto" }}>
-            {Object.keys(categoryTitle).map((category) => (
-              <Box key={category} sx={{ my: 1, width: "100%",  }}>
-                <Button variant="contained" onClick={() => handleCategoryClick(category)} sx={{ bgcolor: "rgb(0,0,0,0.2)", width : "250px", height : "50px", p : 0, display : "flex", justifyContent : "flex-start" }}>
-                  {categoryImage[category]?.map((image, imageIndex) => (
-                    <img key={imageIndex} src={image} alt="" style={{ marginRight: '8px', width : "65px", height : "50px" }} />
-                  ))}
+          <Box sx={{ width : "100%" }}>
+            {categorys.map((category) => (
+              <Box key={category} sx={{ width: "100%" }}>
+                <Button variant="contained" onClick={() => handleCategoryClick(category)}
+                sx={{ background: `url(${getImageForCategory(category)})`,
+                backgroundSize: "cover",
+                backgroundRepeat: "no-repeat",
+                width : "100%",
+                height : "50px",
+                p : 0,
+                display : "flex",
+                justifyContent : "center",
+                textShadow : "2px 2px 5px black",
+                fontSize : "20px",
+                "&:hover": {height : "400px",transition: "all 0.4s ease-in-out",},
+                transition: "height 0.4s ease-in-out"}}>
                   {category}
                 </Button>
-                {selectedCategory === category && (
-                  <Box sx={{ m: 3 }}>
-                    <Box sx={{ display: "flex", flexWrap: "wrap" }}>
-                      {categoryTitle[category].map((subCategory) => (
-                        <Box key={subCategory}>
-                          <Button onClick={onClickCategory} sx={{ whiteSpace: "nowrap" }}>{subCategory}</Button>
-                        </Box>
-                      ))}
-                    </Box>
-                  </Box>
-                )}
               </Box>
             ))}
           </Box>

@@ -32,7 +32,7 @@ function Header() {
   return (
     <AppBar color='default'>
       <Container maxWidth="lg">
-        <Toolbar >
+        <Toolbar sx={{ display : "flex" }}>
           <Logo src="/tabeyoukaLogo.png"/>
           <GNB pages={pages} onClick={setMode}/>
           <Button onClick={(window.localStorage.getItem('id_token') == null) ? login : logout}>
