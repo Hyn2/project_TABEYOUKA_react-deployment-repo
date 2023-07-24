@@ -1,20 +1,15 @@
 import { Container, Typography, Box, Button } from "@mui/material";
 import ModalButton from "../components/common/button/ModalButton";
-import {
-  LocationOnOutlined,
-  DiningOutlined,
-  Search
-} from "@mui/icons-material";
+import {LocationOnOutlined, DiningOutlined, Search} from "@mui/icons-material";
 import useToggle from "../hooks/useToggle";
-import {
-  LocationModal,
-  CategoryModal,
-  RestaurantModal,
-} from "../components/ui/modal";
+import {LocationModal, CategoryModal, RestaurantModal} from "../components/ui/modal";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import {  useSnackbar } from "notistack";
 import InfoFooter from "../components/common/InfoFooter";
+import Layout from "../components/layout";
+
+
 function MainPage() {
   const { setTrue: locationModalOpen, ...locationModalProps } = useToggle();
   const { setTrue: restaurantModalOpen, ...restaurantModalProps } = useToggle();
@@ -165,7 +160,7 @@ function MainPage() {
         </Box>
       </Container>
       <InfoFooter />
-    </>
+    </Layout>
   );
 }
 

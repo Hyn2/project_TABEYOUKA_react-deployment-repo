@@ -9,13 +9,14 @@ interface userModalProps {
 }
 
 const UserModal = ({userModalType, userId} : userModalProps) => {
+  
   const [userData, setUserData] = useState([]);
   useEffect(() => {
     if(userModalType === "following") {
       axios.get('http://localhost:8000/api/following', {
         params : {
-          idToken : window.localStorage.getItem('id_token'),
-          id : userId,
+          access_token : window.localStorage.getItem('access_token'),
+          user_id : userId,
         }
       })
       .then(response => {
@@ -27,8 +28,8 @@ const UserModal = ({userModalType, userId} : userModalProps) => {
     } else {
       axios.get('http://localhost:8000/api/follower', {
         params : {
-          idToken : window.localStorage.getItem('id_token'),
-          id : userId,
+          access_token : window.localStorage.getItem('access_token'),
+          user_id : userId,
         }
       })
       .then(response => {
@@ -42,14 +43,15 @@ const UserModal = ({userModalType, userId} : userModalProps) => {
   
   return (
     <>
-      {userData.length == 0 ? (
+      {userData.length != 0 ? (
+           userData.map((user) => (
+            <UserListItem key={user['id']} id={user['id']} nickname={user['nickname']} profile_image={user['profile_image']}/>
+            ))
+        ) : (
         <Box sx={{display: "flex", textAlign: "center", justifyContent: "center", flexDirection: "column"}}>
           <Typography variant="h6">아직 친구가 없어요</Typography>
         </Box> 
-        ) : (
-        userData.map((user) => (
-        <UserListItem nickname={user['nickname']} profile_image={user['profile_image']}/>
-        ))
+
       )}
     </>
   )

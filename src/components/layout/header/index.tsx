@@ -17,13 +17,15 @@ function Header() {
 
   const logout = () => {
     alert('로그아웃이 완료되었습니다.');
-    window.localStorage.removeItem('id_token');
+    window.localStorage.removeItem('refresh_token');
+    window.localStorage.removeItem('access_token');
+    window.localStorage.removeItem('id');
     Navigate('/');
   }
 
   useEffect(() => {
-    setStatus(window.localStorage.getItem('id_token') == null ? 'ログイン' : 'ログアウト');
-  }, [window.localStorage.getItem('id_token')]);
+    setStatus(window.localStorage.getItem('access_token') == null ? 'ログイン' : 'ログアウト');
+  }, [window.localStorage.getItem('access_token')]);
 
   const pages = [{key : 'Products', onClick :()=> {console.log("Products")}}, 
   {key : 'Pricing', onClick :()=> {console.log("Pricing")}}, 
@@ -35,7 +37,7 @@ function Header() {
         <Toolbar sx={{ display : "flex" }}>
           <Logo src="/tabeyoukaLogo.png"/>
           <GNB pages={pages} onClick={setMode}/>
-          <Button onClick={(window.localStorage.getItem('id_token') == null) ? login : logout}>
+          <Button onClick={(window.localStorage.getItem('access_token') == null) ? login : logout}>
             {status}
           </Button>
           <Box sx={{ flexGrow: 0, display : "flex" }}>
