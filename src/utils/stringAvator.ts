@@ -13,7 +13,6 @@ function stringToColor(string: string) {
     const value = (hash >> (i * 8)) & 0xff;
     color += `00${value.toString(16)}`.slice(-2);
   }
-  /* eslint-enable no-bitwise */
 
   return color;
 }
@@ -24,7 +23,7 @@ function stringToColor(string: string) {
  * @returns AvatarProps { sx, children }
  */
 export function stringAvatar(name: string) {
-  const [firstName, lastName=''] = name.split(' ');
+  const [firstName, lastName = ''] = name.split(' ');
 
   return {
     sx: {

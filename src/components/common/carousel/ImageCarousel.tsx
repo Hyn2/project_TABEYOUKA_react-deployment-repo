@@ -36,6 +36,7 @@ const swipeStyle: SwipeStyle = {
   },
 };
 
+// 나중에 훅써서 리팩토링하면 될 듯
 const ImageCarousel = ({ photos, deleteHandler }: ImageCarouselProps) => {
   let reactSwipeEl: ReactSwipe;
 
@@ -47,8 +48,8 @@ const ImageCarousel = ({ photos, deleteHandler }: ImageCarouselProps) => {
     <Box
       sx={{
         display: 'flex',
-        width: '550px',
-        height: '550px',
+        width: '400px',
+        height: '400px',
         position: 'relative',
         justifyContent: 'center',
         alignItems: 'center',
@@ -66,7 +67,7 @@ const ImageCarousel = ({ photos, deleteHandler }: ImageCarouselProps) => {
             <Box key={i} height="100%" position="relative">
               <img
                 src={URL.createObjectURL(photo)}
-                style={{ objectFit: 'cover', width: '100%', height: '100%' }}
+                style={{ objectFit: 'cover', width: '100%', height: '100%', borderRadius: '10px' }}
                 alt="reviewPhoto"
               />
               {deleteHandler && (
