@@ -9,6 +9,7 @@ interface props {
   width : string
 }
 
+
 const GoogleLoginButton = ({id, width} : props) => {
   const navigate = useNavigate();
 
@@ -33,21 +34,14 @@ const GoogleLoginButton = ({id, width} : props) => {
     })
   };
 
-  const onError = () => {
-    console.log("error");
-  };
-
-  const logout = () => {
-    googleLogout();
-    console.log("googleLogout");
-}
 
   
   
   return (
     <>     
       <GoogleOAuthProvider clientId={id} data-auto_select={false} >
-          <GoogleLogin size='large' width='450px'
+          <GoogleLogin
+            width={width}
             onSuccess={handleLoginSuccess}
             onError={() => {
               console.log('Login Failed');
