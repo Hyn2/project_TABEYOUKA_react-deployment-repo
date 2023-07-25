@@ -1,12 +1,11 @@
 import { AppBar, Box, Toolbar, Container, Button} from '@mui/material/'
 import Logo from './Logo';
-import GNB from './GNB';
-import TemporaryDrawer from './Drawer';
 import { useNavigate } from 'react-router-dom';
 import {useEffect, useState} from 'react';
+import MyPage from './MyPage';
 
 function Header() {
-  const [mode, setMode] = useState('Products');
+  
   const [status, setStatus] = useState("ログイン");
   
   const Navigate = useNavigate();
@@ -27,21 +26,18 @@ function Header() {
     setStatus(window.localStorage.getItem('access_token') == null ? 'ログイン' : 'ログアウト');
   }, [window.localStorage.getItem('access_token')]);
 
-  const pages = [{key : 'Products', onClick :()=> {console.log("Products")}}, 
-  {key : 'Pricing', onClick :()=> {console.log("Pricing")}}, 
-  {key : 'Blog', onClick : ()=> {console.log("Blog")}}];
 
   return (
     <AppBar color='default'>
       <Container maxWidth="lg">
         <Toolbar sx={{ display : "flex" }}>
           <Logo src="/tabeyoukaLogo.png"/>
-          <GNB pages={pages} onClick={setMode}/>
-          <Button onClick={(window.localStorage.getItem('access_token') == null) ? login : logout}>
-            {status}
-          </Button>
-          <Box sx={{ flexGrow: 0, display : "flex" }}>
-            <TemporaryDrawer />
+          {/* <GNB pages={pages} onClick={setMode}/> */}
+          <Box sx={{ flexGrow : 1, display : "flex", justifyContent : "flex-end" }}>
+            <Button onClick={(window.localStorage.getItem('access_token') == null) ? login : logout}>
+              {status}
+            </Button>
+            <MyPage/>
           </Box>
         </Toolbar>
       </Container>
