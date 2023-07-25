@@ -1,0 +1,9 @@
+.ck-editor__editable {
+  min-height: 100px;
+  max-height: 300px;
+}
+
+.ck-editor__editable.ck-read-only {
+  min-height: auto;
+  max-height: fit-content;
+}
