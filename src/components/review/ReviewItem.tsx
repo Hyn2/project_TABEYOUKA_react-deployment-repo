@@ -145,7 +145,7 @@ const ReviewItem = (props: ReviewItemProps) => {
         <Divider variant="middle" />
 
         <Box m={2}>
-          <RestaurantBanner data={review.restaurant} />
+          <RestaurantBanner data={review.restaurant} size="small" />
         </Box>
 
         <Divider variant="middle" />
