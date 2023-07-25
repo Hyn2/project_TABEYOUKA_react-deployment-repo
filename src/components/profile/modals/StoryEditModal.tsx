@@ -29,7 +29,12 @@ const StoryEditModal = ({id, open, onClose} : storyEditModalProps) => {
 
   useEffect(() => {
     axios
-    .get("http://localhost:8000/api/review?user_id=justin010129@gmail.com", )
+    .get("http://localhost:8000/api/review?user_id=justin010129@gmail.com",{
+      params : {
+        access_token : localStorage.getItem('access_token'),
+      }   
+    }
+   )
     .then(response => {
       setReview(response.data);
     })

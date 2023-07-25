@@ -29,7 +29,7 @@ const ReviewContainer = ({userId} : reviewContainerProps) => {
     axios.get(`http://localhost:8000/api/review`, {
       params: {
         user_id: userId,
-        idToken : localStorage.getItem('id_token'),
+        access_token : localStorage.getItem('access_token'),
       }   
     })
       .then(response => {

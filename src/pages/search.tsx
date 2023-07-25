@@ -1,42 +1,80 @@
 import { Box, Button, Container, Typography } from "@mui/material";
 import Layout from "../components/layout";
 import useToggle from "../hooks/useToggle";
-import { LocationModal, CategoryModal, RestaurantModal, MapModal} from "../components/ui/modal";
+import {
+  LocationModal,
+  CategoryModal,
+  RestaurantModal,
+  MapModal,
+} from "../components/ui/modal";
 import ActionCard from "../components/ui/actionCard/infoCard";
-import {LocationOnOutlined, DiningOutlined, Search, MapOutlined} from "@mui/icons-material";
-import {useLayoutEffect, useState, useRef} from "react";
+import {
+  LocationOnOutlined,
+  DiningOutlined,
+  Search,
+  MapOutlined,
+} from "@mui/icons-material";
+import { useLayoutEffect, useState, useEffect, useRef } from "react";
 import searchRestaurant from "../api/search";
-import type {Restaurant} from ".././types/restaurant.interface.ts";
-
+import type { Restaurant } from ".././types/restaurant.interface.ts";
 
 function SearchResultPage() {
-    const {setTrue : locationModalOpen, ...locationModalProps} = useToggle();
-    const {setTrue : restaurantModalOpen, ...restaurantModalProps} = useToggle();
-    const {setTrue : categoryModalOpen, ...categoryModalProps} = useToggle();
-    const {setTrue : FilterModalOpen, ...FilterModalProps} = useToggle();
-    const {setTrue : MapModalOpen, ...MapModalProps} = useToggle();
+  const { setTrue: locationModalOpen, ...locationModalProps } = useToggle();
+  const { setTrue: restaurantModalOpen, ...restaurantModalProps } = useToggle();
+  const { setTrue: categoryModalOpen, ...categoryModalProps } = useToggle();
+  const { setTrue: FilterModalOpen, ...FilterModalProps } = useToggle();
+  const { setTrue: MapModalOpen, ...MapModalProps } = useToggle();
 
-    const [location, setLocation] = React.useState<string>("위치");
-    const [category, setCategory] = React.useState<string>("요리 장르");
-    const [restaurant, setRestaurant] = React.useState<string>("레스토랑 이름");
-    React.useEffect(() => {
-      locationModalProps.setFalse();
-      categoryModalProps.setFalse();
-      restaurantModalProps.setFalse();
-    }, [location, category, restaurant]);
+  const [location, setLocation] = useState<string>("위치");
+  const [category, setCategory] = useState<string>("요리 장르");
+  const [restaurant, setRestaurant] = useState<string>("레스토랑 이름");
+  useEffect(() => {
+    locationModalProps.setFalse();
+    categoryModalProps.setFalse();
+    restaurantModalProps.setFalse();
+  }, [location, category, restaurant]);
 
-    return (
-        <Layout>
-          <Box sx={{ height : "auto", pt : 9}}>
-            <Container maxWidth="lg" sx={{ height : "130px" }}>
-              <Box sx={{ width : "100%", height : "90%", display : "flex", flexWrap : "wrap" }}>
-                <Box sx={{ width : "100%", height : "34%", p : 1, display : "flex"}}>
-                  <Box sx={{ width : "50%", height : "100%", display : "flex" }}>
-                    {/* 아래 3개의 버튼 중복성이 느껴져서 리펙토링 예정 */}
-                    <Box sx={{ width : "40%", height : "100%", ml : 1, borderBottom : "0.5px solid black" }}>
-                      <Button sx={{ width : "100%", height : "100%", display: "flex", justifyContent: "flex-start", color : "#C2C2C2" }} onClick={locationModalOpen}><LocationOnOutlined htmlColor="green"/>{location}</Button>
-                      <LocationModal {...locationModalProps} setLocation={setLocation}/>
-                    </Box>
+  return (
+    <Layout>
+      <Box sx={{ height: "auto", pt: 9 }}>
+        <Container maxWidth="lg" sx={{ height: "130px" }}>
+          <Box
+            sx={{
+              width: "100%",
+              height: "90%",
+              display: "flex",
+              flexWrap: "wrap",
+            }}
+          >
+            <Box sx={{ width: "100%", height: "34%", p: 1, display: "flex" }}>
+              <Box sx={{ width: "50%", height: "100%", display: "flex" }}>
+                {/* 아래 3개의 버튼 중복성이 느껴져서 리펙토링 예정 */}
+                <Box
+                  sx={{
+                    width: "40%",
+                    height: "100%",
+                    ml: 1,
+                    borderBottom: "0.5px solid black",
+                  }}
+                >
+                  <Button
+                    sx={{
+                      width: "100%",
+                      height: "100%",
+                      display: "flex",
+                      justifyContent: "flex-start",
+                      color: "#C2C2C2",
+                    }}
+                    onClick={locationModalOpen}
+                  >
+                    <LocationOnOutlined htmlColor="green" />
+                    {location}
+                  </Button>
+                  <LocationModal
+                    {...locationModalProps}
+                    setLocation={setLocation}
+                  />
+                </Box>
 
                 <Box
                   sx={{
@@ -136,19 +174,41 @@ function SearchResultPage() {
             </Box>
           </Box>
         </Container>
-
-              
-            </Container>
-            <Box sx={{ width : "100%", height : "auto", display : "flex", justifyContent : "center", flexWrap : "wrap", alignContent : "center" }}>
-                <ActionCard src={"https://i0.wp.com/www.fukuoka-now.com/wp-content/uploads/2019/12/fn253-gourmet-rakutenchi-WEB-001.jpg?fit=1400%2C931&ssl=1"} title={"モツ鍋うまい"} tag={"＃モツ鍋"} />
-                <ActionCard src={"https://i0.wp.com/www.fukuoka-now.com/wp-content/uploads/2019/12/fn253-gourmet-rakutenchi-WEB-001.jpg?fit=1400%2C931&ssl=1"} title={"モツ鍋うまい"} tag={"＃モツ鍋"} />
-                <ActionCard src={"https://i0.wp.com/www.fukuoka-now.com/wp-content/uploads/2019/12/fn253-gourmet-rakutenchi-WEB-001.jpg?fit=1400%2C931&ssl=1"} title={"モツ鍋うまい"} tag={"＃モツ鍋"} />
-            </Box>
-          </Box>
-        </Layout>
-    )
+        <Box
+          sx={{
+            width: "100%",
+            height: "auto",
+            display: "flex",
+            justifyContent: "center",
+            flexWrap: "wrap",
+            alignContent: "center",
+          }}
+        >
+          <ActionCard
+            src={
+              "https://i0.wp.com/www.fukuoka-now.com/wp-content/uploads/2019/12/fn253-gourmet-rakutenchi-WEB-001.jpg?fit=1400%2C931&ssl=1"
+            }
+            title={"モツ鍋うまい"}
+            tag={"＃モツ鍋"}
+          />
+          <ActionCard
+            src={
+              "https://i0.wp.com/www.fukuoka-now.com/wp-content/uploads/2019/12/fn253-gourmet-rakutenchi-WEB-001.jpg?fit=1400%2C931&ssl=1"
+            }
+            title={"モツ鍋うまい"}
+            tag={"＃モツ鍋"}
+          />
+          <ActionCard
+            src={
+              "https://i0.wp.com/www.fukuoka-now.com/wp-content/uploads/2019/12/fn253-gourmet-rakutenchi-WEB-001.jpg?fit=1400%2C931&ssl=1"
+            }
+            title={"モツ鍋うまい"}
+            tag={"＃モツ鍋"}
+          />
+        </Box>
+      </Box>
+    </Layout>
+  );
 }
 
 export default SearchResultPage;
-
-

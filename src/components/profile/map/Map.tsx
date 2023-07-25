@@ -25,7 +25,7 @@ const Map = ({userId} : mapProps) => {
     axios.get(`http://localhost:8000/api/map`, {
       params: {
         user_id : userId,
-        idToken : localStorage.getItem('id_token'),
+        access_token : localStorage.getItem('access_token'),
       }   
     })
     .then(response => {

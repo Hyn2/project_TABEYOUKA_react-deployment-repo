@@ -207,11 +207,10 @@ function store() {
                     </GoogleMap>
                   </LoadScript>
                 </Box>
-                <Box sx={{ width : "25%", height : "100%"}}>
-
-                </Box>
+                <Box sx={{ width : "25%", height : "100%"}}></Box>
               </Box>
-            </Container>
+            </Box>
+          </Container>
           </Box>
         </Box>
       </Layout>

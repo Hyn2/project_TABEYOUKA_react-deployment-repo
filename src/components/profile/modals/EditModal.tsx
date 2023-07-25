@@ -21,7 +21,7 @@ const EditModal = (props : editModalProps) => {
     axios
       .get(`http://localhost:8000/api/user`, {
         params : {
-          idToken: window.localStorage.getItem('id_token'),
+          access_token : localStorage.getItem('access_token'),
           user_id : props.userId,
         }
       })
@@ -81,7 +81,7 @@ const EditModal = (props : editModalProps) => {
         'Content-Type': 'multipart/form-data'
       },
       params: {
-        'idToken' : window.localStorage.getItem('id_token'),
+        'access_token' : window.localStorage.getItem('access_token'),
       }
     })
       .then(response => {
