@@ -9,10 +9,10 @@ export default function MyPage() {
     }
 
     return (
-        <Box sx={{ flexGrow : 1, display : "flex", justifyContent : "flex-end" }}>
+        
           <Button onClick={navMypage}>
             <AccountCircleIcon/>
           </Button>
-        </Box>
+        
     )
 }
