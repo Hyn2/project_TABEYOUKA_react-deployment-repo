@@ -29,7 +29,7 @@ export default function MapModal(props: Omit<UseToggle, "setTrue"> & { restauran
     <Modal open={props.value} onClose={props.setFalse} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
       <Box>
         <Box sx={modalStyle}>
-          <LoadScript googleMapsApiKey="AIzaSyDxpTyFysI7-uPLXL_hqP5PRwmfVPrGTls" onLoad={() => setIsMapLoaded(true)}>
+          <LoadScript googleMapsApiKey="" onLoad={() => setIsMapLoaded(true)}>
             {isMapLoaded && (
               <GoogleMap mapContainerStyle={mapContainerStyle} center={center} zoom={6}>
                 {props.restaurants.map((restaurant) => (
