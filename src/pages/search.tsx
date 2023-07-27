@@ -1,15 +1,18 @@
-import { Box, Button, Container, Typography } from "@mui/material";
+import { Box, Button, Container, Typography, useMediaQuery, useTheme } from "@mui/material";
 import Layout from "../components/layout";
 import useToggle from "../hooks/useToggle";
 import { LocationModal, CategoryModal, RestaurantModal, MapModal} from "../components/ui/modal";
 import ActionCard from "../components/ui/actionCard/infoCard";
 import {LocationOnOutlined, DiningOutlined, Search, MapOutlined} from "@mui/icons-material";
-import {useLayoutEffect, useState, useRef} from "react";
+import {useLayoutEffect, useState, useRef, useEffect} from "react";
 import searchRestaurant from "../api/search";
 import type {Restaurant} from ".././types/restaurant.interface.ts";
 
 
 function SearchResultPage() {
+  const theme = useTheme();
+  const isDownMD = useMediaQuery(theme.breakpoints.down("md"));
+
   const target = useRef<HTMLDivElement | null>(null);
   const [fetchingData, setFetchingData] = useState(false);
   
@@ -55,7 +58,7 @@ function SearchResultPage() {
   const [lng, setLng] = useState<number>(0);
   const [location, setLocation] = useState<string>("위치");
   const [category, setCategory] = useState<string>("요리 장르");
-  const [restaurant, setRestaurant] = useState<string>("레스토랑 이름");
+  const [restaurant, setRestaurant] = useState<string>("");
   const [data, setData] = useState<Restaurant[]>([]);
   const [available, setAvailable] = useState<number>(0);
   const [params, setParams] = useState({
@@ -75,36 +78,45 @@ function SearchResultPage() {
   if (params.area !== locationCode) {
     setParams({ ...params, area: locationCode });
   }
+
+  useEffect(() => {
+    setParams({ ...params, name: restaurant });
+  }, [restaurant]);
   
+  
+  useLayoutEffect(() => {
+    const fetchData = async () => {
+      try {
+        setFetchingData(true);
+        const fetchedData = await searchRestaurant(params);
+        setData((prevData) => [...prevData, ...fetchedData]);
+      } catch (e) {
+        console.log(e);
+        // 비동기 처리 완료시 false로 변경
+      } finally {
+        setFetchingData(false);
+      }
+    };
+  
+    fetchData();
+  }, [params.start]);
+
   useLayoutEffect(() => {
     // fetchData 함수 정의
     const fetchData = async () => {
       try {
         const fetchedData = await searchRestaurant(params);
-        setData((prevData) => [...prevData, ...fetchedData]);
-        setFetchingData(false);
-      } catch (e) {
-        console.log(e);
-        setFetchingData(false);
-      }
-    };
-
-    fetchData();
-    
-  }, [params.genre, params.area, params.name, params.start ]);
-
-  useLayoutEffect(() => {
-    const fetchData = async () => {
-      try {
+        setData(fetchedData);
         const available = await searchRestaurant({...params, count : 100});
         setAvailable(available);
       } catch (e) {
         console.log(e);
       }
     };
+
     fetchData();
-    
-  }, []);
+  }, [params.genre, params.area, params.name]);
+
   useLayoutEffect(() => {
     locationModalProps.setFalse();
   }, [location])
@@ -244,7 +256,7 @@ function SearchResultPage() {
                   <Button sx={{ minWidth: "10px" }} onClick={MapModalOpen}>
                     <MapOutlined htmlColor="black" />
                   </Button>
-                  <MapModal {...MapModalProps} restaurants={data} />
+                  <MapModal {...MapModalProps}  />
                 </Box>
               </Box>
               {/* 선택한 필터가 표시될 박스 필요 */}
@@ -257,31 +269,34 @@ function SearchResultPage() {
           sx={{
             height: "auto",
             display: "flex",
-            justifyContent: "flex-start",
+            justifyContent: isDownMD ? "center" : "flex-start",
             flexWrap: "wrap",
             alignContent: "center",
           }}
         >
-          {data.map((item: any, index: any) => (
-            <ActionCard
-              key={index}
-              src={item.photo.pc.l}
-              title={item.name}
-              tag={`${item.small_area.name} / ${item.genre.name}`}
-              id={item.id}
-              
-            />
-          ))}
-          
+          {data.length === 0 ? (
+            <Box sx={{ width: "100%", height: "100%", display: "flex", justifyContent: "center", alignItems: "center" }}>
+              <Typography>검색 결과가 없습니다.</Typography>
+            </Box>
+          ) : (
+            <>
+            {data.map((item: any, index: any) => (
+              <ActionCard
+                key={index}
+                src={item.photo.pc.l}
+                title={item.name}
+                tag={`${item.small_area.name} / ${item.genre.name}`}
+                id={item.id}
+                
+              />
+            ))}
+            <div style={{ height : "50px", backgroundColor : "red" }} ref={target}></div>
+            </>
+          )}
         </Container>
-        {data ? (
-          null
-        ) : <div style={{ backgroundColor : "red", height : "100px" }} ref={target}></div>}
       </Box>
     </Layout>
   );
 }
 
 export default SearchResultPage;
-
-
