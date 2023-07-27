@@ -1,4 +1,4 @@
-import { Container, Typography, Box, Button } from "@mui/material";
+import { Container, Typography, Box, Button, useTheme, useMediaQuery } from "@mui/material";
 import ModalButton from "../components/common/button/ModalButton";
 import {
   LocationOnOutlined,
@@ -16,6 +16,9 @@ import { useEffect, useState } from "react";
 import {  useSnackbar } from "notistack";
 import InfoFooter from "../components/common/InfoFooter";
 function MainPage() {
+  const theme = useTheme();
+  const isDownMD = useMediaQuery(theme.breakpoints.down("md"));
+
   const { setTrue: locationModalOpen, ...locationModalProps } = useToggle();
   const { setTrue: restaurantModalOpen, ...restaurantModalProps } = useToggle();
   const { setTrue: categoryModalOpen, ...categoryModalProps } = useToggle();
@@ -93,8 +96,7 @@ function MainPage() {
       >
         <Typography
           color={"white"}
-          fontSize={"48px"}
-          sx={{ fontWeight: "bold", textAlign: "center", my: 2 }}
+          sx={{ fontWeight: "bold", textAlign: "center", my: 2, fontSize : isDownMD ? "36px" : "48px" }}
         >
           行きたいお店を見つけてみよう！
         </Typography>
@@ -110,7 +112,7 @@ function MainPage() {
           <Box
             sx={{
               backgroundColor: "white",
-              width: "40%",
+              width: isDownMD ? "90%" : "40%",
               height: "100%",
               borderRadius: "10px",
               display: "flex",
