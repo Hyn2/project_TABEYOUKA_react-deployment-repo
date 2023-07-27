@@ -48,12 +48,25 @@ const ReviewDetailPage = () => {
     setAlreadyLiked(!alreadyLiked);
   };
 
+  const redirectToProfile = () => {
+    navigate(`/profile?user_id=${review?.user.id}`);
+  };
+
+  const redirectToRestaurant = () => {
+    navigate(`/store?id=${review?.restaurant.id}`);
+  };
+
   useLayoutEffect(() => {
     if (!review_id) navigate('/reviews');
 
-    getReviewByReviewId(review_id).then((review) => {
-      setReview(review);
-    });
+    getReviewByReviewId(review_id)
+      .then((review) => {
+        setReview(review);
+      })
+      .catch((e) => {
+        // TODO: 만약 review가 not found일 때, not found 페이지로 이동하거나 notfound를 컴포넌트에 띄어야 하는지 고민
+        navigate('/reviews');
+      });
 
     checkLikeReview(review_id, user_id).then((isLike) => {
       setAlreadyLiked(isLike);
@@ -64,6 +77,16 @@ const ReviewDetailPage = () => {
     <Layout>
       <Box pt={9} />
       <Box p={2}>
+        <Button
+          variant="text"
+          size="small"
+          color="inherit"
+          onClick={() => {
+            navigate(-1);
+          }}
+        >
+          {'< back'}
+        </Button>
         <Container>
           {review ? (
             <Box sx={reviewItemStyle}>
@@ -162,18 +185,22 @@ const ReviewDetailPage = () => {
 
                 <Divider variant="middle" />
 
-                <Box m={2}>
-                  <RestaurantBanner data={review.restaurant} />
+                <Box m={2} sx={{ cursor: 'pointer' }}>
+                  <div onClick={redirectToRestaurant}>
+                    <RestaurantBanner data={review.restaurant} />
+                  </div>
                 </Box>
 
                 <Divider variant="middle" />
 
-                <Box width="100%" border="1px solid black" display="flex" justifyContent="center">
+                <Box width="100%" display="flex" justifyContent="center">
                   <ButtonGroup>
                     <IconButton>
                       <NavigateBefore />
                     </IconButton>
-                    <Button>レビュアーの投稿をもっと見る!</Button>
+                    <Button variant="text" onClick={redirectToProfile}>
+                      レビュアーの投稿をもっと見る!
+                    </Button>
                     <IconButton>
                       <NavigateNext />
                     </IconButton>
@@ -214,4 +241,5 @@ const ReviewDetailPage = () => {
     </Layout>
   );
 };
+
 export default ReviewDetailPage;

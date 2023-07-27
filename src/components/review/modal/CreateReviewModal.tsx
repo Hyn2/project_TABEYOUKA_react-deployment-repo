@@ -212,6 +212,7 @@ const CreateReviewModal = ({ value, setFalse }: ModalProps) => {
                   multiple
                   onChange={handleInputPhoto}
                   hidden={true}
+                  accept="image/jpg, image/png, image/jpeg, image/gif"
                 />
               </Box>
 

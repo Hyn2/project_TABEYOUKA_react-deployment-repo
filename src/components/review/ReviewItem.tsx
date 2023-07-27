@@ -8,6 +8,7 @@ import { checkLikeReview, toggleLikeReview } from '../../services/review.service
 import { useLayoutEffect, useState } from 'react';
 import { EditorOnlyRead } from '../common/CKEditor';
 import RestaurantBanner from './RestaurantBanner';
+import { useNavigate } from 'react-router-dom';
 
 interface ReviewItemProps {
   review: Review;
@@ -37,6 +38,7 @@ const userInfo: User = {
 };
 
 const ReviewItem = (props: ReviewItemProps) => {
+  const navigate = useNavigate();
   const { review } = props;
   const [alreadyLiked, setAlreadyLiked] = useState<boolean>(false);
 
@@ -44,6 +46,10 @@ const ReviewItem = (props: ReviewItemProps) => {
     checkLikeReview(review.id, userInfo.id).then((isLiked) => {
       setAlreadyLiked(isLiked);
     });
+  };
+
+  const redirectToRestaurant = () => {
+    navigate(`/store?id=${review.restaurant.id}`);
   };
 
   const handleLike = () => {
@@ -144,8 +150,10 @@ const ReviewItem = (props: ReviewItemProps) => {
 
         <Divider variant="middle" />
 
-        <Box m={2}>
-          <RestaurantBanner data={review.restaurant} />
+        <Box m={2} sx={{ cursor: 'pointer' }}>
+          <div onClick={redirectToRestaurant}>
+            <RestaurantBanner data={review.restaurant} size="small" />
+          </div>
         </Box>
 
         <Divider variant="middle" />
