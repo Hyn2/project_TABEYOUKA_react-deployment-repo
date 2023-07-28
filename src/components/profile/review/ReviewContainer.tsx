@@ -1,8 +1,7 @@
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import Review from "./Review";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 
 interface reviewContainerProps {
   userId : string,
@@ -50,7 +49,7 @@ const ReviewContainer = ({userId} : reviewContainerProps) => {
       </Box>
     ) : (
       review.map((user) => (
-        <Review key={user['id']} src={user['review_image']}/>
+        <Review key={user['id']} reviewId={user['id']} src={user['review_image']}/>
       ))
     )}
     </Box>

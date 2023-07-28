@@ -1,4 +1,4 @@
-import { Modal, Stack } from "@mui/material";
+import { Stack } from "@mui/material";
 import Story from "./Story";
 import StoryModal from "../modals/StoryModal";
 import { useEffect, useState } from "react";
@@ -14,13 +14,13 @@ const Categories = ({id} : categoriesProps) => {
   const [addModal, setAddModal] = useState(false);
   const [storyList, setStoryList] = useState([]);
   const [listInfo, setListInfo] = useState({
-    'id' : '',
+    'id' : 0,
     'name' : '',
     'image' : '',
   });
 
   interface openModalProps {
-    id :string,
+    id :number,
     listName: string,
     image: string,
   }

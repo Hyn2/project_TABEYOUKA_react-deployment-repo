@@ -44,12 +44,6 @@ const centerStyle = {
   display : "flex", justifyContent : "center", alignItems : "center"
 }
 
-const pages = [
-  {key : '지역', onClick :()=> {console.log("Products")}},
-  {key : '역', onClick :()=> {console.log("Pricing")}},
-  {key : '명소', onClick : ()=> {console.log("Blog")}},
-  {key : '호텔', onClick : ()=> {console.log("Blog")}}]
-
 
 const imageSrc = [
   "https://www.visit-hokkaido.jp/lsc/upfile/top/visual/0000/0015/15_1_l.jpg",
@@ -94,14 +88,13 @@ export default function LocationModal(props: Omit<UseToggle, "setTrue"> & {
     }
 
     const { setTrue: restaurantModalOpen, ...restaurantModalProps } = useToggle();
-    const [mode, setMode] = React.useState<string>(pages[0].key);
-    const [gnbState, setGnbState] = React.useState(false);
+    const [mode, setMode] = React.useState<boolean>(false);
     const [highLocations, setHighLocations] = useState("");
 
     const handleLocationClick = (location: string) => {
     console.log('Clicked location:', location);
-    setGnbState(true)
     setHighLocations(location); // 클릭된 위치 값을 highLocations 상태로 업데이트
+    setMode(true); 
     };
 
     return <Modal
@@ -163,10 +156,7 @@ export default function LocationModal(props: Omit<UseToggle, "setTrue"> & {
         {/* 하위지역 선택 툴 */}
         <Box sx={{ width : "100%", height : "80px", ...centerStyle,}}>
           <Box sx={{ width : "90%", height : "100%" }}>
-            {gnbState &&
-              <GNB pages={pages} onClick={setMode}/>
-            }
-            { mode === "지역" && <MiddleLocation  highLocations={highLocations} mode={mode} setLocation={props.setLocation} setLocationCode={props.setLocationCode}/>}
+            { mode && <MiddleLocation  highLocations={highLocations} setLocation={props.setLocation} setLocationCode={props.setLocationCode}/>}
           </Box>
         </Box>
         

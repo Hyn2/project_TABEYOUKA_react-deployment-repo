@@ -1,32 +1,27 @@
 import { Box, Button, Typography, useMediaQuery } from "@mui/material";
-import EditModal from "../modals/EditModal";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Counter from "./Counter";
-import { useNavigate } from "react-router-dom";
 
 interface nameProps {
   userId : string,
   children : React.ReactNode,
+  openEditModal : ()=>void,
 }
 
 interface Follower {
   id: string,
 }
 
-const Name = ({userId, children} : nameProps) => {
+const Name = ({userId, children, openEditModal} : nameProps) => {
 
-  const [modalState, setModalState] = useState(false);
   const [following, setFollowing] = useState(false);
-  const navigate = useNavigate();
   const [followAndReview, setFollowAndReview] = useState({
     reviews : 0,
     followers : 0,
     followings : 0,
   });
 
-  const openModal =() => setModalState(true);
-  const closeModal = () => setModalState(false);
   const mobileScreenFlex = useMediaQuery('(max-width:1500px)');
   const mobileScreenFontSize = useMediaQuery('(max-width: 1210px)');
 
@@ -102,12 +97,11 @@ const Name = ({userId, children} : nameProps) => {
         {
           userId == window.localStorage.getItem('id') ? 
           <>
-          <Button onClick={openModal} variant="contained" size="small" 
+          <Button onClick={openEditModal} variant="contained" size="small" 
           sx={{ marginTop : "10px", fontSize: mobileScreenFontSize ? "65%" : "100%", 
                 marginRight: "10px", backgroundColor: "black", color: "white"}}>
             編集
           </Button> 
-          <EditModal userId={userId} open={modalState} onClose={closeModal} />
           </>
            : 
            following ?           

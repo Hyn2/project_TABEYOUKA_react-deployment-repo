@@ -1,39 +1,125 @@
-import { Box, Button, Container, Typography } from "@mui/material";
+import { Box, Button, Container, Typography, useMediaQuery, useTheme } from "@mui/material";
 import Layout from "../components/layout";
 import useToggle from "../hooks/useToggle";
-import {
-  LocationModal,
-  CategoryModal,
-  RestaurantModal,
-  MapModal,
-} from "../components/ui/modal";
+import { LocationModal, CategoryModal, RestaurantModal, MapModal} from "../components/ui/modal";
 import ActionCard from "../components/ui/actionCard/infoCard";
-import {
-  LocationOnOutlined,
-  DiningOutlined,
-  Search,
-  MapOutlined,
-} from "@mui/icons-material";
-import { useLayoutEffect, useState, useEffect, useRef } from "react";
+import {LocationOnOutlined, DiningOutlined, Search, MapOutlined} from "@mui/icons-material";
+import {useLayoutEffect, useState, useRef, useEffect} from "react";
 import searchRestaurant from "../api/search";
-import type { Restaurant } from ".././types/restaurant.interface.ts";
+import type {Restaurant} from ".././types/restaurant.interface.ts";
+
 
 function SearchResultPage() {
+  const theme = useTheme();
+  const isDownMD = useMediaQuery(theme.breakpoints.down("md"));
+
+  const target = useRef<HTMLDivElement | null>(null);
+  const [fetchingData, setFetchingData] = useState(false);
+  
+  const callback: IntersectionObserverCallback = (entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting && !fetchingData) {
+        setFetchingData(true);
+        setParams((prevParams) => ({ ...prevParams, start: prevParams.start + 10 }));
+        console.log(params.start);
+      }
+    });
+  };
+
+  useLayoutEffect(() => {
+    let observer: IntersectionObserver | null = null; // Declare the observer variable
+
+    if (target.current) {
+      const options = {
+        threshold: 1.0,
+      };
+      observer = new IntersectionObserver(callback, options);
+      observer.observe(target.current);
+    }
+
+    return () => {
+      // Clean up the observer
+      if (observer) {
+        observer.disconnect();
+      }
+    };
+  }, [fetchingData]); // Add fetchingData to the dependencies
+
+  const queryString = window.location.search;
+  const urlParams = new URLSearchParams(queryString);
+  
   const { setTrue: locationModalOpen, ...locationModalProps } = useToggle();
   const { setTrue: restaurantModalOpen, ...restaurantModalProps } = useToggle();
   const { setTrue: categoryModalOpen, ...categoryModalProps } = useToggle();
-  const { setTrue: FilterModalOpen, ...FilterModalProps } = useToggle();
   const { setTrue: MapModalOpen, ...MapModalProps } = useToggle();
-
+  
+  
+  const [lat, setLat] = useState<number>(0);
+  const [lng, setLng] = useState<number>(0);
   const [location, setLocation] = useState<string>("위치");
   const [category, setCategory] = useState<string>("요리 장르");
-  const [restaurant, setRestaurant] = useState<string>("레스토랑 이름");
-  useEffect(() => {
-    locationModalProps.setFalse();
-    categoryModalProps.setFalse();
-    restaurantModalProps.setFalse();
-  }, [location, category, restaurant]);
+  const [restaurant, setRestaurant] = useState<string>("");
+  const [data, setData] = useState<Restaurant[]>([]);
+  const [available, setAvailable] = useState<number>(0);
+  const [params, setParams] = useState({
+    genre: `${urlParams.get("genre")}`,
+    area: `${urlParams.get("area")}`,
+    name: `${urlParams.get("name")}`,
+    lat: `${urlParams.get("lat")}`,
+    lng: `${urlParams.get("lng")}`,
+    start: 1,
+    count: 10,
+  });
+  const [locationCode, setLocationCode] = useState<string>(`${params.area}`);
+  const [categoryCode, setCategoryCode] = useState<string>(`${params.genre}`);
+  if (params.genre !== categoryCode) {
+    setParams({ ...params, genre: categoryCode });
+  }
+  if (params.area !== locationCode) {
+    setParams({ ...params, area: locationCode });
+  }
 
+  useEffect(() => {
+    setParams({ ...params, name: restaurant });
+  }, [restaurant]);
+  
+  
+  useLayoutEffect(() => {
+    const fetchData = async () => {
+      try {
+        setFetchingData(true);
+        const fetchedData = await searchRestaurant(params);
+        setData((prevData) => [...prevData, ...fetchedData]);
+      } catch (e) {
+        console.log(e);
+        // 비동기 처리 완료시 false로 변경
+      } finally {
+        setFetchingData(false);
+      }
+    };
+  
+    fetchData();
+  }, [params.start]);
+
+  useLayoutEffect(() => {
+    // fetchData 함수 정의
+    const fetchData = async () => {
+      try {
+        const fetchedData = await searchRestaurant(params);
+        setData(fetchedData);
+        const available = await searchRestaurant({...params, count : 100});
+        setAvailable(available);
+      } catch (e) {
+        console.log(e);
+      }
+    };
+
+    fetchData();
+  }, [params.genre, params.area, params.name]);
+
+  useLayoutEffect(() => {
+    locationModalProps.setFalse();
+  }, [location])
   return (
     <Layout>
       <Box sx={{ height: "auto", pt: 9 }}>
@@ -73,6 +159,9 @@ function SearchResultPage() {
                   <LocationModal
                     {...locationModalProps}
                     setLocation={setLocation}
+                    setLocationCode={setLocationCode}
+                    setLat={setLat}
+                    setLng={setLng}
                   />
                 </Box>
 
@@ -167,45 +256,44 @@ function SearchResultPage() {
                   <Button sx={{ minWidth: "10px" }} onClick={MapModalOpen}>
                     <MapOutlined htmlColor="black" />
                   </Button>
-                  <MapModal {...MapModalProps} />
+                  <MapModal {...MapModalProps}  />
                 </Box>
               </Box>
               {/* 선택한 필터가 표시될 박스 필요 */}
             </Box>
           </Box>
         </Container>
-        <Box
+
+        <Container
+          maxWidth="lg"
           sx={{
-            width: "100%",
             height: "auto",
             display: "flex",
-            justifyContent: "center",
+            justifyContent: isDownMD ? "center" : "flex-start",
             flexWrap: "wrap",
             alignContent: "center",
           }}
         >
-          <ActionCard
-            src={
-              "https://i0.wp.com/www.fukuoka-now.com/wp-content/uploads/2019/12/fn253-gourmet-rakutenchi-WEB-001.jpg?fit=1400%2C931&ssl=1"
-            }
-            title={"モツ鍋うまい"}
-            tag={"＃モツ鍋"}
-          />
-          <ActionCard
-            src={
-              "https://i0.wp.com/www.fukuoka-now.com/wp-content/uploads/2019/12/fn253-gourmet-rakutenchi-WEB-001.jpg?fit=1400%2C931&ssl=1"
-            }
-            title={"モツ鍋うまい"}
-            tag={"＃モツ鍋"}
-          />
-          <ActionCard
-            src={
-              "https://i0.wp.com/www.fukuoka-now.com/wp-content/uploads/2019/12/fn253-gourmet-rakutenchi-WEB-001.jpg?fit=1400%2C931&ssl=1"
-            }
-            title={"モツ鍋うまい"}
-            tag={"＃モツ鍋"}
-          />
-        </Box>
+          {data.length === 0 ? (
+            <Box sx={{ width: "100%", height: "100%", display: "flex", justifyContent: "center", alignItems: "center" }}>
+              <Typography>검색 결과가 없습니다.</Typography>
+            </Box>
+          ) : (
+            <>
+            {data.map((item: any, index: any) => (
+              <ActionCard
+                key={index}
+                src={item.photo.pc.l}
+                title={item.name}
+                tag={`${item.small_area.name} / ${item.genre.name}`}
+                id={item.id}
+                
+              />
+            ))}
+            <div style={{ height : "50px", backgroundColor : "red" }} ref={target}></div>
+            </>
+          )}
+        </Container>
       </Box>
     </Layout>
   );
