@@ -1,5 +1,4 @@
-import { Box, Button, Container, Typography } from "@mui/material";
-import Layout from "../components/layout";
+import { Box, Button, Container, Typography, useMediaQuery, useTheme } from "@mui/material";
 import ArrowCircleLeftIcon from "@mui/icons-material/ArrowCircleLeft";
 import { Wifi, CreditCard, MoreVert, DinnerDining, CurrencyYen, AccessTime, LocationOn } from "@mui/icons-material";
 import { useLayoutEffect, useRef, useState } from "react";
@@ -89,16 +88,19 @@ function store() {
   const goback = () => {
     navigate(-1);
   };
+
+  const theme = useTheme();
+  const isDownMD = useMediaQuery(theme.breakpoints.down("md"));
   
 
   return (
-      <Layout>
+      
         <Box sx={{ height : "auto", pt : 9 }}>
           <Box sx={{ width : "100%", height : "30px", borderBottom : "#C2C2C2 1px dashed" }}>
             <Container maxWidth="lg" sx={{ height : "100%" }}>
-              <Button sx={{ width : "100%", height : "30px", display : "flex", justifyContent : "flex-start" , py : 1, pl : 0 }}>
+              <Button onClick={goback} sx={{ width : "100%", height : "30px", display : "flex", justifyContent : "flex-start" , py : 1, pl : 0 }}>
                 <ArrowCircleLeftIcon htmlColor="skyblue" />
-                <Typography sx={{ fontSize : "16px" }}>검색 결과 다시 보기</Typography>
+                <Typography sx={{ fontSize : "16px" }}>戻る</Typography>
               </Button>
             </Container>
           </Box>
@@ -108,9 +110,11 @@ function store() {
             width: "100%",
             height: "450px",
             borderBottom: "#C2C2C2 1px solid",
+            flexDirection: isDownMD ? "column" : "row",
           }}
         >
           <Container maxWidth="lg" sx={{ height: "100%", py: 5 }}>
+            
             <Box
               sx={{
                 width: "100%",
@@ -125,16 +129,20 @@ function store() {
                 <Box
                   sx={{ width: "100%", display: "flex", my: 2, color: "red" }}
                 >
-                  <Box sx={{ display: "flex" }}>
+                  {data.card === "利用可" ? (
+                    <Box sx={{ display: "flex" }}>
                     <CreditCard />
                     <Typography>カード</Typography>
                     <MoreVert />
                   </Box>
-                  <Box sx={{ display: "flex" }}>
+                  ) : null}
+                  {data.wifi === "あり" ? (
+                    <Box sx={{ display: "flex" }}>
                     <Wifi />
                     <Typography>WI-FI</Typography>
                     <MoreVert />
                   </Box>
+                  ) : null}
                 </Box>
                 <Box sx={{ width: "100%", height: "240px", display: "flex" }}>
                   <Box sx={{ width: "248px", height: "100%"}}>
@@ -184,7 +192,6 @@ function store() {
           sx={{
             width: "100%",
             height: "auto",
-            borderBottom: "#C2C2C2 1px solid",
             bgcolor: "#F7F5EF",
             pt: 5,
           }}
@@ -198,23 +205,60 @@ function store() {
                 alignContent: "center",
               }}
             >
-              <Box sx={{ width: "70%", height: "100%" }}>
+              <Box sx={{ width: isDownMD ? "100%" : "70%", height: "100%" }}>
                 {/* 이미지 */}
-                <Box sx={{ width : "100%", height : "300px", bgcolor : "red"}}>
+                <Box sx={{ width : "100%", height : "300px"}}>
                   <LoadScript googleMapsApiKey="">
                     <GoogleMap mapContainerStyle={mapContainerStyle} center={center} zoom={10}>
                       <MarkerF position={center} />
                     </GoogleMap>
                   </LoadScript>
                 </Box>
-                <Box sx={{ width : "25%", height : "100%"}}></Box>
+                
+                {/* 가게 상세 */}
+                <InformationTable storeData={storeData} title="店舗詳細" />
+                {/* 좌석 / 시설 정보 */}
+                <InformationTable
+                  storeData={facility}
+                  title="席・設備情報"
+                />
+                <Box sx={{ width : "100%", height : "100px", display: "flex", justifyContent: "flex-end", alignItems: "flex-end" }}>
+                  <Button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} sx={{ p : 2 }}>ページ上部へ戻る</Button>
+                </Box>
+              </Box>
+              <Box sx={{ width: "30%", height: "100%", ml: 4, display: isDownMD ? "none" : "block" }}>
+                <Box sx={{ width: "100%", height: "auto" }}>
+                  <Box sx={{ width: "96%", height: "5%", p: 2 }}>
+                    <Typography variant="h5">基本情報</Typography>
+                  </Box>
+                  <Box sx={{ width: "60%", height: "auto", bgcolor: "#EEECE2", p : 2 }}>
+                    <Typography sx={{ fontSize : "14px", fontWeight : "bold" }}>・ 営業時間</Typography>
+                    <Typography sx={{ fontSize : "12px", px : 1 }}>{data.open}</Typography>
+                    <Typography sx={{ fontSize : "14px", fontWeight : "bold" }}>・ 定休日</Typography>
+                    <Typography sx={{ fontSize : "12px", px : 1 }}>{data.close}</Typography>
+                    <Typography sx={{ fontSize : "14px", fontWeight : "bold" }}>・ 平均予算</Typography>
+                    <Typography sx={{ fontSize : "12px", px : 1 }}>{`平均 ${data.budget?.name}`}</Typography>
+                  </Box>
+                </Box>
+                <Box sx={{ width: "100%", height: "auto" }}>
+                  <Box sx={{ width: "96%", height: "5%", p: 2 }}>
+                    <Typography variant="h5">サービス情報</Typography>
+                  </Box>
+                  <Box sx={{ width: "60%", height: "auto", bgcolor: "#EEECE2", p : 2 }}>
+                    <Typography sx={{ fontSize : "14px" }}>英語メニュー : {data.english}</Typography>
+                    <Typography sx={{ fontSize : "14px" }}>食べ放題 : {data.free_food}</Typography>
+                    <Typography sx={{ fontSize : "14px" }}>飲み放題 : {data.free_drink}</Typography>
+                  </Box>
+                </Box>
               </Box>
             </Box>
+            
           </Container>
           </Box>
         </Box>
-      </Layout>
+      
   )
+  
 }
 
 export default store;

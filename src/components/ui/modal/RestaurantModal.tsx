@@ -79,6 +79,7 @@ export default function RestaurantModal(
 
   const onClickRestaurant = (title : string) => {
     props.setRestaurant(title);
+    props.setFalse();
   };
 
   const onClickLocation = (title : string) => {

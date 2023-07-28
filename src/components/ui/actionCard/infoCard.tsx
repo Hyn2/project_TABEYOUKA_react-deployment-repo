@@ -66,22 +66,6 @@ export default function ActionCard({ src, title, tag, id }: ActionCardProps) {
               {tag}
             </Typography>
           )}
-          <Box sx={{ display: "flex", alignItems: "center" }}>
-            <CleanHandsOutlinedIcon sx={{ fontSize: "21px" }} />
-            {loading ? (
-              <Skeleton
-                variant="text"
-                height={20}
-                width={100}
-                animation="wave"
-                sx={{ ml: 1 }}
-              />
-            ) : (
-              <Typography variant="body1" color="text.secondary">
-                감염 예방
-              </Typography>
-            )}
-          </Box>
         </CardContent>
       </CardActionArea>
     </Card>

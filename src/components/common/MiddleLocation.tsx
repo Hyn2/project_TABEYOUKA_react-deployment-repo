@@ -10,9 +10,8 @@ interface Info {
 
 
 
-const MiddleLocation = ({ highLocations, mode, setLocation, setLocationCode}: {
+const MiddleLocation = ({ highLocations, setLocation, setLocationCode}: {
   highLocations: string;
-  mode: string;
   setLocation: (value: string) => void;
   setLocationCode: (value: string) => void;
 }) => {
@@ -25,7 +24,7 @@ const MiddleLocation = ({ highLocations, mode, setLocation, setLocationCode}: {
   };
 
 
-  if (mode === "지역") {
+  
     const lowerLocations: Info = locationData;
     return (
       <>
@@ -34,36 +33,6 @@ const MiddleLocation = ({ highLocations, mode, setLocation, setLocationCode}: {
             const locations = lowerLocations[key];
             return (
               <div key={key}>
-                <Box
-                  sx={{
-                    width: "100%",
-                    height: "60px",
-                    display: "center",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <Box
-                    sx={{
-                      width: "100%",
-                      height: "100%",
-                      borderBottom: "0.5px dashed black",
-                    }}
-                  >
-                    <Button
-                      sx={{
-                        width: "100%",
-                        height: "100%",
-                        justifyContent: "flex-start",
-                        fontSize: "15px",
-                        color: "black",
-                        fontWeight: 350,
-                      }}
-                    >
-                      전체
-                    </Button>
-                  </Box>
-                </Box>
                 <Box
                   sx={{
                     width: "100%",
@@ -102,54 +71,6 @@ const MiddleLocation = ({ highLocations, mode, setLocation, setLocationCode}: {
         })}
       </>
     );
-  }
-
-  // if (mode !== "지역") {
-  //   const stationInfo: Info = stationData;
-  //   return (
-  //     <>
-  //       {Object.keys(stationInfo).map((key) => {
-  //         if (key === highLocations) {
-  //           const stations = stationInfo[key];
-  //           return (
-  //             <div key={key}>
-  //               <Box
-  //                 sx={{
-  //                   width: "100%",
-  //                   height: "auto",
-  //                   display: "flex",
-  //                   justifyContent: "flex-start",
-  //                   alignItems: "center",
-  //                   flexWrap: "wrap",
-  //                   pb: 5,
-  //                 }}
-  //               >
-  //                 {stations.map((station, index) => (
-  //                   <Button
-  //                     onClick={onClickLocation}
-  //                     key={station + index}
-  //                     sx={{
-  //                       width: "25%",
-  //                       height: "50%",
-  //                       justifyContent: "flex-start",
-  //                       fontSize: "13px",
-  //                       color: "black",
-  //                       fontWeight: "light",
-  //                     }}
-  //                   >
-  //                     {station}
-  //                   </Button>
-  //                 ))}
-  //               </Box>
-  //             </div>
-  //           );
-  //         }
-
-  //         return null;
-  //       })}
-  //     </>
-  //   );
-  // }
 };
 
 export default MiddleLocation;

@@ -6,7 +6,7 @@ import MyButton from "../MyButton";
 import StoryEditModal from "./StoryEditModal";
 
 interface modalProps {
-  id : string,
+  id : number,
   open : boolean,
   onClose : () => void,
   image : string,
@@ -27,6 +27,7 @@ const StoryModal = ({id, open, onClose, image} : modalProps) => {
     .get(`http://localhost:8000/api/story?story_list_id=${id}`, )
     .then(response => {
       setReview(response.data);
+      console.log(response.data);
     })
     .catch(error => {
       console.error(error);
