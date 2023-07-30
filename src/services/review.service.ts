@@ -60,8 +60,8 @@ export async function getReviews(page: string, count: string): Promise<Review[]>
 
 export async function toggleLikeReview(review_id: number, user_id: string) {
   const response = await axios.post(`http://localhost:8000/api/review/like`, {
-    review_id: review_id,
-    user_id: user_id,
+    review_id,
+    user_id,
   });
 
   return response.data;
