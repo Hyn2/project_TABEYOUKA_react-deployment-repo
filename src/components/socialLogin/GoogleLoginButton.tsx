@@ -1,56 +1,11 @@
 import { Box, Button } from '@mui/material';
-import { GoogleOAuthProvider, GoogleLogin, useGoogleLogin } from '@react-oauth/google'
+import { useGoogleLogin } from '@react-oauth/google'
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 
-
-interface props {
-  id : string
-  width : string
-}
-
-
-const GoogleLoginButton = ({id, width} : props) => {
+const GoogleLoginButton = () => {
   const navigate = useNavigate();
-
-
-//   const handleLoginSuccess = (response : any) => {
-//     console.log(response.credential);
-//     const idToken = response.credential;
-//     axios.post('http://localhost:8000/api/user', {
-//       idToken : idToken,
-//     })
-//     .then((response) => {
-//       console.log(response);
-//       const id = response.data;
-//       window.localStorage.setItem('id_token',idToken);
-//       window.localStorage.setItem('id', id);
-//     })
-//     .then(() => {
-//       navigate('/');
-//     })
-//     .catch(error => {
-//       console.error(error);
-//       alert('다시 시도하세요');
-//       navigate('/login');
-//       return error;
-//     })
-//   };  
-  
-//   return (
-//     <>     
-//       <GoogleOAuthProvider clientId={id} data-auto_select={false} >
-//           <GoogleLogin size='large' width='450px'
-//             onSuccess={handleLoginSuccess}
-//             onError={() => {
-//               console.log('Login Failed');
-//             }}
-//           />
-//       </GoogleOAuthProvider> 
-//     </>
-//   )
-// }
 
   const googleSocialLogin = useGoogleLogin({
     scope: "email profile",
@@ -81,7 +36,7 @@ const GoogleLoginButton = ({id, width} : props) => {
   return (
     <Box>
       <Box>
-        <Button onClick={googleSocialLogin}>Google Button</Button>
+        <Button  sx={{ backgroundSize: 'cover', backgroundPosition: 'center', width : '190px', height: '45px', backgroundImage: "url('/public/btn_google_signin_light_normal_web@2x.png')"}} onClick={googleSocialLogin} />
       </Box>
     </Box>
   );
