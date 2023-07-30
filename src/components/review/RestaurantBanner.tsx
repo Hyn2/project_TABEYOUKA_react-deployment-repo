@@ -2,6 +2,7 @@ import { Box, Rating, Skeleton, Typography } from '@mui/material';
 import { RestaurantDB, RestaurantHOTPP } from '../../types/restaurant.interface';
 import { useEffect, useState } from 'react';
 import { findRestaurant } from '../../services/restaurant.service';
+import { getRoughDistance } from '../../utils/distances';
 
 interface RestaurantBannerProps {
   data: RestaurantDB;
@@ -10,15 +11,22 @@ interface RestaurantBannerProps {
 
 const RestaurantBanner = ({ data, size = 'medium' }: RestaurantBannerProps) => {
   const [restaurant, setRestaurant] = useState<RestaurantHOTPP>();
+  const [location, setLocation] = useState<{ latitude: number; longitude: number }>();
+  navigator.geolocation.getCurrentPosition((pos) => {
+    setLocation({
+      latitude: pos.coords.latitude,
+      longitude: pos.coords.longitude,
+    });
+  });
 
   const sizeImage = () => {
     switch (size) {
       case 'small':
-        return restaurant?.shop[0].photo.pc.s;
+        return restaurant?.photo.pc.s;
       case 'medium':
-        return restaurant?.shop[0].photo.pc.m;
+        return restaurant?.photo.pc.m;
       case 'large':
-        return restaurant?.shop[0].photo.pc.l;
+        return restaurant?.photo.pc.l;
     }
   };
 
@@ -48,16 +56,28 @@ const RestaurantBanner = ({ data, size = 'medium' }: RestaurantBannerProps) => {
       <Box>
         {/* title */}
         <Typography fontSize={size} fontWeight={600}>
-          {restaurant?.shop[0].name}
+          {restaurant?.name}
         </Typography>
 
         {/* address */}
         {size !== 'small' ? (
-          <Typography fontSize={size}>{restaurant?.shop[0].address}</Typography>
+          <>
+            <Typography fontSize={size}>{restaurant?.address}</Typography>
+            {location?.latitude && location?.longitude ? (
+              <Typography fontSize={size}>
+                {getRoughDistance(
+                  location?.latitude,
+                  location?.longitude,
+                  restaurant.lat,
+                  restaurant.lng
+                )}
+              </Typography>
+            ) : null}
+          </>
         ) : null}
 
         {/* genre */}
-        <Typography fontSize={size}>{restaurant?.shop[0].genre.name}</Typography>
+        <Typography fontSize={size}>{restaurant?.genre.name}</Typography>
 
         {/* score */}
         <Rating value={5} readOnly size={size} />
