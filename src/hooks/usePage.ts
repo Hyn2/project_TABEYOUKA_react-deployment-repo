@@ -28,7 +28,12 @@ const usePage = <T, MoreDataFn extends (page: string, count: string) => Promise<
 
   const { observe, unobserve } = useObserve(callbackObserved);
 
-  if (endOfPage.current) observe(endOfPage.current);
+  useEffect(() => {
+    if (endOfPage.current) {
+      unobserve(endOfPage.current);
+      observe(endOfPage.current);
+    }
+  }, []);
 
   useEffect(() => {
     (async () => {
