@@ -173,7 +173,7 @@ const ReviewDetailPage = () => {
                         return (
                           <img
                             key={idx}
-                            src={`http://localhost:7000/${image}`}
+                            src={image}
                             alt="review"
                             style={{ width: '125px', maxWidth: '100%' }}
                           />
