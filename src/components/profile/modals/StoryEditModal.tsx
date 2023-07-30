@@ -3,7 +3,7 @@ import { ChangeEvent, useEffect, useState } from "react";
 import axios from "axios";
 
 interface storyEditModalProps {
-  id :string,
+  id : number,
   open : boolean,
   onClose : ()=>void,
 }
@@ -15,11 +15,11 @@ const StoryEditModal = ({id, open, onClose} : storyEditModalProps) => {
   const [storyListName, setStoryListName] = useState('');
 
   const checkboxHandler = (event: ChangeEvent<HTMLInputElement>) => {
-    const id: string = event.target.id;
+    const eventId: number = parseInt(event.target.id);
     if(!event.target.checked) {
-      setStoryReviewList(()=> storyReviewList.filter(reviewId => reviewId !== parseInt(id)));
+      setStoryReviewList(()=> storyReviewList.filter(reviewId => reviewId != eventId));
     } else if (event.target.checked) {
-      setStoryReviewList([...storyReviewList, parseInt(id)]);
+      setStoryReviewList([...storyReviewList, eventId]);
     }
   };
 
