@@ -3,16 +3,11 @@ import { Review } from '../../types/review.interface';
 import { Avatar, Box, Button, Divider, Rating, SxProps, Typography } from '@mui/material';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import moment from 'moment';
-import { User } from '../../types/user.interface';
 import { checkLikeReview, toggleLikeReview } from '../../services/review.service';
 import { useLayoutEffect, useState } from 'react';
 import { EditorOnlyRead } from '../common/CKEditor';
 import RestaurantBanner from './RestaurantBanner';
 import { useNavigate } from 'react-router-dom';
-
-interface ReviewItemProps {
-  review: Review;
-}
 
 const reviewItemStyle: SxProps = {
   width: '650px',
@@ -26,38 +21,27 @@ const reviewItemStyle: SxProps = {
 };
 
 // FIXME: test용 데이터
-const userInfo: User = {
-  bio: '안녕하세요',
-  follower: 0,
-  following: 0,
-  id: 'laravel1@gmail.com',
-  nickname: 'juhyeon',
-  profile_image: 'https://github.com/d556f8.png',
-  created_at: '2023-07-19T06:51:28.000000Z',
-  updated_at: '2023-07-19T06:51:28.000000Z',
+const userInfo = {
+  id: '',
 };
 
-const ReviewItem = (props: ReviewItemProps) => {
+const ReviewItem = ({ review }: { review: Review }) => {
   const navigate = useNavigate();
-  const { review } = props;
-  const [alreadyLiked, setAlreadyLiked] = useState<boolean>(false);
-
-  const checkLike = () => {
-    checkLikeReview(review.id, userInfo.id).then((isLiked) => {
-      setAlreadyLiked(isLiked);
-    });
-  };
+  const [alreadyLiked, setAlreadyLiked] = useState<boolean>(review.liked ? true : false);
+  const [encourage, setEncourage] = useState<boolean>(false);
 
   const redirectToRestaurant = () => {
     navigate(`/store?id=${review.restaurant.id}`);
   };
 
   const handleLike = () => {
-    toggleLikeReview(review.id, userInfo.id);
+    if (!userInfo.id) {
+      return setEncourage(true);
+    }
+
+    toggleLikeReview(review.id, userInfo?.id);
     setAlreadyLiked((p) => !p);
   };
-
-  useLayoutEffect(checkLike, []);
 
   return (
     <Box sx={reviewItemStyle}>
@@ -138,7 +122,7 @@ const ReviewItem = (props: ReviewItemProps) => {
                 return (
                   <img
                     key={idx}
-                    src={`http://localhost:7000/${image}`}
+                    src={image}
                     alt="review"
                     style={{ width: '125px', maxWidth: '100%' }}
                   />
@@ -159,7 +143,7 @@ const ReviewItem = (props: ReviewItemProps) => {
         <Divider variant="middle" />
 
         {/* footer */}
-        <Box m={2} display="flex" alignItems="center">
+        <Box m={2} display="flex" alignItems="center" gap={2}>
           <Button
             size="small"
             variant={alreadyLiked ? 'outlined' : 'contained'}
@@ -179,6 +163,18 @@ const ReviewItem = (props: ReviewItemProps) => {
               {review.like}
             </Typography>
           </Button>
+          {encourage && (
+            <Typography fontSize="small" fontWeight={200}>
+              いいね！するには &nbsp;
+              <u
+                style={{ color: 'blue', cursor: 'pointer', fontWeight: 600 }}
+                onClick={() => navigate('login')}
+              >
+                ログイン
+              </u>
+              &nbsp; してください
+            </Typography>
+          )}
         </Box>
       </Box>
     </Box>

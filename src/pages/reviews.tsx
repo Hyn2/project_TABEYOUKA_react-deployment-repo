@@ -1,4 +1,4 @@
-import { Box, Container } from '@mui/material';
+import { Box, Container, Skeleton } from '@mui/material';
 import Layout from '../components/layout';
 import ReviewItem from '../components/review/ReviewItem';
 import { useLocation } from 'react-router-dom';
@@ -30,9 +30,17 @@ const ReviewPage = () => {
       <Box pt={9} />
       <Box p={2}>
         <Container>
-          {reviews.map((data) => (
-            <ReviewItem key={data.id} review={data} />
-          ))}
+          {reviews.length
+            ? reviews.map((data) => <ReviewItem key={data.id} review={data} />)
+            : Array.from({ length: +initCount }, (_, i) => i).map(() => (
+                <Skeleton
+                  variant="rectangular"
+                  width="650px"
+                  height="300px"
+                  animation="wave"
+                  sx={{ marginTop: '1rem' }}
+                />
+              ))}
         </Container>
 
         {/* FIXME: test용 div */}

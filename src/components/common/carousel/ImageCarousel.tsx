@@ -98,13 +98,13 @@ const ImageCarousel = ({ photos, deleteHandler }: ImageCarouselProps) => {
           }}
         >
           <IconButton
-            sx={{ left: 0, backdropFilter: 'contrast(50%)' }}
+            sx={{ left: 4, backdropFilter: 'contrast(50%)' }}
             onClick={() => reactSwipeEl.prev()}
           >
             <NavigateBeforeIcon />
           </IconButton>
           <IconButton
-            sx={{ right: 0, backdropFilter: 'contrast(50%)' }}
+            sx={{ right: 4, backdropFilter: 'contrast(50%)' }}
             onClick={() => reactSwipeEl.next()}
           >
             <NavigateNextIcon />

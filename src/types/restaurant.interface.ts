@@ -101,97 +101,100 @@ export interface RestaurantDB {
 }
 
 export interface RestaurantHOTPP {
-  shop: [
-    {
-      access: string;
-      address: string;
-      band?: string | null;
-      barrier_free?: string | null;
-      budget?: string | null;
-      budget_memo?: string | null;
-      capacity?: number | null;
-      card?: string | null;
-      catch: string;
-      charter?: string | null;
-      child?: string | null;
-      close?: string | null;
-      coupon_urls?: {
-        pc?: string | null;
-        sp?: string | null;
-      } | null;
-      course?: string | null;
-      english?: string | null;
-      free_drink?: string | null;
-      free_food?: string | null;
-      genre: {
-        catch: string;
-        code?: string | null;
-        name: string;
-      };
-      horigotatsu?: string | null;
-      id?: string | null;
-      karaoke?: string | null;
-      ktai_coupon?: number | null;
-      large_area?: {
-        code?: string | null;
-        name?: string | null;
-      } | null;
-      large_service_area?: {
-        code?: string | null;
-        name?: string | null;
-      } | null;
-      lat: number;
-      lng: number;
-      logo_image?: string | null;
-      lunch?: string | null;
-      middle_area?: {
-        code?: string | null;
-        name?: string | null;
-      } | null;
-      midnight?: string | null;
-      mobile_access?: string | null;
-      name?: string | null;
-      name_kana?: string | null;
-      non_smoking?: string | null;
-      open?: string | null;
-      other_memo?: string | null;
-      parking?: string | null;
-      party_capacity?: number | null;
-      pet?: string | null;
-      photo: {
-        mobile?: {
-          l?: string | null;
-          s?: string | null;
-        } | null;
-        pc: {
-          l: string;
-          m: string;
-          s: string;
-        };
-      };
-      private_room?: string | null;
-      service_area?: {
-        code?: string | null;
-        name?: string | null;
-      } | null;
-      shop_detail_memo?: string | null;
-      show?: string | null;
-      small_area?: {
-        code?: string | null;
-        name?: string | null;
-      } | null;
-      station_name?: string | null;
-      sub_genre?: {
-        code?: string | null;
-        name?: string | null;
-      } | null;
-      tatami?: string | null;
-      tv?: string | null;
-      urls: {
-        pc: string;
-      };
-      wedding?: string | null;
-      wifi?: string | null;
-    }
-  ];
+  access: string;
+  address: string;
+  band?: string | null;
+  barrier_free?: string | null;
+  budget?:
+    | {
+        average?: string;
+        code?: string;
+        name?: string;
+      }
+    | string
+    | null;
+  budget_memo?: string | null;
+  capacity?: number | null;
+  card?: string | null;
+  catch: string;
+  charter?: string | null;
+  child?: string | null;
+  close?: string | null;
+  coupon_urls?: {
+    pc?: string | null;
+    sp?: string | null;
+  } | null;
+  course?: string | null;
+  english?: string | null;
+  free_drink?: string | null;
+  free_food?: string | null;
+  genre: {
+    catch: string;
+    code?: string | null;
+    name: string;
+  };
+  horigotatsu?: string | null;
+  id: string;
+  karaoke?: string | null;
+  ktai_coupon?: number | null;
+  large_area?: {
+    code?: string | null;
+    name?: string | null;
+  } | null;
+  large_service_area?: {
+    code?: string | null;
+    name?: string | null;
+  } | null;
+  lat: number;
+  lng: number;
+  logo_image?: string | null;
+  lunch?: string | null;
+  middle_area?: {
+    code?: string | null;
+    name?: string | null;
+  } | null;
+  midnight?: string | null;
+  mobile_access?: string | null;
+  name?: string | null;
+  name_kana?: string | null;
+  non_smoking?: string | null;
+  open?: string | null;
+  other_memo?: string | null;
+  parking?: string | null;
+  party_capacity?: number | null;
+  pet?: string | null;
+  photo: {
+    mobile?: {
+      l?: string | null;
+      s?: string | null;
+    } | null;
+    pc: {
+      l: string;
+      m: string;
+      s: string;
+    };
+  };
+  private_room?: string | null;
+  service_area?: {
+    code?: string | null;
+    name?: string | null;
+  } | null;
+  shop_detail_memo?: string | null;
+  show?: string | null;
+  small_area?: {
+    code?: string | null;
+    name?: string | null;
+  } | null;
+  station_name?: string | null;
+  sub_genre?: {
+    code?: string | null;
+    name?: string | null;
+  } | null;
+  tatami?: string | null;
+  tv?: string | null;
+  urls: {
+    pc: string;
+  };
+  wedding?: string | null;
+  wifi?: string | null;
 }

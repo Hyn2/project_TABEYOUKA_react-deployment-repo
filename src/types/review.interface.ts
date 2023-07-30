@@ -13,6 +13,7 @@ export interface Review {
   images: string[];
   user: User;
   restaurant: RestaurantDB;
+  liked?: boolean;
 }
 
 export interface CreateReviewPayload {
