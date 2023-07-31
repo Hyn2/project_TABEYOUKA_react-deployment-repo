@@ -4,39 +4,34 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import MyButton from "../MyButton";
 import StoryEditModal from "./StoryEditModal";
+import { EditorOnlyRead } from "../../common/CKEditor";
 
 interface modalProps {
   id : number,
   open : boolean,
   onClose : () => void,
   image : string,
+  storyName : string,
 }
 
-const StoryModal = ({id, open, onClose, image} : modalProps) => {
+const StoryModal = ({id, open, onClose, image, storyName} : modalProps) => {
   const [review, setReview] = useState([{
     restaurant_name: '',
-    review_image: '',
+    images: [],
     content: '',
   }]);
   const [indexCounter, setIndexCounter] = useState(0);
   const [storyEditModal, setStoryEditModal] = useState(false);
-  const [storyName, setStoryName] = useState('');
 
   useEffect(()=>{
     axios
-    .get(`http://localhost:8000/api/story?story_list_id=${id}`, )
+    .get(`http://localhost:8000/api/story?story_list_id=${id}`,{
+      headers : {
+        Authorization : window.localStorage.getItem('access_token')
+      },
+    } )
     .then(response => {
       setReview(response.data);
-      console.log(response.data);
-    })
-    .catch(error => {
-      console.error(error);
-    });
-    axios
-    .get(`http://localhost:8000/api/storylist/${id}`, )
-    .then(response => {
-      console.log(response.data);
-      setStoryName(response.data['story_name']);
     })
     .catch(error => {
       console.error(error);
@@ -82,10 +77,10 @@ const StoryModal = ({id, open, onClose, image} : modalProps) => {
             </Box>
           </Box>
           <Box sx={{ my: "15px", borderBottom: "0.5px solid grey" }}>
-            <img style={{ width: "100%" }} src={review[indexCounter].review_image} />
+            <img style={{ width: "100%" }} src={review[indexCounter].images[0]} />
           </Box>
           <Box>
-            <Typography variant="body2">{review[indexCounter].content}</Typography>
+            <EditorOnlyRead data={review[indexCounter].content}></EditorOnlyRead>
           </Box>
         </Box>
         <MyButton disabled={ indexCounter == review.length-1 ? true : false} onClick={onClickButton} id="forward" variant="contained" disableTouchRipple><ArrowForwardIos /></MyButton>

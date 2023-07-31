@@ -48,9 +48,11 @@ const Categories = ({id} : categoriesProps) => {
   
   useEffect(() => {
     axios.get(`http://localhost:8000/api/storylist`,{
+      headers : {
+        Authorization : window.localStorage.getItem('access_token')
+      },
       params: {
         user_id: id,
-        access_token : localStorage.getItem('access_token'),
       }   
     })
     .then(response => {
@@ -64,7 +66,7 @@ const Categories = ({id} : categoriesProps) => {
   return (
     <>
       <Stack direction="row" spacing={4} sx={{mb: "30px"}}>
-        <Story id="new" onClick={openAddModal} src="/public/tabeyoukaMiniLogo.png" alt="createImage" title="새 목록" />
+        <Story id="new" onClick={openAddModal} src="/tabeyoukaMiniLogo.png" alt="createImage" title="レビューリスト作成" />
         {storyList.map((list) => (
         <Story key={list['id']} id={list['id']} onClick={()=>{openModal({
           id : list['id'], 
@@ -78,6 +80,7 @@ const Categories = ({id} : categoriesProps) => {
           onClose={closeModal}
           id={listInfo.id}
           image = {listInfo.image}
+          storyName= {listInfo.name}
         />
       )}
       <AddStoryModal userId={id} open={addModal} onClose={closeAddModal} />

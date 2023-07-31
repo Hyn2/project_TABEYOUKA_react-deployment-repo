@@ -1,7 +1,13 @@
-import { Box, Typography } from "@mui/material";
-import Review from "./Review";
-import { useEffect, useState } from "react";
+import { Box } from "@mui/material";
+import ReviewBox from "./Review";
 import axios from "axios";
+import queryString from 'query-string';
+import { Review } from '../../../types/review.interface';
+import usePage, { MoreDataFn } from '../../../hooks/usePage';
+import { useLocation } from "react-router-dom";
+import '../../../styles/loadingSpinner.css';
+import LoadingSpinner from "./LoadingSpinner";
+import { useState } from "react";
 
 interface reviewContainerProps {
   userId : string,
@@ -21,40 +27,51 @@ const textContainerStyle = {
 }
 
 const ReviewContainer = ({userId} : reviewContainerProps) => {
-  const [review, setReview] = useState([]);
-  
-  useEffect(() => {
-    // 현재 유저의 정보
-    axios.get(`http://localhost:8000/api/review`, {
+
+  const [loading, setLoading] = useState(false);
+
+  async function getReview (page : string, count : string) : Promise<Review[]> {
+    const response = await axios.get(`http://localhost:8000/api/review`, {
+      headers : {
+        Authorization : window.localStorage.getItem('access_token')
+      },
       params: {
         user_id: userId,
-        access_token : localStorage.getItem('access_token'),
+        page : page,
+        count : count,
       }   
-    })
-      .then(response => {
-        setReview(response.data);
-      })
-      .catch(error => {
-        console.error(error);
-      });
-  }, []); 
+    });
+    setLoading(false);
+    return response.data;
+  }
+
+  const { search } = useLocation();
+  const params = queryString.parse(search);
+  const initPage = (params.page ? params.page : '1') as string;
+  const initCount = (params.count ? params.count : '6') as string;
+
+  const moreReviews: MoreDataFn<Review> = (page, count) => {
+    setLoading(true);
+    console.log(loading);
+    return getReview(page, count);
+  };
+
+  const {
+    data: reviews,
+    endOfPage,
+  } = usePage<Review, MoreDataFn<Review>>(initPage, initCount, moreReviews);
 
   return (
-    <Box sx={review.length == 0 ? textContainerStyle : reviewContainerStyle }>
-
+    <Box sx={reviews.length == 0 ? textContainerStyle : reviewContainerStyle }>
     {
-    review.length == 0 ? (
-      <Box sx={{textAlign : "center"}}>
-        <Typography variant="h2"> 리뷰가 없어요 </Typography>
-      </Box>
-    ) : (
-      review.map((user) => (
-        <Review key={user['id']} reviewId={user['id']} src={user['review_image']}/>
+      reviews.map((user) => (
+        <ReviewBox key={user['id']} reviewId={user['id']} src={user['images'][0]}/>
       ))
-    )}
+    }
+    {loading ? (<LoadingSpinner/>) : <></>}
+    <div ref={endOfPage}></div>
     </Box>
   )
 }
 
 export default ReviewContainer;
-
