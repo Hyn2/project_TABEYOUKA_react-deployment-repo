@@ -20,8 +20,10 @@ const EditModal = (props : editModalProps) => {
   useEffect(() => {
     axios
       .get(`http://localhost:8000/api/user`, {
+        headers : {
+          Authorization : window.localStorage.getItem('access_token')
+        },
         params : {
-          access_token : localStorage.getItem('access_token'),
           user_id : props.userId,
         }
       })
@@ -78,11 +80,10 @@ const EditModal = (props : editModalProps) => {
 
     axios.post('http://localhost:8000/api/user', formData, {
       headers: {
-        'Content-Type': 'multipart/form-data'
+        'Content-Type': 'multipart/form-data',
+        Authorization : window.localStorage.getItem('access_token')
+
       },
-      params: {
-        'access_token' : window.localStorage.getItem('access_token'),
-      }
     })
       .then(response => {
         // 요청 성공 시 작업

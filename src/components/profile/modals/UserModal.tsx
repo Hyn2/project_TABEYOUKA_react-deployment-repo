@@ -14,8 +14,10 @@ const UserModal = ({userModalType, userId} : userModalProps) => {
   useEffect(() => {
     if(userModalType === "following") {
       axios.get('http://localhost:8000/api/following', {
+        headers : {
+          Authorization : window.localStorage.getItem('access_token')
+        },
         params : {
-          access_token : window.localStorage.getItem('access_token'),
           user_id : userId,
         }
       })
@@ -27,8 +29,10 @@ const UserModal = ({userModalType, userId} : userModalProps) => {
       });
     } else {
       axios.get('http://localhost:8000/api/follower', {
+        headers : {
+          Authorization : window.localStorage.getItem('access_token')
+        },
         params : {
-          access_token : window.localStorage.getItem('access_token'),
           user_id : userId,
         }
       })

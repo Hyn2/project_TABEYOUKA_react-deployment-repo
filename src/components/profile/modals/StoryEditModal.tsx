@@ -56,6 +56,9 @@ const StoryEditModal = ({id, open, onClose} : storyEditModalProps) => {
     // 스토리 아이디 스토리 이름, 스토리에 들어갈 리뷰의 아이디를 바디에 포함.
     axios
     .post("http://localhost:8000/api/storylist", {
+      headers : {
+        Authorization : window.localStorage.getItem('access_token')
+      },
       id : id,
       story_name : storyListName,
       review_list : storyReviewList,

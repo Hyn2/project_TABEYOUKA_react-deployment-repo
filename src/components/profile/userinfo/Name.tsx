@@ -15,6 +15,17 @@ interface Follower {
 
 const Name = ({userId, children, openEditModal} : nameProps) => {
 
+  const mobileScreenFlex = useMediaQuery('(max-width:1500px)');
+  const mobileScreenFontSize = useMediaQuery('(max-width: 1210px)');
+
+  const statusButtonStyle = {
+    marginTop: "3px", 
+    fontSize: mobileScreenFontSize ? "65%" : "100%", 
+    backgroundColor: "black", 
+    color: "white",
+    height: "30px"
+  }
+
   const [following, setFollowing] = useState(false);
   const [followAndReview, setFollowAndReview] = useState({
     reviews : 0,
@@ -22,13 +33,12 @@ const Name = ({userId, children, openEditModal} : nameProps) => {
     followings : 0,
   });
 
-  const mobileScreenFlex = useMediaQuery('(max-width:1500px)');
-  const mobileScreenFontSize = useMediaQuery('(max-width: 1210px)');
-
   useEffect(() => {
     axios.get('http://localhost:8000/api/following', {
+      headers : {
+        Authorization : window.localStorage.getItem('access_token')
+      },
       params : {
-        access_token : localStorage.getItem('access_token'),
         user_id : userId,
       }
     })
@@ -44,10 +54,11 @@ const Name = ({userId, children, openEditModal} : nameProps) => {
     .catch(error => {
       console.error(error);
     })
-
     axios.get(`http://localhost:8000/api/user`, {
+    headers : {
+      Authorization : window.localStorage.getItem('access_token')
+    },  
       params : {
-        access_token : localStorage.getItem('access_token'),
         user_id : userId,
       }
     })
@@ -91,34 +102,26 @@ const Name = ({userId, children, openEditModal} : nameProps) => {
 
   return (
     <>
-    <Box sx={{ py:"11px", display: "flex", alignItems: "center", flexDirection: mobileScreenFlex ? "column" : "row"}}>
-      <Typography sx={{paddingTop : "10px"}} component="span" variant="h5">{children}</Typography>
-      <Box sx={{display : "flex", flexDirection : "row", width: "50%", justifyContent: "space-evenly"}}>
+    <Box sx={{ display: "flex", alignItems: mobileScreenFlex ? "left" : "center", flexDirection: mobileScreenFlex ? "column" : "row"}}>
+      <Typography sx={{ fontSize : mobileScreenFontSize ? "60%" : 'none', mr: "10px"}} component="span" variant="h5">{children}</Typography>
+      <Box sx={{ width: "50%"}}>
         {
           userId == window.localStorage.getItem('id') ? 
-          <>
-          <Button onClick={openEditModal} variant="contained" size="small" 
-          sx={{ marginTop : "10px", fontSize: mobileScreenFontSize ? "65%" : "100%", 
-                marginRight: "10px", backgroundColor: "black", color: "white"}}>
+          <Button onClick={openEditModal} variant="contained" size="small" sx={statusButtonStyle}>
             編集
           </Button> 
-          </>
            : 
            following ?           
-           <Button id={userId} onClick={deleteFollow} variant="contained" size="small" 
-           sx={{ marginTop: "10px", fontSize: mobileScreenFontSize ? "65%" : "100%", 
-                 backgroundColor: "black", color: "white"}}>
+           <Button id={userId} onClick={deleteFollow} variant="contained" size="small" sx={statusButtonStyle}>
            ファロー中  
            </Button> :
-           <Button id={userId} onClick={addFollow} variant="contained" size="small" 
-           sx={{ marginTop: "10px", fontSize: mobileScreenFontSize ? "65%" : "100%", 
-                 backgroundColor: "black", color: "white"}}>
+           <Button id={userId} onClick={addFollow} variant="contained" size="small" sx={statusButtonStyle}>
            ファローする
            </Button>
         }
       </Box>
     </Box>
-    <Box sx={{ display: "flex", justifyContent: mobileScreenFlex ? "center" : "left", my: "7px"}}>
+    <Box sx={{ display: "flex", justifyContent: "left", my: "7px"}}>
       <Counter userId={userId} counterType="reviews" title="ポスト" count={followAndReview.reviews}/>
       <Counter userId={userId} counterType="follower" title="ファロワー" count={followAndReview.followers}/>
       <Counter userId={userId} counterType="following" title="ファロー中" count={followAndReview.followings}/>
