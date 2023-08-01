@@ -32,8 +32,7 @@ function Header() {
       <Container maxWidth="lg">
         <Toolbar sx={{ display : "flex" }}>
           <Logo src="/tabeyoukaLogo.png"/>
-          {/* <GNB pages={pages} onClick={setMode}/> */}
-          <Box sx={{ flexGrow : 1, display : "flex", justifyContent : "flex-end" }}>
+          <Box sx={{ flexGrow : 1, display : "flex", justifyContent: "flex-end" }}>
             <Button onClick={(window.localStorage.getItem('access_token') == null) ? login : logout}>
               {status}
             </Button>

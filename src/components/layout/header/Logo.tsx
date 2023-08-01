@@ -18,7 +18,7 @@ const Logo = ({src} : Props) => {
     const isDownMD = useMediaQuery(theme.breakpoints.down('md'));
     
     return ( 
-        <Box sx={{ flexGrow: isDownMD ? 1 : 0, mr : 8 }}>
+        <Box sx={{ flexGrow: isDownMD ? 1 : 0, mr: isDownMD ? 2 : 8 }}>
             <IconButton onClick={goToMain}>
                 <img width={"141px"} height={"40px"} src={src} alt="gurunavi" />
             </IconButton>

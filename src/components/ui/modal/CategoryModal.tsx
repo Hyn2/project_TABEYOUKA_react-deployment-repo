@@ -1,21 +1,8 @@
-import { Box, Button, Modal, Typography } from "@mui/material"
+import { Box, Button, Modal, Typography, useMediaQuery, useTheme } from "@mui/material"
 import type { UseToggle } from "../../../types/hooks.interface";
 import categoryData from "../../../categoryData.json";
 import useGetCode from "../../../hooks/useGetCode";
-
-const modalStyle = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: "50%",
-    height: "70%",
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
-    boxShadow: 24,
-    p: 8,
-    overflow: 'auto'
-};
+import { Close } from "@mui/icons-material";
 
 type categoryType = {
     [key : string] : string[]
@@ -47,7 +34,21 @@ export default function MiddleLocation(props: Omit<UseToggle, "setTrue"> & {
   setCategory: (category: string) => void,
   setCategoryCode : (value : string) => void,
   }) {
-  
+  const theme = useTheme();
+  const isDownMD = useMediaQuery(theme.breakpoints.down("md"));
+  const modalStyle = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: isDownMD ? "100%" : "50%",
+    height: "70%",
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: isDownMD ? 0 : 8,
+    overflow: 'auto'
+  };
   const handleCategoryClick = (category: string) => {
     props.setCategory(category);
     const code = useGetCode(categoryData, category);
@@ -71,9 +72,18 @@ export default function MiddleLocation(props: Omit<UseToggle, "setTrue"> & {
       aria-describedby="modal-modal-description"
     >
       <Box>
-        <Typography variant="h6" textAlign="center" sx={{ my: 2, color: "white", fontWeight: "normal" }}>
+        <Typography variant="h6" textAlign={"center"} sx={{ mt: isDownMD ? 4 : 2, color : "white", fontWeight : "normal" }}>
           요리 장르
         </Typography>
+        <Button 
+        onClick={props.setFalse}
+        sx={{
+          position: "absolute",
+          right: isDownMD ? "7%" : "24%",
+          top: isDownMD ? "3%" : "2%"
+        }}>
+          <Close htmlColor="white" />
+        </Button>
         <Box sx={modalStyle}>
           <Box sx={{ width : "100%" }}>
             {categorys.map((category) => (
@@ -83,13 +93,12 @@ export default function MiddleLocation(props: Omit<UseToggle, "setTrue"> & {
                 backgroundSize: "cover",
                 backgroundRepeat: "no-repeat",
                 width : "100%",
-                height : "50px",
-                p : 0,
+                height : isDownMD ? "100px" : "50px",
                 display : "flex",
                 justifyContent : "center",
-                textShadow : "2px 2px 5px black",
+                textShadow : "1px 1px 1px black",
                 fontSize : "20px",
-                "&:hover": {height : "400px",transition: "all 0.4s ease-in-out",},
+                "&:hover": {height: isDownMD ? "100px" : "400px",transition: "all 0.4s ease-in-out",},
                 transition: "height 0.4s ease-in-out"}}>
                   {category}
                 </Button>

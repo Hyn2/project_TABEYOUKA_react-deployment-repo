@@ -1,5 +1,5 @@
 import { AccessTime, CreditCard, CurrencyYen, DinnerDining, LocationOn, MoreVert, Wifi } from "@mui/icons-material";
-import { Box, Button, Container, Typography } from "@mui/material";
+import { Box, Button, Container, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { useRef } from "react";
 import type { Restaurant } from "../../../types/restaurant.interface";
 
@@ -17,6 +17,8 @@ interface StoreHeaderInfoProps {
 
 
 export default function HeaderInfo({ data } : StoreHeaderInfoProps) {
+  const theme = useTheme();
+  const isDownMD = useMediaQuery(theme.breakpoints.down("md"));
   const targetElement = useRef<HTMLDivElement>(null);
 
   const handleClick = () => {
@@ -25,7 +27,7 @@ export default function HeaderInfo({ data } : StoreHeaderInfoProps) {
     }
   };
   return (
-      <Container maxWidth="lg" sx={{ height: "100%", py: 5 }}>
+      <Container maxWidth="lg" sx={{ height: isDownMD ? "600px" : "100%", py: 5 }}>
         <Box
           sx={{
             width: "100%",
@@ -34,7 +36,7 @@ export default function HeaderInfo({ data } : StoreHeaderInfoProps) {
             alignContent: "center",
           }}
         >
-          <Box sx={{ width: "75%", height: "100%" }}>
+          <Box sx={{ width: "100%", height: "100%" }}>
             <Typography>{data.name_kana}</Typography>
             <Typography variant="h4">{data.name}</Typography>
             <Box
@@ -55,13 +57,19 @@ export default function HeaderInfo({ data } : StoreHeaderInfoProps) {
               </Box>
               ) : null}
             </Box>
-            <Box sx={{ width: "100%", height: "240px", display: "flex" }}>
+            <Box sx={{
+              width: "100%",
+              height: "240px",
+              display: "flex",
+              flexDirection: isDownMD ? "column" : "row",
+              alignItems: isDownMD ? "center" : "flex-start"
+            }}>
               <Box sx={{ width: "248px", height: "100%"}}>
                 {data && data.photo && data.photo.pc && (
                   <img src={data.photo.pc.l} alt="store" />
                 )}
               </Box>
-              <Box sx={{ width: "60%", height: "80%", ml: 3 }}>
+              <Box sx={{ width: isDownMD ? "100%" : "60%", height: "80%", ml: 3 }}>
                 <Box sx={{ ...mainTypoBoxStyle }}>
                   <DinnerDining />
                   <Typography sx={{ ...mainTypoStyle }}>

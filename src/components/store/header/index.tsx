@@ -10,7 +10,7 @@ export default function StoreHeader({ children }: IProps) {
   };
   return (
     <>
-      <Container maxWidth="lg" sx={{ height : "100%", borderBottom : "#C2C2C2 1px dashed" }}>
+      <Container maxWidth="lg" sx={{ height : "auto", borderBottom : "#C2C2C2 1px dashed" }}>
         <Button onClick={goback} sx={{ width : "100%", height : "30px", display : "flex", justifyContent : "flex-start" , py : 1, pl : 0 }}>
           <ArrowCircleLeftIcon htmlColor="skyblue" />
           <Typography sx={{ fontSize : "16px" }}>戻る</Typography>
