@@ -1,65 +1,74 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import UserListItem from "./UserListItem";
 import { Box, Typography } from "@mui/material";
 
 interface userModalProps {
-  userModalType: string,
-  userId : string
+  userModalType: string;
+  userId: string;
 }
 
-const UserModal = ({userModalType, userId} : userModalProps) => {
-  
+const UserModal = ({ userModalType, userId }: userModalProps) => {
   const [userData, setUserData] = useState([]);
-  useEffect(() => {
-    if(userModalType === "following") {
-      axios.get('http://localhost:8000/api/following', {
-        headers : {
-          Authorization : window.localStorage.getItem('access_token')
+  if (userModalType === "following") {
+    axios
+      .get("http://localhost:8000/api/following", {
+        headers: {
+          Authorization: window.localStorage.getItem("access_token"),
         },
-        params : {
-          user_id : userId,
-        }
+        params: {
+          user_id: userId,
+        },
       })
-      .then(response => {
+      .then((response) => {
         setUserData(response.data);
       })
-      .catch(error => {
+      .catch((error) => {
         console.error(error);
       });
-    } else {
-      axios.get('http://localhost:8000/api/follower', {
-        headers : {
-          Authorization : window.localStorage.getItem('access_token')
+  } else {
+    axios
+      .get("http://localhost:8000/api/follower", {
+        headers: {
+          Authorization: window.localStorage.getItem("access_token"),
         },
-        params : {
-          user_id : userId,
-        }
+        params: {
+          user_id: userId,
+        },
       })
-      .then(response => {
+      .then((response) => {
         setUserData(response.data);
       })
-      .catch(error => {
+      .catch((error) => {
         console.error(error);
       });
-    }
-  }, []);
-  
+  }
+
   return (
     <>
       {userData.length != 0 ? (
-           userData.map((user) => (
-            <UserListItem key={user['id']} id={user['id']} nickname={user['nickname']} profile_image={user['profile_image']}/>
-            ))
-        ) : (
-        <Box sx={{display: "flex", textAlign: "center", justifyContent: "center", flexDirection: "column"}}>
+        userData.map((user) => (
+          <UserListItem
+            key={user["id"]}
+            id={user["id"]}
+            nickname={user["nickname"]}
+            profile_image={user["profile_image"]}
+          />
+        ))
+      ) : (
+        <Box
+          sx={{
+            display: "flex",
+            textAlign: "center",
+            justifyContent: "center",
+            flexDirection: "column",
+          }}
+        >
           <Typography variant="h6">아직 친구가 없어요</Typography>
-        </Box> 
-
+        </Box>
       )}
     </>
-  )
-
-}
+  );
+};
 
 export default UserModal;
