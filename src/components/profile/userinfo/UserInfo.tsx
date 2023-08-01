@@ -1,4 +1,4 @@
-import { Box, useMediaQuery } from "@mui/material";
+import { Box } from "@mui/material";
 import ProfileImage from "./ProfileImage";
 import Bio from "./Bio";
 import Name from "./Name";
@@ -13,7 +13,6 @@ interface userInfoProps {
 
 const UserInfo = ({userId} : userInfoProps) => {
   const navigate = useNavigate();
-  const mobileScreenJustifyContent = useMediaQuery('(max-width : 1500px)');
   const [userData, setUserData] = useState({ 
     id: '', 
     nickname: '', 
@@ -26,8 +25,10 @@ const UserInfo = ({userId} : userInfoProps) => {
   useEffect(() => {
     // 현재 유저의 정보
     axios.get(`http://localhost:8000/api/user`, {
+      headers : {
+        Authorization : window.localStorage.getItem('access_token')
+      },
       params : {
-        access_token : window.localStorage.getItem('access_token'),
         user_id : userId,
       }
     })
@@ -46,10 +47,8 @@ const UserInfo = ({userId} : userInfoProps) => {
         window.localStorage.removeItem('id');
         if(error.response.status == 401) {
           navigate('/unauthorized');
-        } else {
-          window.alert('올바르지 않은 접근');
-          return navigate('/');
         }
+        // 추가적인 에러 처리?
       });
   }, [userId, modalState]);
   return (
@@ -61,7 +60,7 @@ const UserInfo = ({userId} : userInfoProps) => {
       <Name openEditModal={openModal} userId={userId}>
         {userData.nickname}
       </Name>
-      <Box sx={{display: "flex", justifyContent: mobileScreenJustifyContent ? "center" : "left",}}>
+      <Box sx={{display: "flex", justifyContent: "flex-start"}}>
         <Bio>{userData.bio}</Bio>
       </Box>
     </Box>

@@ -59,8 +59,10 @@ const AddStoryModal = ({userId, open, onClose} : AddStoryModalProps) => {
   useEffect(() => {
     axios
     .get("http://localhost:8000/api/review",{
+    headers : {
+      Authorization : window.localStorage.getItem('access_token')
+    },
      params : {
-      access_token : localStorage.getItem('access_token'),
       user_id : userId,
      }
     })
@@ -87,7 +89,7 @@ const AddStoryModal = ({userId, open, onClose} : AddStoryModalProps) => {
             {review.map((review) => (
               <Box key={review['id']} sx={{ position: "relative", overflow:"hidden", 
               flexBasis: "33.3%", width: "100%", height: "0px", paddingBottom: "33.3%", 
-              backgroundImage: `url(${review['review_image']})`, backgroundSize: "cover"}}>
+              backgroundImage: `url(${review['images'][0]})`, backgroundSize: "cover"}}>
                 <Checkbox sx={checkBoxStyles} id={String(review['id'])} onChange={checkboxHandler} />
               </Box>
             ))}
