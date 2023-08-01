@@ -29,9 +29,12 @@ const StoryEditModal = ({id, open, onClose} : storyEditModalProps) => {
 
   useEffect(() => {
     axios
-    .get("http://localhost:8000/api/review?user_id=justin010129@gmail.com",{
+    .get(`http://localhost:8000/api/review`,{
+      headers : {
+        Authorization : window.localStorage.getItem('access_token')
+      },
       params : {
-        access_token : localStorage.getItem('access_token'),
+        user_id : window.localStorage.getItem('id'),
       }   
     }
    )
@@ -50,7 +53,7 @@ const StoryEditModal = ({id, open, onClose} : storyEditModalProps) => {
     .catch(error => {
       console.error(error);
     });
-  }, [open]);
+  });
 
   const editSubmitFunc = () => {
     // 스토리 아이디 스토리 이름, 스토리에 들어갈 리뷰의 아이디를 바디에 포함.
@@ -86,12 +89,12 @@ const StoryEditModal = ({id, open, onClose} : storyEditModalProps) => {
       }}>
         <Box sx={{padding: "10px", display: "flex", flexDirection: "column", alignItems: "center"}}>
           <Typography sx={{my: "25px"}} variant="subtitle1">기존 목록 수정</Typography>
-          <TextField onChange={storyListChange} fullWidth id="outlined-basic" label="새 목록 이름" variant="outlined" value={storyListName} />
+          <TextField onChange={storyListChange} fullWidth id="outlined-basic" label="수정할 목록 이름" variant="outlined" value={storyListName} />
         </Box>
         <Box sx={{ height: "500px", overflow: "scroll"}}>
           <Box sx={{ display: "flex", flexWrap: "wrap", justifyContent: "flex-start"}}>
             {review.map((review) => (
-              <Box key={review['id']} sx={{ flexBasis: "33.3%", width: "100%", height: "0px", paddingBottom: "33.3%", backgroundImage: "url('./public/steak.webp')", backgroundSize: "cover"}}>
+              <Box key={review['id']} sx={{ flexBasis: "33.3%", width: "100%", height: "0px", paddingBottom: "33.3%", backgroundImage: `url(${review['images'][0]})`, backgroundSize: "cover"}}>
                 <Checkbox id={review['id']} onChange={checkboxHandler} checked={storyReviewList.includes(review['id'])}/>
               </Box>
             ))}

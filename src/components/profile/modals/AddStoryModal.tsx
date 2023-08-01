@@ -21,17 +21,22 @@ const AddStoryModal = ({userId, open, onClose} : AddStoryModalProps) => {
   const [review, setReview] = useState([]);
   const [reviewList, setReviewList] =useState<string[]>([]);
   const [storyListName, setStoryListName] = useState('');
-
   const checkboxHandler = (event: ChangeEvent<HTMLInputElement>) => {
     const id: string = event.target.id;
     if(!event.target.checked) {
       setReviewList(reviewList => reviewList.filter(reviewId => reviewId !== id));
+      console.log(reviewList);
       
     } else if (event.target.checked) {
       setReviewList(reviewList => [...reviewList, id]);
+      console.log(reviewList);
     }
   };
   
+  const onCloseModal = () => {
+    setReviewList([]);
+    onClose();
+  }
 
   const storyListChange = (e : React.ChangeEvent<HTMLInputElement>) => {
     setStoryListName(e.target.value);
@@ -56,7 +61,7 @@ const AddStoryModal = ({userId, open, onClose} : AddStoryModalProps) => {
     });
   }
 
-  useEffect(() => {
+  if(open) {
     axios
     .get("http://localhost:8000/api/review",{
     headers : {
@@ -72,10 +77,11 @@ const AddStoryModal = ({userId, open, onClose} : AddStoryModalProps) => {
     .catch(error => {
       console.error(error);
     });
-  }, []);
+  }
+
 
   return (
-    <Modal open={open} onClose={onClose}  sx={{ alignItems: "center", display: "flex", justifyContent: "center" }}>
+    <Modal open={open} onClose={onCloseModal}  sx={{ alignItems: "center", display: "flex", justifyContent: "center" }}>
       <Box sx={{
         display: "flex", flexDirection: "column", width: "500px",
         height: "770px", borderRadius: "1%", bgcolor: "white", justifyContent: "space-between"
@@ -96,7 +102,7 @@ const AddStoryModal = ({userId, open, onClose} : AddStoryModalProps) => {
           </Box>
         </Box>
         <Box sx={{ padding: "10px", textAlign: "right"}}>
-          <Button onClick={submitFunc} variant="text">추가</Button>
+          <Button disabled={reviewList.length > 0 ? false : true} onClick={submitFunc} variant="text">추가</Button>
         </Box>
       </Box>
     </Modal>

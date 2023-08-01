@@ -1,4 +1,4 @@
-import { Avatar, Box, ButtonBase, Modal, Typography } from "@mui/material"
+import { Avatar, Box, ButtonBase, Modal, Skeleton, Typography } from "@mui/material"
 import {ArrowBackIos, LocationOn, ArrowForwardIos, MoreHoriz} from '@mui/icons-material';
 import React, { useEffect, useState } from "react";
 import axios from "axios";
@@ -16,6 +16,9 @@ interface modalProps {
 
 const StoryModal = ({id, open, onClose, image, storyName} : modalProps) => {
   const [review, setReview] = useState([{
+    restaurant : {
+      id : ''
+    },
     restaurant_name: '',
     images: [],
     content: '',
@@ -54,14 +57,15 @@ const StoryModal = ({id, open, onClose, image, storyName} : modalProps) => {
   const closeEditModal = () => {
     setStoryEditModal(false);
   }
+
   // 버튼을 누를 때 마다 인덱스 값이 증가하고, 배열의 요소를 새로 렌더링 함.
   return (
     <Modal open={open} onClose={onClose} sx={{ alignItems: "center", display: "flex", justifyContent: "center" }}>
       <Box sx={{display: "flex"}}>
       <MyButton disabled={ indexCounter == 0 ? true : false} onClick={onClickButton} id="back" variant="contained" disableTouchRipple><ArrowBackIos /></MyButton>
         <Box sx={{
-          display: "flex", flexDirection: "column", width: "500px",
-          height: "770px", borderRadius: "1%", bgcolor: "white", padding: "10px"
+          display: "flex", flexDirection: "column", width: "400px",
+          height: "650px", borderRadius: "1%", bgcolor: "white", padding: "10px"
         }}>
           <Box sx={{ display: "flex", flexDirection: "row" }}>
             <Avatar src={image} sx={{width: "50px", height: "50px" }} />
@@ -69,7 +73,7 @@ const StoryModal = ({id, open, onClose, image, storyName} : modalProps) => {
               <Typography sx={{ fontSize: "12px", py: "5px", marginLeft: "5px" }}>{storyName}</Typography>
               <Box sx={{ display: "flex" }}>
                 <LocationOn sx={{ color: "grey", fontSize: "15px" }} />
-                <Typography component={"a"} href="#" sx={{ textDecoration: "none", color: "grey", fontSize: "10px" }}>{review[indexCounter].restaurant_name}</Typography>
+                <Typography component={'a'} href={`/store?id=${review[indexCounter].restaurant.id}`} sx={{ textDecoration: "none", color: "grey", fontSize: "10px" }}>{review[indexCounter].restaurant_name}</Typography>
               </Box>
             </Box>
             <Box sx={{paddingTop : "10px",}}>
@@ -77,7 +81,12 @@ const StoryModal = ({id, open, onClose, image, storyName} : modalProps) => {
             </Box>
           </Box>
           <Box sx={{ my: "15px", borderBottom: "0.5px solid grey" }}>
-            <img style={{ width: "100%" }} src={review[indexCounter].images[0]} />
+            {
+             review[indexCounter].images[0] ? 
+             <img style={{ width: "100%" }} src={review[indexCounter].images[0]} />
+             : <Skeleton variant="rectangular" width={400} height={400} />
+             
+            }
           </Box>
           <Box>
             <EditorOnlyRead data={review[indexCounter].content}></EditorOnlyRead>

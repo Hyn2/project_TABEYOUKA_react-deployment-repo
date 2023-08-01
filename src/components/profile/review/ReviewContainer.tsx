@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, Skeleton } from "@mui/material";
 import ReviewBox from "./Review";
 import axios from "axios";
 import queryString from 'query-string';
@@ -6,8 +6,6 @@ import { Review } from '../../../types/review.interface';
 import usePage, { MoreDataFn } from '../../../hooks/usePage';
 import { useLocation } from "react-router-dom";
 import '../../../styles/loadingSpinner.css';
-import LoadingSpinner from "./LoadingSpinner";
-import { useState } from "react";
 
 interface reviewContainerProps {
   userId : string,
@@ -19,16 +17,7 @@ const reviewContainerStyle = {
   justifyContent: "flex-start"
 }
 
-const textContainerStyle = {
-  display: "flex", 
-  flexWrap: "wrap", 
-  marginTop : "20px",
-  justifyContent: "center"
-}
-
 const ReviewContainer = ({userId} : reviewContainerProps) => {
-
-  const [loading, setLoading] = useState(false);
 
   async function getReview (page : string, count : string) : Promise<Review[]> {
     const response = await axios.get(`http://localhost:8000/api/review`, {
@@ -41,35 +30,45 @@ const ReviewContainer = ({userId} : reviewContainerProps) => {
         count : count,
       }   
     });
-    setLoading(false);
     return response.data;
   }
 
   const { search } = useLocation();
   const params = queryString.parse(search);
   const initPage = (params.page ? params.page : '1') as string;
-  const initCount = (params.count ? params.count : '6') as string;
+  const initCount = (params.count ? params.count : '9') as string;
 
   const moreReviews: MoreDataFn<Review> = (page, count) => {
-    setLoading(true);
-    console.log(loading);
     return getReview(page, count);
   };
 
   const {
     data: reviews,
     endOfPage,
+    unobserve,
+    setPage,
+    setCount,
   } = usePage<Review, MoreDataFn<Review>>(initPage, initCount, moreReviews);
 
   return (
-    <Box sx={reviews.length == 0 ? textContainerStyle : reviewContainerStyle }>
-    {
-      reviews.map((user) => (
-        <ReviewBox key={user['id']} reviewId={user['id']} src={user['images'][0]}/>
-      ))
-    }
-    {loading ? (<LoadingSpinner/>) : <></>}
-    <div ref={endOfPage}></div>
+    <Box sx={reviewContainerStyle}>
+      {
+        // reviews.map((user) => (
+        //   <ReviewBox key={user['id']} reviewId={user['id']} src={user['images'][0]}/>
+        // ))
+        reviews.length
+          ? reviews.map((data) => <ReviewBox key={data.id} reviewId={data['id']} src={data['images'][0]} />)
+          : Array.from({ length: +initCount }, (_, i) => i).map((i) => (
+              <Skeleton
+                key={i}
+                variant="rectangular"
+                width="300px"
+                height="300px"
+                sx={{margin: "1px"}}
+              />
+          ))
+      }
+      <div ref={endOfPage} />
     </Box>
   )
 }

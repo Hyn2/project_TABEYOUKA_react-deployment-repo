@@ -21,7 +21,6 @@ const GoogleLoginButton = () => {
           navigate('/');
         })
         .catch(error => {
-          console.error(error);
           alert('다시 시도하세요');
           navigate('/login');
           return error;
