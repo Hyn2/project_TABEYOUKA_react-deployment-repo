@@ -7,9 +7,12 @@ import {LocationOnOutlined, DiningOutlined, Search, MapOutlined} from "@mui/icon
 import {useLayoutEffect, useState, useRef, useEffect} from "react";
 import searchRestaurant from "../api/search";
 import type {Restaurant} from ".././types/restaurant.interface.ts";
+import ReSearchModalButton from "../components/common/button/ReSearchModalButton.tsx";
+import { useNavigate } from "react-router-dom";
 
 
 function SearchResultPage() {
+  const navigate = useNavigate();
   const theme = useTheme();
   const isDownMD = useMediaQuery(theme.breakpoints.down("md"));
 
@@ -27,8 +30,7 @@ function SearchResultPage() {
   };
 
   useLayoutEffect(() => {
-    let observer: IntersectionObserver | null = null; // Declare the observer variable
-
+    let observer: IntersectionObserver | null = null;
     if (target.current) {
       const options = {
         threshold: 1.0,
@@ -36,14 +38,12 @@ function SearchResultPage() {
       observer = new IntersectionObserver(callback, options);
       observer.observe(target.current);
     }
-
     return () => {
-      // Clean up the observer
       if (observer) {
         observer.disconnect();
       }
     };
-  }, [fetchingData]); // Add fetchingData to the dependencies
+  }, [fetchingData]);
 
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
@@ -72,12 +72,18 @@ function SearchResultPage() {
   });
   const [locationCode, setLocationCode] = useState<string>(`${params.area}`);
   const [categoryCode, setCategoryCode] = useState<string>(`${params.genre}`);
+
   if (params.genre !== categoryCode) {
     setParams({ ...params, genre: categoryCode });
   }
   if (params.area !== locationCode) {
     setParams({ ...params, area: locationCode });
   }
+
+  // lat 혹은 lng가 변경되면 params에 반영 하지만 number를 string으로 변환해야함
+  useEffect(() => {
+    setParams({ ...params, lat: `${lat}`, lng: `${lng}` });
+  }, [lat]);
 
   useEffect(() => {
     setParams({ ...params, name: restaurant });
@@ -102,7 +108,6 @@ function SearchResultPage() {
   }, [params.start]);
 
   useLayoutEffect(() => {
-    // fetchData 함수 정의
     const fetchData = async () => {
       try {
         const fetchedData = await searchRestaurant(params);
@@ -121,7 +126,6 @@ function SearchResultPage() {
     locationModalProps.setFalse();
   }, [location])
   return (
-    <Layout>
       <Box sx={{ height: "auto", pt: 9 }}>
         <Container maxWidth="lg" sx={{ height: "130px" }}>
           <Box
@@ -133,29 +137,15 @@ function SearchResultPage() {
             }}
           >
             <Box sx={{ width: "100%", height: "34%", p: 1, display: "flex" }}>
+              
               <Box sx={{ width: "50%", height: "100%", display: "flex" }}>
-                {/* 아래 3개의 버튼 중복성이 느껴져서 리펙토링 예정 */}
-                <Box
-                  sx={{
-                    width: "40%",
-                    height: "100%",
-                    ml: 1,
-                    borderBottom: "0.5px solid black",
-                  }}
+                <ReSearchModalButton
+                  Icon={LocationOnOutlined}
+                  iconColor="green"
+                  word={location}
+                  modalOpen={locationModalOpen}
+                  width="40%"
                 >
-                  <Button
-                    sx={{
-                      width: "100%",
-                      height: "100%",
-                      display: "flex",
-                      justifyContent: "flex-start",
-                      color: "#C2C2C2",
-                    }}
-                    onClick={locationModalOpen}
-                  >
-                    <LocationOnOutlined htmlColor="green" />
-                    {location}
-                  </Button>
                   <LocationModal
                     {...locationModalProps}
                     setLocation={setLocation}
@@ -163,64 +153,35 @@ function SearchResultPage() {
                     setLat={setLat}
                     setLng={setLng}
                   />
-                </Box>
-
-                <Box
-                  sx={{
-                    width: "60%",
-                    height: "100%",
-                    ml: 1,
-                    borderBottom: "0.5px solid black",
-                  }}
+                </ReSearchModalButton>
+                <ReSearchModalButton
+                  Icon={DiningOutlined}
+                  iconColor="orange"
+                  word={category}
+                  modalOpen={categoryModalOpen}
+                  width="60%"
                 >
-                  <Button
-                    sx={{
-                      width: "100%",
-                      height: "100%",
-                      display: "flex",
-                      justifyContent: "flex-start",
-                      color: "#C2C2C2",
-                    }}
-                    onClick={categoryModalOpen}
-                  >
-                    <DiningOutlined htmlColor="orange" />
-                    {category}
-                  </Button>
                   <CategoryModal
                     {...categoryModalProps}
                     setCategory={setCategory}
                     setCategoryCode={setCategoryCode}
                   />
-                </Box>
+                </ReSearchModalButton>
               </Box>
               <Box sx={{ width: "50%", height: "100%" }}>
-                <Box
-                  sx={{
-                    width: "100%",
-                    height: "100%",
-                    ml: 1,
-                    borderBottom: "0.5px solid black",
-                  }}
+                <ReSearchModalButton
+                    Icon={Search}
+                    iconColor="skyblue"
+                    word={restaurant}
+                    modalOpen={restaurantModalOpen}
+                    width="100%"
                 >
-                  <Button
-                    sx={{
-                      width: "100%",
-                      height: "100%",
-                      display: "flex",
-                      justifyContent: "flex-start",
-                      color: "#C2C2C2",
-                    }}
-                    onClick={restaurantModalOpen}
-                  >
-                    <Search htmlColor="#99DBF5" />
-                    {restaurant}
-                  </Button>
                   <RestaurantModal
                     {...restaurantModalProps}
                     setRestaurant={setRestaurant}
                     purpose="restaurant"
                   />
-                </Box>
+                </ReSearchModalButton>
               </Box>
             </Box>
 
@@ -242,7 +203,6 @@ function SearchResultPage() {
                   <Typography>건</Typography>
                 </Box>
               </Box>
-              <Box sx={{ width: "90%", height: "100%" }}>
                 <Box
                   sx={{
                     width: "100%",
@@ -258,8 +218,6 @@ function SearchResultPage() {
                   </Button>
                   <MapModal {...MapModalProps}  />
                 </Box>
-              </Box>
-              {/* 선택한 필터가 표시될 박스 필요 */}
             </Box>
           </Box>
         </Container>
@@ -274,13 +232,14 @@ function SearchResultPage() {
             alignContent: "center",
           }}
         >
-          {data.length === 0 ? (
+          {(data && data.length) === 0 ? (
             <Box sx={{ width: "100%", height: "100%", display: "flex", justifyContent: "center", alignItems: "center" }}>
-              <Typography>검색 결과가 없습니다.</Typography>
+              <Typography>検索結果がございません。</Typography>
+              <Button onClick={() => {navigate(-1)}}>新たに検索する！</Button>
             </Box>
           ) : (
             <>
-            {data.map((item: any, index: any) => (
+            {data && data.map((item: any, index: any) => (
               <ActionCard
                 key={index}
                 src={item.photo.pc.l}
@@ -290,12 +249,13 @@ function SearchResultPage() {
                 
               />
             ))}
-            <div style={{ height : "50px", backgroundColor : "red" }} ref={target}></div>
+            {data && data.length >= 10 && (
+              <div style={{ height : "50px", backgroundColor : "red" }} ref={target}></div>
+            )}
             </>
           )}
         </Container>
       </Box>
-    </Layout>
   );
 }
 

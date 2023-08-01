@@ -4,9 +4,8 @@ import SearchIcon from '@mui/icons-material/Search';
 import ImageSlider from "../../common/ImageSlider";
 import type { UseToggle } from "../../../types/hooks.interface";
 import MiddleLocation from "../../common/MiddleLocation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import React from "react";
-import GNB from "../../layout/header/GNB";
 import Geolocation from '@react-native-community/geolocation';
 import RestaurantModal from "./RestaurantModal";
 import useToggle from "../../../hooks/useToggle";
@@ -77,28 +76,41 @@ export default function LocationModal(props: Omit<UseToggle, "setTrue"> & {
           console.log(`latitude: ${latitude}, longitude: ${longitude}`, typeof latitude);
           props.setLat(latitude);
           props.setLng(longitude);
-          setLoading(false);
-          props.setFalse();
+    
+          setLoading(false); // 위치 로딩이 완료되면 로딩 상태를 false로 변경
+          setPositionLoaded(true); // 위치 로딩이 완료되면 positionLoaded를 true로 변경하여 모달이 닫힘
+          props.setFalse(); // 모달이 닫힘이 완료되면 호출
+          props.setLocation("現在地");
         },
-        error => {console.log(error); setLoading(false);},
+        error => {
+          console.log(error);
+          setLoading(false);
+        },
         {enableHighAccuracy: true, timeout: 10000, maximumAge: 1000},
       );
-      props.setLocation("現在地");
-      
-    }
+    };
+    
 
     const { setTrue: restaurantModalOpen, ...restaurantModalProps } = useToggle();
     const [mode, setMode] = React.useState<boolean>(false);
     const [highLocations, setHighLocations] = useState("");
+    const [positionLoaded, setPositionLoaded] = useState(false);
 
     const handleLocationClick = (location: string) => {
     console.log('Clicked location:', location);
-    setHighLocations(location); // 클릭된 위치 값을 highLocations 상태로 업데이트
+    setHighLocations(location); 
     setMode(true); 
     };
 
+    useEffect(() => {
+      if (props.value) {
+        setPositionLoaded(false);
+      }
+    }, [props.value]);
+    
+
     return <Modal
-    open={props.value}
+    open={props.value && !positionLoaded}
     onClose={props.setFalse}
     aria-labelledby="modal-modal-title"
     aria-describedby="modal-modal-description"
