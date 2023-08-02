@@ -1,6 +1,9 @@
-import { Box, TextField, Typography, Checkbox, Button, Modal } from "@mui/material"
+import { Box, TextField, Typography, Checkbox, Button, Modal, useMediaQuery, ButtonBase } from "@mui/material"
 import { ChangeEvent, useEffect, useState } from "react";
 import axios from "axios";
+import LoadingSpinner from "../review/LoadingSpinner";
+import '../../../styles/loadingSpinner.css';
+import { Close } from "@mui/icons-material";
 
 interface storyEditModalProps {
   id : number,
@@ -13,6 +16,7 @@ const StoryEditModal = ({id, open, onClose} : storyEditModalProps) => {
   const [review, setReview] = useState([]);
   const [storyReviewList, setStoryReviewList] =useState<number[]>([]);
   const [storyListName, setStoryListName] = useState('');
+  const mobileScreenSize = useMediaQuery('(max-width:650px)');
 
   const checkboxHandler = (event: ChangeEvent<HTMLInputElement>) => {
     const eventId: number = parseInt(event.target.id);
@@ -84,24 +88,31 @@ const StoryEditModal = ({id, open, onClose} : storyEditModalProps) => {
   return (
     <Modal sx={{ alignItems: "center", display: "flex", justifyContent: "center" }} open={open} onClose={closeModalButton}>
       <Box sx={{
-        display: "flex", flexDirection: "column", width: "400px",
-        height: "600px", borderRadius: "1%", bgcolor: "white", justifyContent: "space-between"
+        display: "flex", flexDirection: "column", width: "500px", mx : "30px",
+        borderRadius: "1%", bgcolor: "white", justifyContent: "space-between"
       }}>
         <Box sx={{padding: "10px", display: "flex", flexDirection: "column", alignItems: "center"}}>
-          <Typography sx={{my: "25px"}} variant="subtitle1">기존 목록 수정</Typography>
+          <ButtonBase onClick={closeModalButton} sx={{right :"48%"}}>
+            <Close /> 
+          </ButtonBase>
+          <Typography sx={{marginBottom: "25px"}} variant="subtitle1">기존 목록 수정</Typography>
           <TextField onChange={storyListChange} fullWidth id="outlined-basic" label="수정할 목록 이름" variant="outlined" value={storyListName} />
         </Box>
         <Box sx={{ height: "500px", overflow: "scroll"}}>
-          <Box sx={{ display: "flex", flexWrap: "wrap", justifyContent: "flex-start"}}>
-            {review.map((review) => (
-              <Box key={review['id']} sx={{ flexBasis: "33.3%", width: "100%", height: "0px", paddingBottom: "33.3%", backgroundImage: `url(${review['images'][0]})`, backgroundSize: "cover"}}>
-                <Checkbox id={review['id']} onChange={checkboxHandler} checked={storyReviewList.includes(review['id'])}/>
-              </Box>
-            ))}
+          <Box sx={{ textAlign : "center", display: "flex", flexWrap: "wrap", justifyContent: "flex-start", flexDirection: review.length ? "row" : "column"}}>
+            {
+              review.length ? 
+                review.map((review) => (
+                  <Box key={review['id']} sx={{ flexBasis: "33.3%", width: "100%", height: "0px", paddingBottom: "33.3%", backgroundImage: `url(${review['images'][0]})`, backgroundSize: "cover"}}>
+                    <Checkbox id={review['id']} onChange={checkboxHandler} checked={storyReviewList.includes(review['id'])}/>
+                  </Box>
+                )) : 
+                <LoadingSpinner />
+            }
           </Box>
         </Box>
         <Box sx={{ padding: "10px", textAlign: "right"}}>
-          <Button onClick={editSubmitFunc} variant="text">추가</Button>
+          <Button disabled={storyReviewList.length > 0 ? false : true} onClick={editSubmitFunc} variant="text">추가</Button>
         </Box>
       </Box>
     </Modal>
