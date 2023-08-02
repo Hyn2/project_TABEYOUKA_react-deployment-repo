@@ -9,6 +9,12 @@ interface categoriesProps {
   id : string,
 }
 
+interface openModalProps {
+  id :number,
+  listName: string,
+  image: string,
+}
+
 const Categories = ({id} : categoriesProps) => {
   const [modal, setModal] = useState(false);
   const [addModal, setAddModal] = useState(false);
@@ -18,12 +24,6 @@ const Categories = ({id} : categoriesProps) => {
     'name' : '',
     'image' : '',
   });
-
-  interface openModalProps {
-    id :number,
-    listName: string,
-    image: string,
-  }
 
   const openModal = ({id, listName, image}: openModalProps) => {
     setModal(true);
@@ -71,7 +71,7 @@ const Categories = ({id} : categoriesProps) => {
         <Story key={list['id']} id={list['id']} onClick={()=>{openModal({
           id : list['id'], 
           listName : list['story_name'], 
-          image : list['image']})}} src={list['image']} alt="storyImage" title={list['story_name']}/>
+          image : list['image']['image_url']})}} src={list['image']['image_url']} alt="storyImage" title={list['story_name']}/>
         ))}
       </Stack>
       {modal && (

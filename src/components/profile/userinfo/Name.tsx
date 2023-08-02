@@ -1,11 +1,11 @@
-import { Box, Button, Typography, useMediaQuery } from "@mui/material";
+import { Box, Button, Skeleton, Typography, useMediaQuery } from "@mui/material";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Counter from "./Counter";
 
 interface nameProps {
   userId : string,
-  children : React.ReactNode,
+  name : string,
   openEditModal : ()=>void,
 }
 
@@ -13,7 +13,7 @@ interface Follower {
   id: string,
 }
 
-const Name = ({userId, children, openEditModal} : nameProps) => {
+const Name = ({userId, name, openEditModal} : nameProps) => {
 
   const mobileScreenFlex = useMediaQuery('(max-width:1500px)');
   const mobileScreenFontSize = useMediaQuery('(max-width: 1210px)');
@@ -103,7 +103,11 @@ const Name = ({userId, children, openEditModal} : nameProps) => {
   return (
     <>
     <Box sx={{ display: "flex", alignItems: mobileScreenFlex ? "left" : "center", flexDirection: mobileScreenFlex ? "column" : "row"}}>
-      <Typography sx={{ fontSize : mobileScreenFontSize ? "60%" : 'none', mr: "10px"}} component="span" variant="h5">{children}</Typography>
+      {name ? 
+      <Typography sx={{ fontSize : mobileScreenFontSize ? "90%" : 'none', mr: "10px"}} component="span" variant="h5">{name}</Typography> : 
+      <Skeleton sx={{mr: "10px"}} variant="rounded" width={56} height={32} />
+      }
+  
       <Box sx={{ width: "50%"}}>
         {
           userId == window.localStorage.getItem('id') ? 

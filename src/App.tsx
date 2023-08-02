@@ -18,6 +18,9 @@ function App() : JSX.Element {
       window.localStorage.setItem('access_token', response.data.access_token);
     })
   };
+  // const authTimeOut = () => {
+
+  // }
   
   if(window.localStorage.getItem('refresh_token')) {
     setInterval(refreshUserToken, 1800 * 1000); 
