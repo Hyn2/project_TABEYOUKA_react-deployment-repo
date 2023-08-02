@@ -2,15 +2,24 @@ import { Box, useMediaQuery } from "@mui/material";
 import UserTab from "../components/profile/tab/UserTab";
 import Categories from "../components/profile/category/Categories";
 import UserInfo from "../components/profile/userinfo/UserInfo";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 function ProfilePage() {
   const queryString = window.location.search;
   const mobileScreen = useMediaQuery("(max-width: 800px)");
   const url = new URLSearchParams(queryString);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if(!window.localStorage.getItem('access_token')) {
+      navigate('/login');
+    }
+  }, []);
+
   const params = {
     userId: `${url.get("user_id")}`,
   };
-
   return (
     <Box
       sx={{
