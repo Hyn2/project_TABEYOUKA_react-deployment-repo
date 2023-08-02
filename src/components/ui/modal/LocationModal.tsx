@@ -1,6 +1,4 @@
-import { Box, Button, Modal, Typography, CircularProgress } from "@mui/material"
-import MyLocationIcon from '@mui/icons-material/MyLocation';
-import SearchIcon from '@mui/icons-material/Search';
+import { Box, Button, Modal, Typography, CircularProgress, useTheme, useMediaQuery } from "@mui/material"
 import ImageSlider from "../../common/ImageSlider";
 import type { UseToggle } from "../../../types/hooks.interface";
 import MiddleLocation from "../../common/MiddleLocation";
@@ -9,6 +7,7 @@ import React from "react";
 import Geolocation from '@react-native-community/geolocation';
 import RestaurantModal from "./RestaurantModal";
 import useToggle from "../../../hooks/useToggle";
+import { Close, MyLocation, Search  } from "@mui/icons-material";
 
 const locations = [
   ["北海道"],
@@ -23,26 +22,9 @@ const locations = [
   ["沖縄"]
 ];
 
-
-
-const modalStyle = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: "50%",
-  height: "80%",
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
-  boxShadow: 24,
-  pb: 5,
-  overflow: 'auto'
-};
-
 const centerStyle = {
   display : "flex", justifyContent : "center", alignItems : "center"
 }
-
 
 const imageSrc = [
   "https://www.visit-hokkaido.jp/lsc/upfile/top/visual/0000/0015/15_1_l.jpg",
@@ -57,16 +39,27 @@ const imageSrc = [
   "https://a.cdn-hotels.com/gdcs/production104/d560/80ecd04f-0ecb-4b58-ad25-a23dda8acf77.jpg",
 ];
 
-
-
-
-
 export default function LocationModal(props: Omit<UseToggle, "setTrue"> & {
     setLocation: (category: string) => void,
     setLocationCode: (value: string) => void,
     setLat: (value: number) => void,
     setLng: (value: number) => void,
   }) {
+    const theme = useTheme();
+    const isDownMD = useMediaQuery(theme.breakpoints.down("md"));
+    const modalStyle = {
+      position: 'absolute',
+      top: '50%',
+      left: '50%',
+      transform: 'translate(-50%, -50%)',
+      width: isDownMD ? "80%" : "50%",
+      height: "80%",
+      bgcolor: 'background.paper',
+      border: '2px solid #000',
+      boxShadow: 24,
+      pb: 5,
+      overflow: 'auto'
+    };
     const [loading, setLoading] = useState(false);
     const myPosition = () => {
       setLoading(true);
@@ -116,14 +109,22 @@ export default function LocationModal(props: Omit<UseToggle, "setTrue"> & {
     aria-describedby="modal-modal-description"
   >
     <Box>
-      <Typography variant="h6" textAlign={"center"} sx={{ my : 2, color : "white", fontWeight : "normal" }}>
+      <Typography variant="h6" textAlign={"center"} sx={{ mt: isDownMD ? 4 : 2, color : "white", fontWeight : "normal" }}>
           위치
       </Typography>
+      <Button 
+        onClick={props.setFalse}
+        sx={{
+          position: "absolute",
+          right: isDownMD ? "7%" : "24%",
+          top: isDownMD ? "3%" : "2%"}}>
+        <Close htmlColor="white" />
+      </Button>
       <Box sx={modalStyle}>
         {/* 현재위치 */}
         <Box sx={{ width : "100%", height : "15%", ...centerStyle }}>
             <Button onClick={myPosition} sx={{ width : "40%", height : "40%", fontSize : "18px", color : "black", "&:hover": { border : "0.5px solid red", transition: "all 0.3s ease-in-out" }, "&:not(:hover)": { border : "1px #EEEEEE solid", transition: "all 0.3s ease-in-out" } }}>
-            <MyLocationIcon sx={{ color : "red", mr : 0.5 }}/>
+            <MyLocation sx={{ color : "red", mr : 0.5 }}/>
             현위치보기
             </Button>
             <Box sx={{ position : "absolute" }}>
@@ -137,7 +138,7 @@ export default function LocationModal(props: Omit<UseToggle, "setTrue"> & {
         {/* 지역 검색창 */}
         <Box sx={{ width : "100%", height : "15%", ...centerStyle }}>
             <Button onClick={restaurantModalOpen} sx={{ border : "1px #C2C2C2 solid", width : "40%", height : "40%", fontSize : "18px", color : "#C2C2C2", justifyContent : "flex-start" }}>
-            <SearchIcon sx={{ color : "#99DBF5", mr : 1 }} />
+            <Search sx={{ color : "#99DBF5", mr : 1 }} />
             지역
             </Button>
             <RestaurantModal {...restaurantModalProps} setRestaurant={props.setLocation} purpose="location" />

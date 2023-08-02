@@ -1,4 +1,4 @@
-import { Box, Button, Modal, TextField, Typography } from "@mui/material";
+import { Box, Button, Modal, TextField, Typography, useMediaQuery, useTheme } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import type { UseToggle } from "../../../types/hooks.interface";
 import type { Restaurant } from "../../../types/restaurant.interface";
@@ -30,6 +30,8 @@ export default function RestaurantModal(
     purpose: string;
     setRestaurant: (category: string) => void;
   }) {
+  const theme = useTheme();
+  const isDownMD = useMediaQuery(theme.breakpoints.down("md"));
   const textInput = useInput("");
   // 데이터받아서 state에 저장 state만큼 map돌려서 뿌려주기
   const [titles, setTitle] = useState<string[]>([]);
@@ -100,7 +102,7 @@ export default function RestaurantModal(
             sx={{ ...centerStyle, bgcolor: "white", width: "100%", height: "5%" }}
           >
             <Box sx={{ ...centerStyle, width: "55%", height: "100%" }}>
-              <Box sx={{ width: "5%", height: "100%" }}>
+              <Box sx={{ width: isDownMD ? "10%" : "5%", height: "100%" }}>
                 <Button
                   onClick={props.setFalse}
                   sx={{ p: 0, minWidth: "100%", height: "100%" }}
@@ -124,7 +126,7 @@ export default function RestaurantModal(
           </Box>
   
           <Box sx={{ ...centerStyle, width: "100%", height: "10%" }}>
-            <Box sx={{ width: "53%", height: "100%" }}>
+            <Box sx={{ width: isDownMD ? "100%" : "53%", height: "100%" }}>
               <Box
                 sx={{
                   display: "flex",
@@ -144,7 +146,7 @@ export default function RestaurantModal(
                         <Storefront sx={{ fontSize: "16px"}} />
                       </Box>
                       <Box sx={{ width: "98%", height: "100%", textAlign: "left", display: "flex", alignItems: "center" }}>
-                        <Typography sx={{ fontSize: "12px", color: "black", ml: 1 }}>
+                        <Typography sx={{ fontSize: "12px", color: "black", ml: 2 }}>
                           {title}
                         </Typography>
                       </Box>
@@ -177,7 +179,7 @@ export default function RestaurantModal(
             sx={{ ...centerStyle, bgcolor: "white", width: "100%", height: "5%" }}
           >
             <Box sx={{ ...centerStyle, width: "55%", height: "100%" }}>
-              <Box sx={{ width: "5%", height: "100%" }}>
+              <Box sx={{ width: isDownMD ? "10%" : "5%", height: "100%" }}>
                 <Button
                   onClick={props.setFalse}
                   sx={{ p: 0, minWidth: "100%", height: "100%" }}
@@ -201,7 +203,7 @@ export default function RestaurantModal(
           </Box>
   
           <Box sx={{ ...centerStyle, width: "100%", height: "100%" }}>
-            <Box sx={{ width: "53%", height: "100%", overflow: "auto" }}>
+            <Box sx={{ width: isDownMD ? "100%" : "53%", height: "100%", overflow: "auto" }}>
               <Box
                 sx={{
                   display: "flex",
@@ -209,7 +211,7 @@ export default function RestaurantModal(
                   width: "100%",
                   height: "auto",
                   my: 1,
-                  px: 2,
+                  p: 1,
                   boxShadow: "5px 5px 5px #C2C2C2",
                   flexDirection: "column",
                   
@@ -219,13 +221,13 @@ export default function RestaurantModal(
                   <React.Fragment key={title}>
                     {/* 하위 항목 렌더링 */}
                     {items.map((item, index) => (
-                      <Box key={index} sx={{ width: "100%", height: "70px", borderBottom: "#C2C2C2 1px dashed", pl: "20px"}}>
+                      <Box key={index} sx={{ width: "100%", height: "70px", borderBottom: "#C2C2C2 1px dashed"}}>
                         <Button onClick={() => onClickLocation(item)} sx={{ width: "100%", height: "100%", py: 1, display: "flex" }}>
                           <Box sx={{ width: "2%", height: "100%", display: "flex", alignItems: "center" }}>
                             <LocationOn sx={{ fontSize: "16px"}} />
                           </Box>
                           <Box sx={{ width: "98%", height: "100%", textAlign: "left", display: "flex", alignItems: "center" }}>
-                            <Typography sx={{ fontSize: "12px", color: "black", ml: 1 }}>
+                            <Typography sx={{ fontSize: "12px", color: "black", ml: 2 }}>
                               {item}
                             </Typography>
                           </Box>

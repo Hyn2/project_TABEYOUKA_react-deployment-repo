@@ -12,14 +12,15 @@ export default function InfoFooter() {
             left: 0,
             bottom: 0,
             width: '100%',
-            height: "176px",
+            height: "100px",
             display : "flex",
+            alignItems : "center",
             justifyContent : "center",
             p : 2
         }}>
-            <Box sx={{ width : isDownMD ? "90%" : "50%", height : "30%", p : 1, display : "flex" }}>
-                <Box sx={{ width : "50%", height : "100%", display : "flex"}}>
-                    <Box sx={{ width : isDownMD ? "20%" : "10%", height : "100%" }}>
+            <Box sx={{ width : isDownMD ? "90%" : "50%", height : "55%", p : 1, display : "flex" }}>
+                <Box sx={{ width : "50%", height : "100%", display : "flex" }}>
+                    <Box sx={{ width : isDownMD ? "30%" : "10%", height : "100%" }}>
                         <img src="public/tabeyoukaMiniLogo.png" alt="" style={{
                             width : "100%",
                             height : "100%"

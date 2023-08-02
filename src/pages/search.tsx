@@ -127,7 +127,7 @@ function SearchResultPage() {
   }, [location])
   return (
       <Box sx={{ height: "auto", pt: 9 }}>
-        <Container maxWidth="lg" sx={{ height: "130px" }}>
+        <Container maxWidth="lg" sx={{ height: isDownMD ? "auto" : "130px" }}>
           <Box
             sx={{
               width: "100%",
@@ -136,15 +136,12 @@ function SearchResultPage() {
               flexWrap: "wrap",
             }}
           >
-            <Box sx={{ width: "100%", height: "34%", p: 1, display: "flex" }}>
-              
-              <Box sx={{ width: "50%", height: "100%", display: "flex" }}>
+            <Box sx={{ width: "90%", height: "34%", p: 1, display: "flex", flexDirection : isDownMD ? "column" : "row" }}>
                 <ReSearchModalButton
                   Icon={LocationOnOutlined}
                   iconColor="green"
                   word={location}
                   modalOpen={locationModalOpen}
-                  width="40%"
                 >
                   <LocationModal
                     {...locationModalProps}
@@ -153,13 +150,12 @@ function SearchResultPage() {
                     setLat={setLat}
                     setLng={setLng}
                   />
-                </ReSearchModalButton>
+                </ReSearchModalButton>     
                 <ReSearchModalButton
                   Icon={DiningOutlined}
                   iconColor="orange"
                   word={category}
                   modalOpen={categoryModalOpen}
-                  width="60%"
                 >
                   <CategoryModal
                     {...categoryModalProps}
@@ -167,14 +163,11 @@ function SearchResultPage() {
                     setCategoryCode={setCategoryCode}
                   />
                 </ReSearchModalButton>
-              </Box>
-              <Box sx={{ width: "50%", height: "100%" }}>
                 <ReSearchModalButton
                     Icon={Search}
                     iconColor="skyblue"
                     word={restaurant}
                     modalOpen={restaurantModalOpen}
-                    width="100%"
                 >
                   <RestaurantModal
                     {...restaurantModalProps}
@@ -182,7 +175,6 @@ function SearchResultPage() {
                     purpose="restaurant"
                   />
                 </ReSearchModalButton>
-              </Box>
             </Box>
 
             <Box sx={{ width: "100%", height: "22%", p: 1, display: "flex" }}>

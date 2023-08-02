@@ -1,4 +1,4 @@
-import { Box, Button, Modal, Typography } from "@mui/material";
+import { Box, Button, Modal, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { Close, ArrowBackIosNew, ArrowForwardIos } from "@mui/icons-material";
 import type { UseToggle } from "../../../types/hooks.interface";
 import { GoogleMap, LoadScript, MarkerF } from "@react-google-maps/api";
@@ -29,6 +29,8 @@ const center = {
 };
 
 export default function MapModal(props: Omit<UseToggle, "setTrue">) {
+  const theme = useTheme();
+  const isDownMD = useMediaQuery(theme.breakpoints.down("md"));
   const [isMapLoaded, setIsMapLoaded] = useState(false);
   const [data, setData] = useState<Restaurant[]>([]);
   const queryString = window.location.search;
@@ -81,10 +83,15 @@ export default function MapModal(props: Omit<UseToggle, "setTrue">) {
   return (
     <Modal open={props.value} onClose={props.setFalse} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
       <Box sx={{ display: "flex", flexDirection: "column", alignItems : "center", height: "100%"}}>
-        <Typography variant="h6" textAlign={"center"} sx={{ my : 2, mr : 1, color : "white", fontWeight : "normal" }}>
+        <Typography variant="h6" textAlign={"center"} sx={{ mt: isDownMD ? 4 : 2, color : "white", fontWeight : "normal" }}>
             위치
         </Typography>
-        <Button onClick={props.setFalse} sx={{ position : "absolute", right : "22%", top : "2%"}}>
+        <Button 
+        onClick={props.setFalse}
+        sx={{
+          position: "absolute",
+          right: isDownMD ? "7%" : "24%",
+          top: isDownMD ? "3%" : "2%"}}>
           <Close htmlColor="white" />
         </Button>
         <Box sx={modalStyle}>
@@ -150,7 +157,7 @@ export default function MapModal(props: Omit<UseToggle, "setTrue">) {
                 </Box>
               </Button>
             ))}
-              <Button onClick={onClickNext} sx={{ bgcolor : "white", minWidth : "60px", height : "120px", p : 1, mr : 3, flexDirection : "column", display : params ? "flex" : "none" }}>
+              <Button onClick={onClickNext} sx={{ bgcolor : "white", minWidth : "60px", height : "120px", p : 1, mr : 3, flexDirection : "column", display : data.length >= 19 ? "flex" : "none" }}>
                <ArrowForwardIos htmlColor="#E40301"/>
                <Typography sx={{ color : "black", fontSize : "11px", mt : 2 }}>次の20件</Typography>
               </Button>
