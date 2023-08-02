@@ -94,7 +94,7 @@ const EditModal = (props : editModalProps) => {
   return (
     
     <Modal open={props.open} onClose={props.onClose}  sx={{ alignItems: "center", display: "flex", justifyContent: "center" }}>
-      <Box sx={{ width: "500px", padding: "30px", bgcolor: "white",display: "flex", flexDirection: 'column', borderRadius: "1%"}}>
+      <Box sx={{ width: "500px", mx : "30px", padding: "30px", bgcolor: "white",display: "flex", flexDirection: 'column', borderRadius: "1%"}}>
           <Box sx={{display: "flex", flexDirection: "column"}}>
             <Typography sx={{my: "10px"}} id="modal-modal-title" variant="h6" component="h2">
               프로필 수정

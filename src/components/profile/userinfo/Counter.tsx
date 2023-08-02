@@ -37,7 +37,7 @@ const Counter = ({title, count, counterType, userId} : counterProps) => {
         </Box>
       </MyButton>
       <Modal open={userModalState} sx={{ alignItems: "center", display: "flex", justifyContent: "center" }}>
-      <Box sx={{ width: "500px", padding: "30px", bgcolor: "white",display: "flex", flexDirection: 'column', borderRadius: "1%"}}>
+      <Box sx={{ width: "500px", mx: "10px", padding: "30px", bgcolor: "white",display: "flex", flexDirection: 'column', borderRadius: "1%"}}>
       <Box>
         <List>
           <UserModal userId={userId} userModalType={counterType}/>

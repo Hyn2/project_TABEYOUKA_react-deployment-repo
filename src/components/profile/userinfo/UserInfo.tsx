@@ -1,11 +1,11 @@
-import { Avatar, Box, Skeleton } from "@mui/material";
+import { Box, Skeleton } from "@mui/material";
 import Bio from "./Bio";
 import Name from "./Name";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import EditModal from "../modals/EditModal";
-import React from "react";
+import ProfileImage from "./ProfileImage";
 
 interface userInfoProps {
   userId: string;
@@ -35,12 +35,8 @@ const UserInfo = ({ userId }: userInfoProps) => {
         },
       })
       .then((response) => {
-        setUserData({
-          id: response.data.id,
-          nickname: response.data.nickname,
-          profile_image: response.data.profile_image,
-          bio: response.data.bio,
-        });
+        const {id, nickname, profile_image, bio} = response.data;
+        setUserData({id, nickname, profile_image, bio});
       })
       .catch((error) => {
         console.error(error);
@@ -65,15 +61,7 @@ const UserInfo = ({ userId }: userInfoProps) => {
     >
       <Box sx={{ height: "150px", width: "150px" }}>
         {userData.profile_image ? (
-          <Avatar
-            alt={"profile_image"}
-            src={userData.profile_image}
-            sx={{
-              width: "100%",
-              height: "100%",
-              border: "0.8px solid black",
-            }}
-          />
+          <ProfileImage src={userData.profile_image} alt="profile" />
         ) : (
           <Skeleton variant="circular" width={150} height={150} />
         )}

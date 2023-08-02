@@ -1,5 +1,5 @@
-import { Avatar, Box, ButtonBase, Modal, Skeleton, Typography } from "@mui/material"
-import {ArrowBackIos, LocationOn, ArrowForwardIos, MoreHoriz} from '@mui/icons-material';
+import { Avatar, Box, ButtonBase, Modal, Skeleton, Typography, useMediaQuery } from "@mui/material"
+import {ArrowBackIos, LocationOn, ArrowForwardIos, MoreHoriz, Close} from '@mui/icons-material';
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import MyButton from "../MyButton";
@@ -25,6 +25,7 @@ const StoryModal = ({id, open, onClose, image, storyName} : modalProps) => {
   }]);
   const [indexCounter, setIndexCounter] = useState(0);
   const [storyEditModal, setStoryEditModal] = useState(false);
+  const mobileScreen = useMediaQuery('(max-width: 500px)');
 
   useEffect(()=>{
     axios
@@ -64,9 +65,12 @@ const StoryModal = ({id, open, onClose, image, storyName} : modalProps) => {
       <Box sx={{display: "flex"}}>
       <MyButton disabled={ indexCounter == 0 ? true : false} onClick={onClickButton} id="back" variant="contained" disableTouchRipple><ArrowBackIos /></MyButton>
         <Box sx={{
-          display: "flex", flexDirection: "column", width: "400px",
-          height: "650px", borderRadius: "1%", bgcolor: "white", padding: "10px"
+          display: "flex", flexDirection: "column", flexBasis: "80%",
+          height: "80%", borderRadius: "1%", bgcolor: "white", padding: "10px"
         }}>
+          <ButtonBase onClick={onClose} sx={{right :"48%"}}>
+            <Close /> 
+          </ButtonBase>
           <Box sx={{ display: "flex", flexDirection: "row" }}>
             <Avatar src={image} sx={{width: "50px", height: "50px" }} />
             <Box sx={{ flexBasis: "82%", display: "flex", flexDirection: "column", alignItems: "left" }}>
@@ -80,16 +84,21 @@ const StoryModal = ({id, open, onClose, image, storyName} : modalProps) => {
                 <ButtonBase onClick={clickMoreButton}><MoreHoriz/></ButtonBase>
             </Box>
           </Box>
-          <Box sx={{ my: "15px", borderBottom: "0.5px solid grey" }}>
+          <Box sx={{ width: "100%", height: "100%", my: "15px", borderBottom: "0.5px solid grey" }}>
             {
              review[indexCounter].images[0] ? 
              <img style={{ width: "100%" }} src={review[indexCounter].images[0]} />
-             : <Skeleton variant="rectangular" width={400} height={400} />
+             : 
+               <Skeleton variant="rectangular" width={mobileScreen ?  250 : 400} height={mobileScreen ?  250 : 400} />
              
             }
           </Box>
           <Box>
-            <EditorOnlyRead data={review[indexCounter].content}></EditorOnlyRead>
+            {
+              review[indexCounter].content ? 
+              <EditorOnlyRead data={review[indexCounter].content}></EditorOnlyRead>
+              : <Skeleton variant="text" width={mobileScreen ?  250 : 400} height={50}/>
+            }
           </Box>
         </Box>
         <MyButton disabled={ indexCounter == review.length-1 ? true : false} onClick={onClickButton} id="forward" variant="contained" disableTouchRipple><ArrowForwardIos /></MyButton>

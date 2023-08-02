@@ -5,7 +5,6 @@ import queryString from 'query-string';
 import { Review } from '../../../types/review.interface';
 import usePage, { MoreDataFn } from '../../../hooks/usePage';
 import { useLocation } from "react-router-dom";
-import '../../../styles/loadingSpinner.css';
 
 interface reviewContainerProps {
   userId : string,
@@ -36,7 +35,7 @@ const ReviewContainer = ({userId} : reviewContainerProps) => {
   const { search } = useLocation();
   const params = queryString.parse(search);
   const initPage = (params.page ? params.page : '1') as string;
-  const initCount = (params.count ? params.count : '9') as string;
+  const initCount = (params.count ? params.count : '10') as string;
 
   const moreReviews: MoreDataFn<Review> = (page, count) => {
     return getReview(page, count);
@@ -53,20 +52,19 @@ const ReviewContainer = ({userId} : reviewContainerProps) => {
   return (
     <Box sx={reviewContainerStyle}>
       {
-        // reviews.map((user) => (
-        //   <ReviewBox key={user['id']} reviewId={user['id']} src={user['images'][0]}/>
-        // ))
         reviews.length
           ? reviews.map((data) => <ReviewBox key={data.id} reviewId={data['id']} src={data['images'][0]} />)
           : Array.from({ length: +initCount }, (_, i) => i).map((i) => (
               <Skeleton
                 key={i}
                 variant="rectangular"
-                width="300px"
-                height="300px"
-                sx={{margin: "1px"}}
+                sx={{
+                margin: "0.5px",
+                width: "100%",
+                paddingTop: "33%",
+                flexBasis: "33%", }}
               />
-          ))
+        ))
       }
       <div ref={endOfPage} />
     </Box>
