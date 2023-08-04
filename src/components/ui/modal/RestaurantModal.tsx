@@ -114,7 +114,7 @@ export default function RestaurantModal(
               <Box sx={{ width: "95%", height: "100%" }}>
                 <form onSubmit={onSubmit}>
                   <TextField
-                    label="검색어를 입력하세요"
+                    label="レストラン名"
                     variant="standard"
                     color="success"
                     {...textInput}
@@ -156,7 +156,7 @@ export default function RestaurantModal(
                 
                 <Box sx={{ width: "100%", height: "50px", p: 1 }}>
                   <Typography sx={{ fontSize: "14px", color: "#787A91" }}>
-                    키워드로 검색하기 "{textInput.value}"
+                    フリーワードで検索する '{textInput.value}'
                   </Typography>
                 </Box>
               </Box>
@@ -191,7 +191,7 @@ export default function RestaurantModal(
               <Box sx={{ width: "95%", height: "100%" }}>
                 <form onSubmit={onSubmit}>
                   <TextField
-                    label="검색어를 입력하세요"
+                    label="都道府県"
                     variant="standard"
                     color="success"
                     {...textInput}
@@ -240,7 +240,7 @@ export default function RestaurantModal(
                 
                 <Box sx={{ width: "100%", height: "50px", p: 1 }}>
                   <Typography sx={{ fontSize: "14px", color: "#787A91" }}>
-                    키워드로 검색하기 "{textInput.value}"
+                    フリーワードで検索する '{textInput.value}'
                   </Typography>
                 </Box>
               </Box>

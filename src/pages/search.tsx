@@ -56,8 +56,8 @@ function SearchResultPage() {
   
   const [lat, setLat] = useState<number>(0);
   const [lng, setLng] = useState<number>(0);
-  const [location, setLocation] = useState<string>("위치");
-  const [category, setCategory] = useState<string>("요리 장르");
+  const [location, setLocation] = useState<string>("エリア");
+  const [category, setCategory] = useState<string>("料理ジャンル");
   const [restaurant, setRestaurant] = useState<string>("");
   const [data, setData] = useState<Restaurant[]>([]);
   const [available, setAvailable] = useState<number>(0);
@@ -192,7 +192,7 @@ function SearchResultPage() {
                   <Typography sx={{ fontWeight: "bold" }}>
                     {available}
                   </Typography>
-                  <Typography>건</Typography>
+                  <Typography>件</Typography>
                 </Box>
               </Box>
                 <Box

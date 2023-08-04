@@ -73,7 +73,7 @@ export default function MiddleLocation(props: Omit<UseToggle, "setTrue"> & {
     >
       <Box>
         <Typography variant="h6" textAlign={"center"} sx={{ mt: isDownMD ? 4 : 2, color : "white", fontWeight : "normal" }}>
-          요리 장르
+          料理ジャンル
         </Typography>
         <Button 
         onClick={props.setFalse}

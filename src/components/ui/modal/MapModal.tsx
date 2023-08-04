@@ -84,7 +84,7 @@ export default function MapModal(props: Omit<UseToggle, "setTrue">) {
     <Modal open={props.value} onClose={props.setFalse} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
       <Box sx={{ display: "flex", flexDirection: "column", alignItems : "center", height: "100%"}}>
         <Typography variant="h6" textAlign={"center"} sx={{ mt: isDownMD ? 4 : 2, color : "white", fontWeight : "normal" }}>
-            위치
+            地図
         </Typography>
         <Button 
         onClick={props.setFalse}

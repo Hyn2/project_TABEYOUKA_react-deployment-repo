@@ -110,7 +110,7 @@ export default function LocationModal(props: Omit<UseToggle, "setTrue"> & {
   >
     <Box>
       <Typography variant="h6" textAlign={"center"} sx={{ mt: isDownMD ? 4 : 2, color : "white", fontWeight : "normal" }}>
-          위치
+          エリア
       </Typography>
       <Button 
         onClick={props.setFalse}
@@ -125,7 +125,7 @@ export default function LocationModal(props: Omit<UseToggle, "setTrue"> & {
         <Box sx={{ width : "100%", height : "15%", ...centerStyle }}>
             <Button onClick={myPosition} sx={{ width : "40%", height : "40%", fontSize : "18px", color : "black", "&:hover": { border : "0.5px solid red", transition: "all 0.3s ease-in-out" }, "&:not(:hover)": { border : "1px #EEEEEE solid", transition: "all 0.3s ease-in-out" } }}>
             <MyLocation sx={{ color : "red", mr : 0.5 }}/>
-            현위치보기
+            現在地を取得
             </Button>
             <Box sx={{ position : "absolute" }}>
               {loading ? <CircularProgress /> : null}
@@ -133,19 +133,19 @@ export default function LocationModal(props: Omit<UseToggle, "setTrue"> & {
         </Box>
         {/* 지역이름 텍스트 */}
         <Box sx={{ bgcolor : "#EEEEEE", width : "100%", height : "8%", ...centerStyle }}>
-            <Typography fontSize={"22px"} fontWeight={"500"}>지역 이름</Typography>
+            <Typography fontSize={"22px"} fontWeight={"500"}>エリア名</Typography>
         </Box>
         {/* 지역 검색창 */}
         <Box sx={{ width : "100%", height : "15%", ...centerStyle }}>
             <Button onClick={restaurantModalOpen} sx={{ border : "1px #C2C2C2 solid", width : "40%", height : "40%", fontSize : "18px", color : "#C2C2C2", justifyContent : "flex-start" }}>
             <Search sx={{ color : "#99DBF5", mr : 1 }} />
-            지역
+            エリア
             </Button>
             <RestaurantModal {...restaurantModalProps} setRestaurant={props.setLocation} purpose="location" />
         </Box>
         {/* 전체지역 텍스트 */}
         <Box sx={{ bgcolor : "#EEEEEE", width : "100%", height : "8%", ...centerStyle }}>
-            <Typography fontSize={"22px"} fontWeight={"500"}>전체 지역</Typography>
+            <Typography fontSize={"22px"} fontWeight={"500"}>都道府県</Typography>
         </Box> 
         {/* 지역선택 슬라이더 */}
         <Box sx={{ width : "100%", height : "44%", ...centerStyle }}>
