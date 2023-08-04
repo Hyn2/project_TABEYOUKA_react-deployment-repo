@@ -1,6 +1,5 @@
 import { AccessTime, CreditCard, CurrencyYen, DinnerDining, LocationOn, MoreVert, Wifi } from "@mui/icons-material";
-import { Box, Button, Container, Typography, useMediaQuery, useTheme } from "@mui/material";
-import { useRef } from "react";
+import { Box, Container, Typography, useMediaQuery, useTheme } from "@mui/material";
 import type { Restaurant } from "../../../types/restaurant.interface";
 
 const mainTypoBoxStyle = {
@@ -19,13 +18,7 @@ interface StoreHeaderInfoProps {
 export default function HeaderInfo({ data } : StoreHeaderInfoProps) {
   const theme = useTheme();
   const isDownMD = useMediaQuery(theme.breakpoints.down("md"));
-  const targetElement = useRef<HTMLDivElement>(null);
 
-  const handleClick = () => {
-    if (targetElement.current) {
-      targetElement.current.scrollIntoView({ behavior: "smooth" });
-    }
-  };
   return (
       <Container maxWidth="lg" sx={{ height: isDownMD ? "600px" : "100%", py: 5 }}>
         <Box
@@ -93,9 +86,6 @@ export default function HeaderInfo({ data } : StoreHeaderInfoProps) {
                   <Typography sx={{ ...mainTypoStyle }}>
                     {data.access}
                   </Typography>
-                </Box>
-                <Box sx={{ width: "100%", height: "20%", py: 1 }}>
-                  <Button onClick={handleClick}>점포 상세</Button>
                 </Box>
               </Box>
             </Box>
