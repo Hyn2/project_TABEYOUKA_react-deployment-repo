@@ -15,6 +15,7 @@ const EditModal = (props : editModalProps) => {
   const [bio, setBio] = useState(userData.bio);
   const [selectedFile, setSelectedFile] = useState<File | undefined>(undefined);
   const [previewUrl, setPreviewUrl] = useState<string | undefined>(undefined);
+  const [textFilled, setTextFilled] = useState(true);
 
   // 현재 유저의 정보
   useEffect(() => {
@@ -38,6 +39,9 @@ const EditModal = (props : editModalProps) => {
     });
   }, [props.open]);
 
+  useEffect(() => {
+    setTextFilled(name.trim() !== '');
+  }, [name]);
 
   const nameHandleChange = (e : React.ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);
@@ -80,9 +84,9 @@ const EditModal = (props : editModalProps) => {
 
       },
     })
-      .then(response => {
+      .then(() => {
         // 요청 성공 시 작업
-        alert('수정이 완료되었습니다.');
+        alert('編集を完了しました.');
         props.onClose();
       })
       .catch(error => {
@@ -97,22 +101,24 @@ const EditModal = (props : editModalProps) => {
       <Box sx={{ width: "500px", mx : "30px", padding: "30px", bgcolor: "white",display: "flex", flexDirection: 'column', borderRadius: "1%"}}>
           <Box sx={{display: "flex", flexDirection: "column"}}>
             <Typography sx={{my: "10px"}} id="modal-modal-title" variant="h6" component="h2">
-              프로필 수정
+            プロフィール編集
             </Typography>
             <Avatar sx={{my: "10px", width: "100px", height: "100px", border:  "0.5px solid black"}} src={previewUrl} />
             <TextField
+              required
               id="filled-helperText"
               label="Nickname"
-              helperText="닉네임을 입력해주세요."
+              helperText="ニックネームを入力してください."
               variant="standard"
               onChange={nameHandleChange}
               margin="normal"
+              error={name == '' ? true : false}
               value={name}
               />
             <TextField
               id="filled-helperText"
               label="Description"
-              helperText="한 줄 소개를 입력해주세요."
+              helperText="紹介を入力してください."
               variant="standard"
               onChange={bioHandleChange}
               margin="normal"
@@ -121,8 +127,8 @@ const EditModal = (props : editModalProps) => {
             <input type="file" onChange={handleFileChange} />
           </Box>
           <Box sx={{textAlign: "right"}}>
-            <Button onClick={patchSubmit} sx={{width: "50px", float: "right"}}>수정</Button>
-            <Button onClick={props.onClose} sx={{width: "50px", float: "right"}}>취소</Button>
+            <Button disabled={!textFilled} onClick={patchSubmit} sx={{width: "50px", float: "right"}}>編集</Button>
+            <Button onClick={props.onClose} sx={{width: "80px", float: "right"}}>キャンセル</Button>
           </Box>
         </Box>
     </Modal>
