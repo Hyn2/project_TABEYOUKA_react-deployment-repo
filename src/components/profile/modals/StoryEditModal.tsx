@@ -1,4 +1,4 @@
-import { Box, TextField, Typography, Checkbox, Button, Modal, useMediaQuery, ButtonBase } from "@mui/material"
+import { Box, TextField, Typography, Checkbox, Button, Modal, ButtonBase } from "@mui/material"
 import { ChangeEvent, useEffect, useState } from "react";
 import axios from "axios";
 import LoadingSpinner from "../review/LoadingSpinner";
@@ -16,7 +16,6 @@ const StoryEditModal = ({id, open, onClose} : storyEditModalProps) => {
   const [review, setReview] = useState([]);
   const [storyReviewList, setStoryReviewList] =useState<number[]>([]);
   const [storyListName, setStoryListName] = useState('');
-  const mobileScreenSize = useMediaQuery('(max-width:650px)');
 
   const checkboxHandler = (event: ChangeEvent<HTMLInputElement>) => {
     const eventId: number = parseInt(event.target.id);
@@ -95,8 +94,8 @@ const StoryEditModal = ({id, open, onClose} : storyEditModalProps) => {
           <ButtonBase onClick={closeModalButton} sx={{right :"48%"}}>
             <Close /> 
           </ButtonBase>
-          <Typography sx={{marginBottom: "25px"}} variant="subtitle1">기존 목록 수정</Typography>
-          <TextField onChange={storyListChange} fullWidth id="outlined-basic" label="수정할 목록 이름" variant="outlined" value={storyListName} />
+          <Typography sx={{marginBottom: "25px"}} variant="subtitle1">ストーリー編集</Typography>
+          <TextField onChange={storyListChange} fullWidth id="outlined-basic" label="ストーリー名" variant="outlined" value={storyListName} />
         </Box>
         <Box sx={{ height: "500px", overflow: "scroll"}}>
           <Box sx={{ textAlign : "center", display: "flex", flexWrap: "wrap", justifyContent: "flex-start", flexDirection: review.length ? "row" : "column"}}>
@@ -112,7 +111,7 @@ const StoryEditModal = ({id, open, onClose} : storyEditModalProps) => {
           </Box>
         </Box>
         <Box sx={{ padding: "10px", textAlign: "right"}}>
-          <Button disabled={storyReviewList.length > 0 ? false : true} onClick={editSubmitFunc} variant="text">추가</Button>
+          <Button disabled={storyReviewList.length > 0 ? false : true} onClick={editSubmitFunc} variant="text">登録</Button>
         </Box>
       </Box>
     </Modal>

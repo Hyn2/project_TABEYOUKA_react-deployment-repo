@@ -39,6 +39,7 @@ const AddStoryModal = ({userId, open, onClose} : AddStoryModalProps) => {
   
   const onCloseModal = () => {
     setReviewList([]);
+    setStoryListName('');
     onClose();
   }
 
@@ -47,9 +48,6 @@ const AddStoryModal = ({userId, open, onClose} : AddStoryModalProps) => {
   };
 
   const submitFunc = () => {
-    console.log('추가');
-    console.log(storyListName);
-    console.log(reviewList)
     axios.post('http://localhost:8000/api/storylist', {
       access_token: window.localStorage.getItem('access_token'),
       user_id: window.localStorage.getItem('id'),
@@ -57,7 +55,7 @@ const AddStoryModal = ({userId, open, onClose} : AddStoryModalProps) => {
       review_list : reviewList,
     })
     .then(() => {
-      alert('스토리가 성공적으로 등록되었습니다.');
+      alert('レビューストーリーが成功的に登録されました。');
       onClose();
     })
     .catch(error => {
@@ -93,8 +91,8 @@ const AddStoryModal = ({userId, open, onClose} : AddStoryModalProps) => {
           <ButtonBase onClick={onCloseModal} sx={{right :"48%"}}>
             <Close /> 
           </ButtonBase>
-          <Typography sx={{marginBottom: "25px"}} variant="subtitle1">새로운 목록 생성하기</Typography> 
-          <TextField onChange={storyListChange} fullWidth id="outlined-basic" label="새 목록 이름" variant="outlined" value={storyListName} />
+          <Typography sx={{marginBottom: "25px"}} variant="subtitle1">新しいストーリー作成</Typography> 
+          <TextField onChange={storyListChange} fullWidth id="outlined-basic" label="新しいストーリー名" variant="outlined" value={storyListName} />
         </Box>
         <Box sx={{ height: "500px", overflow: "scroll"}}>
           <Box sx={{ textAlign: "center", display: "flex", flexWrap: "wrap", justifyContent: "flex-start", flexDirection: review.length ? "row" : "column"}}>
@@ -112,7 +110,7 @@ const AddStoryModal = ({userId, open, onClose} : AddStoryModalProps) => {
           </Box>
         </Box>
         <Box sx={{ padding: "10px", textAlign: "right"}}>
-          <Button disabled={reviewList.length > 0 ? false : true} onClick={submitFunc} variant="text">추가</Button>
+          <Button disabled={reviewList.length > 0 && storyListName ? false : true} onClick={submitFunc} variant="text">登録</Button>
         </Box>
       </Box>
     </Modal>
