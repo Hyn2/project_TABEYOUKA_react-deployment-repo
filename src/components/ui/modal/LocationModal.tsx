@@ -141,7 +141,7 @@ export default function LocationModal(props: Omit<UseToggle, "setTrue"> & {
             <Search sx={{ color : "#99DBF5", mr : 1 }} />
             エリア
             </Button>
-            <RestaurantModal {...restaurantModalProps} setRestaurant={props.setLocation} purpose="location" />
+            <RestaurantModal {...restaurantModalProps} setRestaurant={props.setLocation} purpose="location"  setLocation={props.setLocation} setLocationCode={props.setLocationCode}/>
         </Box>
         {/* 전체지역 텍스트 */}
         <Box sx={{ bgcolor : "#EEEEEE", width : "100%", height : "8%", ...centerStyle }}>
