@@ -1,4 +1,4 @@
-import { Box, Skeleton } from "@mui/material";
+import { Box, Skeleton, Typography } from "@mui/material";
 import ReviewBox from "./Review";
 import axios from "axios";
 import queryString from 'query-string';
@@ -16,6 +16,12 @@ const reviewContainerStyle = {
   justifyContent: "flex-start"
 }
 
+const emptyContainerStyle = {
+  display: "flex", 
+  flexWrap: "wrap",
+  justifyContent: "center" 
+}
+
 const ReviewContainer = ({userId} : reviewContainerProps) => {
 
   async function getReview (page : string, count : string) : Promise<Review[]> {
@@ -29,6 +35,7 @@ const ReviewContainer = ({userId} : reviewContainerProps) => {
         count : count,
       }   
     });
+    console.log(response.data);
     return response.data;
   }
 
@@ -50,21 +57,21 @@ const ReviewContainer = ({userId} : reviewContainerProps) => {
   } = usePage<Review, MoreDataFn<Review>>(initPage, initCount, moreReviews);
 
   return (
-    <Box sx={reviewContainerStyle}>
+    <Box sx={reviews[0] == null ? emptyContainerStyle : reviewContainerStyle}>
       {
         reviews.length
           ? reviews.map((data) => <ReviewBox key={data.id} reviewId={data['id']} src={data['images'][0]} />)
-          : Array.from({ length: +initCount }, (_, i) => i).map((i) => (
-              <Skeleton
-                key={i}
-                variant="rectangular"
-                sx={{
-                margin: "0.5px",
-                width: "100%",
-                paddingTop: "33%",
-                flexBasis: "33%", }}
-              />
-        ))
+          : reviews[0] == null ? <Typography variant="h4">등록한 리뷰가 없어요</Typography> : Array.from({ length: +initCount }, (_, i) => i).map((i) => (
+            <Skeleton
+              key={i}
+              variant="rectangular"
+              sx={{
+              margin: "0.5px",
+              width: "100%",
+              paddingTop: "33%",
+              flexBasis: "33%", }}
+            />
+      ))
       }
       <div ref={endOfPage} />
     </Box>
