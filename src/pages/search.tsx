@@ -1,5 +1,4 @@
 import { Box, Button, Container, Typography, useMediaQuery, useTheme } from "@mui/material";
-import Layout from "../components/layout";
 import useToggle from "../hooks/useToggle";
 import { LocationModal, CategoryModal, RestaurantModal, MapModal} from "../components/ui/modal";
 import ActionCard from "../components/ui/actionCard/infoCard";
@@ -172,6 +171,8 @@ function SearchResultPage() {
                   <RestaurantModal
                     {...restaurantModalProps}
                     setRestaurant={setRestaurant}
+                    setLocation={setLocation}
+                    setLocationCode={setLocationCode}
                     purpose="restaurant"
                   />
                 </ReSearchModalButton>

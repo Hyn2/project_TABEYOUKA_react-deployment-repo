@@ -172,6 +172,8 @@
                   <RestaurantModal
                     {...restaurantModalProps}
                     setRestaurant={setRestaurant}
+                    setLocation={setLocation}
+                    setLocationCode={setLocationCode}
                     purpose={"restaurant"}
                   />
                 </Box>

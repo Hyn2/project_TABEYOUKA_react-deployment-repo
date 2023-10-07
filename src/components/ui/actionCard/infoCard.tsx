@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
-import { Box, CardActionArea, Skeleton } from "@mui/material";
-import CleanHandsOutlinedIcon from "@mui/icons-material/CleanHandsOutlined";
+import {  CardActionArea, Skeleton } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 interface ActionCardProps {

@@ -29,6 +29,8 @@ export default function RestaurantModal(
   props: Omit<UseToggle, "setTrue"> & {
     purpose: string;
     setRestaurant: (category: string) => void;
+    setLocation: (location: string) => void;
+    setLocationCode: (code: string) => void;
   }) {
   const theme = useTheme();
   const isDownMD = useMediaQuery(theme.breakpoints.down("md"));
