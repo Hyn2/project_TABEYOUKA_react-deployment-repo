@@ -1,5 +1,5 @@
 import '../../../styles/ckeditor.css';
-import { useState, useRef, SyntheticEvent } from 'react';
+import { useState, useRef, SyntheticEvent, useEffect } from 'react';
 import {
   Box,
   Icon,
@@ -28,14 +28,16 @@ import { RestaurantHOTPP } from '../../../types/restaurant.interface';
 import RestaurantSelector from './RestaurantSelector';
 import useToggle from '../../../hooks/useToggle';
 import ModalButton from '../../common/button/ModalButton';
+import axios from 'axios';
 
 // FIXME: 임시로 만든 유저 정보
-const preInfo = {
-  id: 'laravel1@gmail.com',
-  nickname: 'juhyeon',
-  profile_image: 'https://github.com/d556f8.png',
-  restaurant_id: 'J001051651',
-};
+// const preInfo = {
+//   id: 'laravel1@gmail.com',
+//   nickname: 'juhyeon',
+//   profile_image: 'https://github.com/d556f8.png',
+//   restaurant_id: 'J001051651',
+// };
+
 
 const modalContainerStyle: SxProps = {
   position: 'absolute' as 'absolute',
@@ -197,6 +199,30 @@ const ContentWorkspace = ({
     editor?.data.set(content);
   };
 
+  const [preInfo, setPreInfo] = useState({
+    nickname : '',
+    profile_image : '',
+  });
+  
+  const getPreInfo = () => {
+    axios.get('http://localhost:8000/api/user', {
+      params : {
+        user_id : window.localStorage.getItem('id'),
+      }
+    })
+    .then(response => {
+      console.log(response.data);
+      setPreInfo(response.data);
+    })
+    .catch(error => {
+      console.log(error);
+    });
+  }
+
+  useEffect(() => {
+    getPreInfo();
+  }, []);
+
   return (
     <Box width="100%">
       {/* User Information */}
@@ -301,7 +327,7 @@ const CreateReviewModal = ({ value, setFalse }: Omit<UseToggle, 'setTrue'>) => {
     photos: [],
     score: 5,
     restaurant_id: '',
-    user_id: 'laravel1@gmail.com',
+    user_id: window.localStorage.getItem('id') || '',
   });
 
   const handleInputPhoto = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -349,6 +375,9 @@ const CreateReviewModal = ({ value, setFalse }: Omit<UseToggle, 'setTrue'>) => {
         setFalse();
       });
   };
+
+
+
   return (
     <>
       {loading ? (

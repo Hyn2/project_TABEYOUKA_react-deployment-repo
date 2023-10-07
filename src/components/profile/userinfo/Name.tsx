@@ -117,7 +117,7 @@ const Name = ({userId, name, openEditModal} : nameProps) => {
            : 
            following ?           
            <Button id={userId} onClick={deleteFollow} variant="contained" size="small" sx={statusButtonStyle}>
-           ファロー中  
+           ファロー中
            </Button> :
            <Button id={userId} onClick={addFollow} variant="contained" size="small" sx={statusButtonStyle}>
            ファローする
