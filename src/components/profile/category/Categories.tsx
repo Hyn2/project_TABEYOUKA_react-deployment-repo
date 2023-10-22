@@ -1,4 +1,4 @@
-import { Modal, Stack } from "@mui/material";
+import { Stack } from "@mui/material";
 import Story from "./Story";
 import StoryModal from "../modals/StoryModal";
 import { useEffect, useState } from "react";
@@ -9,21 +9,21 @@ interface categoriesProps {
   id : string,
 }
 
+interface openModalProps {
+  id :number,
+  listName: string,
+  image: string,
+}
+
 const Categories = ({id} : categoriesProps) => {
   const [modal, setModal] = useState(false);
   const [addModal, setAddModal] = useState(false);
   const [storyList, setStoryList] = useState([]);
   const [listInfo, setListInfo] = useState({
-    'id' : '',
+    'id' : 0,
     'name' : '',
     'image' : '',
   });
-
-  interface openModalProps {
-    id :string,
-    listName: string,
-    image: string,
-  }
 
   const openModal = ({id, listName, image}: openModalProps) => {
     setModal(true);
@@ -47,7 +47,14 @@ const Categories = ({id} : categoriesProps) => {
   }
   
   useEffect(() => {
-    axios.get(`http://localhost:8000/api/storylist?user_id=${id}`)
+    axios.get(`http://localhost:8000/api/storylist`,{
+      headers : {
+        Authorization : window.localStorage.getItem('access_token')
+      },
+      params: {
+        user_id: id,
+      }   
+    })
     .then(response => {
       setStoryList(response.data);
     })
@@ -59,12 +66,12 @@ const Categories = ({id} : categoriesProps) => {
   return (
     <>
       <Stack direction="row" spacing={4} sx={{mb: "30px"}}>
-        <Story id="new" onClick={openAddModal} src="/public/ramen.jpeg" alt="createImage" title="새 목록" />
+        <Story id="new" onClick={openAddModal} src="/tabeyoukaMiniLogo.png" alt="createImage" title="レビューリスト作成" />
         {storyList.map((list) => (
         <Story key={list['id']} id={list['id']} onClick={()=>{openModal({
           id : list['id'], 
           listName : list['story_name'], 
-          image : list['image']})}} src={list['image']} alt="storyImage" title={list['story_name']}/>
+          image : list['image']['image_url']})}} src={list['image']['image_url']} alt="storyImage" title={list['story_name']}/>
         ))}
       </Stack>
       {modal && (
@@ -73,9 +80,10 @@ const Categories = ({id} : categoriesProps) => {
           onClose={closeModal}
           id={listInfo.id}
           image = {listInfo.image}
+          storyName= {listInfo.name}
         />
       )}
-      <AddStoryModal open={addModal} onClose={closeAddModal} />
+      <AddStoryModal userId={id} open={addModal} onClose={closeAddModal} />
     </>
 
   );

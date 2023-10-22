@@ -1,4 +1,4 @@
-import { Box, Button } from "@mui/material";
+import { Box, Button, useMediaQuery, useTheme } from "@mui/material";
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
@@ -44,10 +44,12 @@ ImageSlider.RightButton = ({maxLength} : {maxLength : number}) => {
 }
 
 ImageSlider.ImageContainer = ({children} :IProps ) => {
+    const theme = useTheme();
+    const isDownMD = useMediaQuery(theme.breakpoints.down("md"));
     const {currentIndex} = useContext(ImageSliderContext);
 
     return (
-    <Box sx={{ display: "flex", overflow: "hidden", width: "780px", height: "250px" }}>
+    <Box sx={{ display: "flex", overflow: "hidden", width: isDownMD ? "250px" : "780px", height: "250px" }}>
       <Box sx={{ display: "flex", flexGrow : 1, transition: "transform 0.5s ease", transform: `translateX(-${currentIndex * 260}px)` }}>
         {children}
       </Box>

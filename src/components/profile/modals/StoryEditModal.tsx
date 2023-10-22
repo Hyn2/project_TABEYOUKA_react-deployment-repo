@@ -1,9 +1,12 @@
-import { Box, TextField, Typography, Checkbox, Button, Modal } from "@mui/material"
+import { Box, TextField, Typography, Checkbox, Button, Modal, ButtonBase } from "@mui/material"
 import { ChangeEvent, useEffect, useState } from "react";
 import axios from "axios";
+import LoadingSpinner from "../review/LoadingSpinner";
+import '../../../styles/loadingSpinner.css';
+import { Close } from "@mui/icons-material";
 
 interface storyEditModalProps {
-  id :string,
+  id : number,
   open : boolean,
   onClose : ()=>void,
 }
@@ -15,11 +18,11 @@ const StoryEditModal = ({id, open, onClose} : storyEditModalProps) => {
   const [storyListName, setStoryListName] = useState('');
 
   const checkboxHandler = (event: ChangeEvent<HTMLInputElement>) => {
-    const id: string = event.target.id;
+    const eventId: number = parseInt(event.target.id);
     if(!event.target.checked) {
-      setStoryReviewList(()=> storyReviewList.filter(reviewId => reviewId !== parseInt(id)));
+      setStoryReviewList(()=> storyReviewList.filter(reviewId => reviewId != eventId));
     } else if (event.target.checked) {
-      setStoryReviewList([...storyReviewList, parseInt(id)]);
+      setStoryReviewList([...storyReviewList, eventId]);
     }
   };
 
@@ -29,7 +32,15 @@ const StoryEditModal = ({id, open, onClose} : storyEditModalProps) => {
 
   useEffect(() => {
     axios
-    .get("http://localhost:8000/api/review?user_id=justin010129@gmail.com", )
+    .get(`http://localhost:8000/api/review`,{
+      headers : {
+        Authorization : window.localStorage.getItem('access_token')
+      },
+      params : {
+        user_id : window.localStorage.getItem('id'),
+      }   
+    }
+   )
     .then(response => {
       setReview(response.data);
     })
@@ -45,12 +56,15 @@ const StoryEditModal = ({id, open, onClose} : storyEditModalProps) => {
     .catch(error => {
       console.error(error);
     });
-  }, [open]);
+  });
 
   const editSubmitFunc = () => {
     // 스토리 아이디 스토리 이름, 스토리에 들어갈 리뷰의 아이디를 바디에 포함.
     axios
     .post("http://localhost:8000/api/storylist", {
+      headers : {
+        Authorization : window.localStorage.getItem('access_token')
+      },
       id : id,
       story_name : storyListName,
       review_list : storyReviewList,
@@ -73,24 +87,31 @@ const StoryEditModal = ({id, open, onClose} : storyEditModalProps) => {
   return (
     <Modal sx={{ alignItems: "center", display: "flex", justifyContent: "center" }} open={open} onClose={closeModalButton}>
       <Box sx={{
-        display: "flex", flexDirection: "column", width: "400px",
-        height: "600px", borderRadius: "1%", bgcolor: "white", justifyContent: "space-between"
+        display: "flex", flexDirection: "column", width: "500px", mx : "30px",
+        borderRadius: "1%", bgcolor: "white", justifyContent: "space-between"
       }}>
         <Box sx={{padding: "10px", display: "flex", flexDirection: "column", alignItems: "center"}}>
-          <Typography sx={{my: "25px"}} variant="subtitle1">기존 목록 수정</Typography>
-          <TextField onChange={storyListChange} fullWidth id="outlined-basic" label="새 목록 이름" variant="outlined" value={storyListName} />
+          <ButtonBase onClick={closeModalButton} sx={{right :"48%"}}>
+            <Close /> 
+          </ButtonBase>
+          <Typography sx={{marginBottom: "25px"}} variant="subtitle1">ストーリー編集</Typography>
+          <TextField onChange={storyListChange} fullWidth id="outlined-basic" label="ストーリー名" variant="outlined" value={storyListName} />
         </Box>
         <Box sx={{ height: "500px", overflow: "scroll"}}>
-          <Box sx={{ display: "flex", flexWrap: "wrap", justifyContent: "flex-start"}}>
-            {review.map((review) => (
-              <Box key={review['id']} sx={{ flexBasis: "33.3%", width: "100%", height: "0px", paddingBottom: "33.3%", backgroundImage: "url('./public/steak.webp')", backgroundSize: "cover"}}>
-                <Checkbox id={review['id']} onChange={checkboxHandler} checked={storyReviewList.includes(review['id'])}/>
-              </Box>
-            ))}
+          <Box sx={{ textAlign : "center", display: "flex", flexWrap: "wrap", justifyContent: "flex-start", flexDirection: review.length ? "row" : "column"}}>
+            {
+              review.length ? 
+                review.map((review) => (
+                  <Box key={review['id']} sx={{ flexBasis: "33.3%", width: "100%", height: "0px", paddingBottom: "33.3%", backgroundImage: `url(${review['images'][0]})`, backgroundSize: "cover"}}>
+                    <Checkbox id={review['id']} onChange={checkboxHandler} checked={storyReviewList.includes(review['id'])}/>
+                  </Box>
+                )) : 
+                <LoadingSpinner />
+            }
           </Box>
         </Box>
         <Box sx={{ padding: "10px", textAlign: "right"}}>
-          <Button onClick={editSubmitFunc} variant="text">추가</Button>
+          <Button disabled={storyReviewList.length > 0 ? false : true} onClick={editSubmitFunc} variant="text">登録</Button>
         </Box>
       </Box>
     </Modal>
