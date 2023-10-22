@@ -7,12 +7,12 @@ import { SnackbarProvider } from 'notistack'
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   
-  <React.StrictMode>
+  // <React.StrictMode>
     <BrowserRouter>
       <SnackbarProvider maxSnack={3} autoHideDuration={3000}>
         <App />
       </SnackbarProvider>
     </BrowserRouter>
-  </React.StrictMode>
+  // </React.StrictMode>
   
 )

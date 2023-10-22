@@ -5,6 +5,7 @@ import queryString from 'query-string';
 import { Review } from '../../../types/review.interface';
 import usePage, { MoreDataFn } from '../../../hooks/usePage';
 import { useLocation } from "react-router-dom";
+import { useEffect } from "react";
 
 interface reviewContainerProps {
   userId : string,
@@ -13,7 +14,7 @@ interface reviewContainerProps {
 const reviewContainerStyle = {
   display: "flex", 
   flexWrap: "wrap",
-  justifyContent: "flex-start"
+  justifyContent: "center"
 }
 
 const emptyContainerStyle = {
@@ -56,11 +57,15 @@ const ReviewContainer = ({userId} : reviewContainerProps) => {
     setCount,
   } = usePage<Review, MoreDataFn<Review>>(initPage, initCount, moreReviews);
 
+  useEffect(() => {
+    getReview(initPage, initCount);
+  },[]);
+
   return (
     <Box sx={reviews[0] == null ? emptyContainerStyle : reviewContainerStyle}>
       {
         reviews.length
-          ? reviews.map((data) => <ReviewBox key={data.id} reviewId={data['id']} src={data['images'][0]} />)
+          ? reviews.map((data, index) => <ReviewBox key={index} reviewId={data.id} src={data['images'][0]} reviewData={data} />)
           : reviews[0] == null ? <Typography variant="h4">등록한 리뷰가 없어요</Typography> : Array.from({ length: +initCount }, (_, i) => i).map((i) => (
             <Skeleton
               key={i}

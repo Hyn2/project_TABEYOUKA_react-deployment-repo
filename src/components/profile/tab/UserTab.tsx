@@ -3,6 +3,7 @@ import { useState } from "react";
 import ReviewContainer from "../review/ReviewContainer";
 import TabPanel from "./TabPanel";
 import UserMap from "../map/UserMap";
+import Categories from "../category/Categories";
 
 interface userTabProps {
   userId : string
@@ -16,7 +17,7 @@ const UserTab = ({userId} : userTabProps) => {
     setValue(value);
   }
   return (
-    <Box>
+    <Box sx={{marginTop : "50px"}}>
       <Tabs variant="fullWidth" value={value} onChange={selectTab} aria-label="usertabs" sx={{
           "& .MuiTabs-indicator": {
             backgroundColor: "black",
@@ -25,21 +26,31 @@ const UserTab = ({userId} : userTabProps) => {
           paddingBottom: "0.05%"
         }}
       >
-        <Tab label="리뷰" value={1} sx={{
+        <Tab label="Reviews" value={1} sx={{
           "&.Mui-selected": {
             color: "black", // 선택된 탭의 글자 색 변경
           },
         }}/>
-        <Tab label="지도" value={2} sx={{
+        <Tab label="Map" value={2} sx={{
+          "&.Mui-selected": {
+            color: "black", // 선택된 탭의 글자 색 변경
+          },
+        }}/>
+        <Tab label="My Logs" value={3} sx={{
           "&.Mui-selected": {
             color: "black", // 선택된 탭의 글자 색 변경
           },
         }}/>
       </Tabs>
+
       <TabPanel value={value} index={1}><ReviewContainer userId={userId} /></TabPanel>
       <TabPanel value={value} index={2}>
         <UserMap userId={userId} />
       </TabPanel>
+      <TabPanel value={value} index={3}>
+        <Categories id={'justin010129@gmail.com'} />
+      </TabPanel>
+      
     </Box>
   )
 }

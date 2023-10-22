@@ -1,6 +1,6 @@
 import { useLoadScript } from "@react-google-maps/api"
 import Map from "./Map"
-import { Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 
 interface userMapProps {
   userId : string
@@ -16,8 +16,15 @@ export default function UserMap({userId} : userMapProps) {
   if (!isLoaded) return <div>Loading</div>
   return ( 
     <>
-    <Typography sx={{my: "10px", textAlign : "center"}} variant="h5">レビューを作成したお店を確認</Typography>
-    <Map userId={userId}></Map>
+      <Box sx={{height: "100%", display: "flex", flexDirection: "column", alignItems: "center"}}>
+        <Box sx={{width : "80%", justifyContent: "center", textAlign : "center", my: "3%"}}>
+          <Typography sx={{my: "10px"}} variant="h4">レビューを残したお店</Typography>
+          <Typography sx={{my: "20px"}} variant="body1">今までレビューを残したお店を確認したり、その店のロケーションや詳しい情報まで見られる！</Typography>
+        </Box>
+        <Box sx={{width: "90%", height: "80%", boxShadow: "10"}}>
+          <Map userId={userId}></Map>
+        </Box>
+      </Box>
     </>
   )
 }
