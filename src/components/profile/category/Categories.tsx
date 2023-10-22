@@ -65,7 +65,8 @@ const Categories = ({id} : categoriesProps) => {
 
   return (
     <>
-      <Stack direction="row" spacing={4} sx={{mb: "30px"}}>
+      {/* 나중에 반응형 처리 할것 */}
+      <Stack direction="row" sx={{ my: "5px", justifyContent : "left"}} flexWrap="wrap">
         <Story id="new" onClick={openAddModal} src="/tabeyoukaMiniLogo.png" alt="createImage" title="レビューリスト作成" />
         {storyList.map((list) => (
         <Story key={list['id']} id={list['id']} onClick={()=>{openModal({

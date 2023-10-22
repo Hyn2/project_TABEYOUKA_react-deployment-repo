@@ -1,4 +1,4 @@
-import { Avatar, Box, ButtonBase, Typography } from "@mui/material";
+import { Avatar, Box, Button, ButtonBase, Card, CardActionArea, CardActions, CardContent, CardMedia, Typography } from "@mui/material";
 
 interface storyProps {
   id: string,
@@ -15,14 +15,26 @@ const avatarStyles = {
   objectFit: "cover"
 }
 
-const Story = ({id, onClick, src, alt, title} : storyProps) => {
+const Story = ({ onClick, src, alt, title} : storyProps) => {
   return (
-      <Box id={id} sx={{display: "flex", flexDirection: "column"}}>
-        <ButtonBase onClick={onClick} sx={{ borderRadius: "100%"}}>
-          <Avatar sx={avatarStyles} src={src} alt={alt} />
-        </ButtonBase>
-        <Typography variant="caption" sx={{textAlign: "center"}}>{title}</Typography>
-      </Box>
+    // <Box sx={{ position : 'relative', paddingTop : "15%", width: "15%" }}>
+      <Card sx={{ width: "200px", margin: "2%"}}>
+          <CardActionArea onClick={onClick}>
+            <CardMedia
+              component="img"
+              height="140"
+              image="/vite.svg"
+              alt={alt}
+            />
+            <CardContent>
+              <Typography gutterBottom variant="body1" component="div" >
+                {title}
+              </Typography>
+            </CardContent>
+          </CardActionArea>
+        </Card>
+    // </Box>
+    
   );
 }
 
