@@ -24,12 +24,12 @@ export default function Footer() {
 
 const footerContainer = {
     width : "100%",
-    height : "80px",
+    height : "auto",
     display : "flex",
     alignItems : "center",
     justifyContent : "center",
     bgcolor : "#F5F5F5",
-    p : 2
+    py : 2
 }
 
 const footerTypo = {
