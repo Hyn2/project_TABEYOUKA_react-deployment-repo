@@ -14,7 +14,9 @@
   import { useNavigate } from "react-router-dom";
   import { useEffect, useState } from "react";
   import {  useSnackbar } from "notistack";
-  import InfoFooter from "../components/common/InfoFooter";
+  import Footer from "../components/layout/footer";
+  
+
   function MainPage() {
     const theme = useTheme();
     const isDownMD = useMediaQuery(theme.breakpoints.down("md"));
@@ -213,7 +215,7 @@
             </Box>
           </Box>
         </Container>
-        <InfoFooter />
+        <Footer />
       </>
     );
   }
