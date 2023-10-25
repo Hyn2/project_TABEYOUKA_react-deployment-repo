@@ -24,10 +24,11 @@ export default function Footer() {
 
 const footerContainer = {
     width : "100%",
-    height : "100px",
+    height : "80px",
     display : "flex",
     alignItems : "center",
     justifyContent : "center",
+    bgcolor : "#F5F5F5",
     p : 2
 }
 
