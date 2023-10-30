@@ -1,4 +1,4 @@
-  import { Container, Typography, Box, Button, useTheme, useMediaQuery } from "@mui/material";
+  import { Typography, Box, Button, useTheme, useMediaQuery, SxProps } from "@mui/material";
   import ModalButton from "../components/common/button/ModalButton";
   import {
     LocationOnOutlined,
@@ -13,10 +13,9 @@
   } from "../components/ui/modal";
   import { useNavigate } from "react-router-dom";
   import { useEffect, useState } from "react";
-  import {  useSnackbar } from "notistack";
+  import { useSnackbar } from "notistack";
   import Footer from "../components/layout/footer";
   
-
   function MainPage() {
     const theme = useTheme();
     const isDownMD = useMediaQuery(theme.breakpoints.down("md"));
@@ -78,57 +77,11 @@
 
     return (
       <>
-        <Container
-          maxWidth={false}
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-            px: "0 !important",
-            backgroundImage: `url(${"https://www.exploretravel.com.au/images/transform/v1/crop/frm/130854433/1b6a6656-f316-4d72-ba10-2067288e49b7.jpg/r0_138_2700_1662_w1200_h678_fmax.jpg"})`,
-            height: "100vh",
-            backgroundRepeat: "no-repeat",
-            backgroundSize: "cover",
-            position: "relative",
-          }}
-        >
-          <Typography
-            color={"white"}
-            sx={{ fontWeight: "bold", textAlign: "center", my: 2, fontSize : isDownMD ? "27px" : "48px", textShadow: "1px 1px 1px black" }}
-          >
-            行きたいお店を見つけてみよう！
-          </Typography>
-          <Box
-            sx={{
-              width: "100%",
-              height: "200px",
-              display: "flex",
-              p : 1,
-              justifyContent: "center",
-            }}
-          >
-            <Box
-              sx={{
-                backgroundColor: "white",
-                width: isDownMD ? "90%" : "40%",
-                height: isDownMD ? "80%" : "100%",
-                boxShadow: "0px 0px 10px 0px rgba(0,0,0,0.75)",
-                borderRadius: "10px",
-                display: "flex",
-                p: 1,
-              }}
-            >
-              <Box
-                sx={{
-                  width: isDownMD ? "60%" : "90%",
-                  display: "flex",
-                  justifyContent: "center",
-                  ml: 1,
-                  flexDirection: "column",
-                }}
-              >
-                <Box sx={{ width: "100%", height: isDownMD ? "40%" : "inherit", display: "flex" }}>
+        <Box sx={mainContainer} >
+          <Typography sx={{fontSize: isDownMD ? "27px" : "48px", ...sloganTypo}} >行きたいお店を見つけてみよう！</Typography>
+            <Box sx={{width: isDownMD ? "90%" : "40%", ...contentBox}} >
+              <Box sx={{width: isDownMD ? "60%" : "90%", ...conditionButtonBox}} >
+                <Box sx={{width: isDownMD ? "40%" : "500px", ...modalButtonCon}}>
                   {/* Location Modal Button*/}
                   <ModalButton
                     title={location}
@@ -146,7 +99,7 @@
                   
                 </Box>
                 <Box
-                  sx={{ width: "100%", height: isDownMD ? "40%" : "inherit", display: "flex" }}
+                  sx={{width: isDownMD ? "40%" : "500px", ...modalButtonCon}}
                 >
                   {/* Category Modal Button*/}
                   <ModalButton
@@ -162,7 +115,7 @@
                   />
                 </Box>
                 <Box
-                  sx={{ width: "100%", height: isDownMD ? "40%" : "inherit", display: "flex" }}
+                  sx={{width: isDownMD ? "40%" : "500px", ...modalButtonCon}}
                 >
                   {/* Restaurant Modal Button */}
                   <ModalButton
@@ -180,44 +133,77 @@
                   />
                 </Box>
               </Box>
-              <Box
-                sx={{
-                  width: "30%",
-                  display: "flex",
-                  borderRadius: "5px",
-                  my: 7,
-                  mx: 2,
-                  bgcolor: "#FFA41B",
-                  color: "white",
-                  boxShadow: "0px 0px 5px 0px rgba(0,0,0,0.2)",
-                  border: "0.5px solid #787A91",
-                  "&:hover": {
-                    bgcolor: "#FFC107",
-                    transition: "all 0.4s ease-in-out",
-                  },
-                }}
-              >
-                <Button
-                  onClick={searchButtonHandler}
-                  sx={{
-                    color: "black",
-                    mx: 1,
-                    flexGrow: 1,
-                    py: 1.2,
-                    justifyContent: "center",
-                  }}
-                >
-                  <Typography variant="caption" sx={{ fontSize: "18px" }}>
-                    検索
+              <Box sx={{ ...searchButtonBox }} >
+                <Button onClick={searchButtonHandler} sx={{ color: "black", flexGrow: 1, py: 1.2, }}>
+                  <Typography variant="caption" sx={{ fontSize: "24px" }}>
+                    食べに行こう!
                   </Typography>
                 </Button>
               </Box>
             </Box>
-          </Box>
-        </Container>
+        </Box>
         <Footer />
       </>
     );
   }
 
-  export default MainPage;
+export default MainPage;
+
+const mainContainer : SxProps = {
+  boxSizing: 'border-box',
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "center",
+  alignItems: "center",
+  backgroundImage: `url(${"https://www.exploretravel.com.au/images/transform/v1/crop/frm/130854433/1b6a6656-f316-4d72-ba10-2067288e49b7.jpg/r0_138_2700_1662_w1200_h678_fmax.jpg"})`,
+  backgroundColor: "#F5F5F5",
+  height: "100vh",
+  backgroundRepeat: "no-repeat",
+  backgroundSize: "cover",
+}
+
+const sloganTypo = {
+  fontWeight: "bold",
+  textAlign: "center",
+  my: 2,
+  textShadow: "1px 1px 1px black",
+  color: "white",
+}
+
+const contentBox = {
+  backgroundColor: "rgba(255,255,255,0.5)",
+  height: "200px",
+  boxShadow: "0px 0px 10px 0px rgba(0,0,0,0.75)",
+  borderRadius: "10px",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  p: 2,
+}
+
+const modalButtonCon = {
+  height: "40%",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+}
+
+const conditionButtonBox = {
+  display: "flex",
+  justifyContent: "center",
+  flexDirection: "column",
+}
+
+const searchButtonBox = {
+  width: "30%",
+  height: "100px",
+  display: "flex",
+  borderRadius: "20px",
+  boxShadow: "0px 0px 5px 0px rgba(0,0,0,0.2)",
+  bgcolor: "#ffae19",
+  "&:hover": {
+    bgcolor: "#FFA500",
+    boxShadow: "0px 3px 5px 0px rgba(0,0,0,0.6)",
+    transition: "all 0.4s ease-in-out",
+  }
+}
