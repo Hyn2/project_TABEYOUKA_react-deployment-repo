@@ -14,13 +14,17 @@ const ModalButton = ({title,Icon,iconColor,handleOpen} : Props) => {
     return (
         <Button onClick={handleOpen} sx={{
           width: "100%",
+          backgroundColor : "white",
           color : "black",
-          flexGrow : 1,
           p: isDownMD ? 1 : 2,
-          border : "1px solid #787A91",
           justifyContent: "flex-start",
           my : 0.5,
-          boxShadow : "0px 0px 5px 0px rgba(0,0,0,0.2)",
+          boxShadow : "2px 2px 5px 0px rgba(0,0,0,0.4)",
+          "&:hover" : {
+            backgroundColor : "#F5F5F5",
+            transition : "all 0.4s ease-in-out",
+            boxShadow : "0px 3px 5px 0px rgba(0,0,0,0.6)",
+          }
         }}>
           <Icon sx={{ color : iconColor }} />
           <Typography variant='caption' sx={{ fontSize : isDownMD ? "14px" : "16px", mx: isDownMD ? 0 : 1, color : "#787A91", textOverflow: "ellipsis", overflow: "hidden", whiteSpace: "nowrap", }}>

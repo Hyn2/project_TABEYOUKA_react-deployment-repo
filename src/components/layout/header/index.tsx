@@ -28,7 +28,7 @@ function Header() {
 
 
   return (
-    <AppBar color='default'>
+    <AppBar color='default' position='sticky'>
       <Container maxWidth="lg">
         <Toolbar sx={{ display : "flex" }}>
           <Logo src="/tabeyoukaLogo.png"/>
