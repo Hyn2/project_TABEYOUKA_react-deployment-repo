@@ -26,7 +26,7 @@ const emptyContainerStyle = {
 const ReviewContainer = ({userId} : reviewContainerProps) => {
 
   async function getReview (page : string, count : string) : Promise<Review[]> {
-    const response = await axios.get(`http://localhost:8000/api/review`, {
+    const response = await axios.get(`${import.meta.env.VITE_REACT_APP_BASE_URI}/api/review`, {
       headers : {
         Authorization : window.localStorage.getItem('access_token')
       },
@@ -52,9 +52,6 @@ const ReviewContainer = ({userId} : reviewContainerProps) => {
   const {
     data: reviews,
     endOfPage,
-    unobserve,
-    setPage,
-    setCount,
   } = usePage<Review, MoreDataFn<Review>>(initPage, initCount, moreReviews);
 
   useEffect(() => {

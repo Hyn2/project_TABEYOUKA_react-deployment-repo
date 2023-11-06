@@ -1,7 +1,7 @@
 import { Box, TextField, Typography, Checkbox, Button, Modal, ButtonBase } from "@mui/material"
 import { ChangeEvent, useState } from "react";
 import axios from "axios";
-import LoadingSpinner from "../review/LoadingSpinner";
+import LoadingSpinner from "../reviewtab/LoadingSpinner";
 import '../../../styles/loadingSpinner.css'; 
 import {Close} from '@mui/icons-material';
 
@@ -48,7 +48,7 @@ const AddStoryModal = ({userId, open, onClose} : AddStoryModalProps) => {
   };
 
   const submitFunc = () => {
-    axios.post('http://localhost:8000/api/storylist', {
+    axios.post(`${import.meta.env.BASE_URL}/api/storylist`, {
       access_token: window.localStorage.getItem('access_token'),
       user_id: window.localStorage.getItem('id'),
       story_name : storyListName,
@@ -65,7 +65,7 @@ const AddStoryModal = ({userId, open, onClose} : AddStoryModalProps) => {
 
   if(open) {
     axios
-    .get("http://localhost:8000/api/review",{
+    .get(`${import.meta.env.VITE_REACT_APP_BASE_URL}/api/review`,{
     headers : {
       Authorization : window.localStorage.getItem('access_token')
     },

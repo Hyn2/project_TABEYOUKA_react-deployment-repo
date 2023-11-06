@@ -1,6 +1,6 @@
 import { Box, Tab, Tabs } from "@mui/material";
 import { useState } from "react";
-import ReviewContainer from "../review/ReviewContainer";
+import ReviewContainer from "../reviewtab/ReviewContainer";
 import TabPanel from "./TabPanel";
 import UserMap from "../map/UserMap";
 import Categories from "../category/Categories";

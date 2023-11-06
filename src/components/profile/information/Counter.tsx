@@ -1,7 +1,7 @@
-import { Box, Button, List, Modal, Typography, useMediaQuery } from "@mui/material";
+import { Box, Button, List, Modal, Typography } from "@mui/material";
 import UserModal from "../modals/UserModal";
 import { useState } from "react";
-import MyButton from "../MyButton";
+import MyButton from "../../common/button/ProfileButton";
 
 interface counterProps {
   title: string,
@@ -18,7 +18,6 @@ const buttonStyles = {
 }
 
 const Counter = ({title, count, counterType, userId} : counterProps) => {
-  const mobileScreenFontSize = useMediaQuery('(max-width: 1210px)');
   const [userModalState, setUserModalState] = useState(false);
 
   const openUserModal =() => {
@@ -32,8 +31,8 @@ const Counter = ({title, count, counterType, userId} : counterProps) => {
     <>
       <MyButton disabled={(counterType == "reviews") ? true : false} onClick={openUserModal} sx={buttonStyles}>
         <Box>
-          <Typography  component= "span" sx={{ fontSize : mobileScreenFontSize ? "78%" : "100%", textDecoration: "none", color: "inherit", mr: "3px"}}>{title}</Typography>
-          <Typography  component= "span" sx={{fontSize : mobileScreenFontSize ? "78%" : "100%", fontWeight: "bold"}}>{count}</Typography>
+          <Typography  component= "span" sx={{ fontSize : "1vw", textDecoration: "none", color: "inherit", mr: "3px"}}>{title}</Typography>
+          <Typography  component= "span" sx={{fontSize : "0.9vw", fontWeight: "bold"}}>{count}</Typography>
         </Box>
       </MyButton>
       <Modal open={userModalState} sx={{ alignItems: "center", display: "flex", justifyContent: "center" }}>

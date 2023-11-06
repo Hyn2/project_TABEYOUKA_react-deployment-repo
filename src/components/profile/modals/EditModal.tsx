@@ -20,7 +20,7 @@ const EditModal = (props : editModalProps) => {
   // 현재 유저의 정보
   useEffect(() => {
     axios
-    .get(`http://localhost:8000/api/user`, {
+    .get(`${import.meta.env.VITE_REACT_APP_BASE_URI}/api/user`, {
       headers : {
         Authorization : window.localStorage.getItem('access_token')
       },
@@ -77,7 +77,7 @@ const EditModal = (props : editModalProps) => {
     }
     formData.append('_method', 'patch');
 
-    axios.post('http://localhost:8000/api/user', formData, {
+    axios.post(`${import.meta.env.BASE_URL}/api/user`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
         Authorization : window.localStorage.getItem('access_token')
