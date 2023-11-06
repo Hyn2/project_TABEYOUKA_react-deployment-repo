@@ -47,7 +47,7 @@ const Categories = ({id} : categoriesProps) => {
   }
   
   useEffect(() => {
-    axios.get(`http://localhost:8000/api/storylist`,{
+    axios.get(`${import.meta.env.VITE_REACT_APP_BASE_URI}/api/storylist`,{
       headers : {
         Authorization : window.localStorage.getItem('access_token')
       },

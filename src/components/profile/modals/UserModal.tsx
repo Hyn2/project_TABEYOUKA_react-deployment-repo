@@ -12,7 +12,7 @@ const UserModal = ({ userModalType, userId }: userModalProps) => {
   const [userData, setUserData] = useState([]);
   if (userModalType === "following") {
     axios
-      .get("http://localhost:8000/api/following", {
+      .get(`${import.meta.env.VITE_REACT_APP_BASE_URL}/api/following`, {
         headers: {
           Authorization: window.localStorage.getItem("access_token"),
         },
@@ -28,7 +28,7 @@ const UserModal = ({ userModalType, userId }: userModalProps) => {
       });
   } else {
     axios
-      .get("http://localhost:8000/api/follower", {
+      .get(`${import.meta.env.VITE_REACT_APP_BASE_URL}/api/follower`, {
         headers: {
           Authorization: window.localStorage.getItem("access_token"),
         },

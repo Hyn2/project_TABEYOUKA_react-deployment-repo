@@ -1,4 +1,4 @@
-import { Avatar, Box, Button, ButtonBase, Card, CardActionArea, CardActions, CardContent, CardMedia, Typography } from "@mui/material";
+import { Card, CardActionArea, CardContent, CardMedia, Typography } from "@mui/material";
 
 interface storyProps {
   id: string,
@@ -8,14 +8,7 @@ interface storyProps {
   onClick: () => void;
 }
 
-const avatarStyles = {
-  height:"70px", 
-  width: "70px", 
-  border: "1px solid rgba(0,0,0,0.3)", 
-  objectFit: "cover"
-}
-
-const Story = ({ onClick, src, alt, title} : storyProps) => {
+const Story = ({ onClick, alt, title} : storyProps) => {
   return (
     // <Box sx={{ position : 'relative', paddingTop : "15%", width: "15%" }}>
       <Card sx={{ width: "200px", margin: "2%"}}>

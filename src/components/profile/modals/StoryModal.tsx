@@ -2,7 +2,7 @@ import { Avatar, Box, ButtonBase, Modal, Skeleton, Typography, useMediaQuery } f
 import {ArrowBackIos, LocationOn, ArrowForwardIos, MoreHoriz, Close} from '@mui/icons-material';
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import MyButton from "../MyButton";
+import MyButton from "../../common/button/ProfileButton";
 import StoryEditModal from "./StoryEditModal";
 import { EditorOnlyRead } from "../../common/CKEditor";
 
@@ -29,7 +29,7 @@ const StoryModal = ({id, open, onClose, image, storyName} : modalProps) => {
 
   useEffect(()=>{
     axios
-    .get(`http://localhost:8000/api/story?story_list_id=${id}`,{
+    .get(`${import.meta.env.VITE_REACT_APP_BASE_URL}/story?story_list_id=${id}`,{
       headers : {
         Authorization : window.localStorage.getItem('access_token')
       },

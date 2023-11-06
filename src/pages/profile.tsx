@@ -1,22 +1,24 @@
 import { Box, Button, Skeleton, Typography, useMediaQuery } from "@mui/material";
-import UserTab from "../components/profile/tab/UserTab";
+import UserTab from "../components/profile/tabs/UserTab";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import Bio from "../components/profile/userinfo/Bio";
 import EditModal from "../components/profile/modals/EditModal";
-import ProfileImage from '../components/profile/userinfo/ProfileImage';
-import Counter from "../components/profile/userinfo/Counter";
+import ProfileImage from '../components/profile/information/ProfileImage';
+import Counter from "../components/profile/information/Counter";
+import Defaultbutton from "../components/common/button/DefaultButton";
 
 function ProfilePage() {
 
-  const mobileScreenFontSize = useMediaQuery('(max-width: 1210px)');
-
   const statusButtonStyle = { 
-    fontSize: mobileScreenFontSize ? "65%" : "100%", 
+    fontSize: "0.85vw",
     backgroundColor: "#FFA41B", 
     color: "black",
-    height: "28px"
+    height: "28px",
+    width : "5vw",
+    border : "none",
+    borderRadius : "3px",
+    boxShadow : "2.75px 1.5px 5px rgba(0,0,0,0.3)"
   }
 
   const [following, setFollowing] = useState(false);
@@ -43,7 +45,7 @@ function ProfilePage() {
 
   const addFollow = (event : React.MouseEvent<HTMLButtonElement>) => {
     const followId = event.currentTarget.id;
-    axios.post('http://localhost:8000/api/follow', {
+    axios.post(`${import.meta.env.VITE_REACT_APP_BASE_URI}/api/follow`, {
       id : window.localStorage.getItem('id'),
       follow_id : followId,
     })
@@ -55,7 +57,7 @@ function ProfilePage() {
   const deleteFollow = (event : React.MouseEvent<HTMLButtonElement>) => {
     const followId = event.currentTarget.id;
     if(window.confirm('취소하시겠습니까?')) {
-      axios.delete('http://localhost:8000/api/follow', {
+      axios.delete(`${import.meta.env.VITE_REACT_APP_BASE_URI}/api/follow`, {
         params : {
           id : window.localStorage.getItem('id'),
           follow_id : followId,
@@ -74,7 +76,7 @@ function ProfilePage() {
     }
     // 현재 유저의 정보
     axios
-      .get(`http://localhost:8000/api/user`, {
+      .get(`${import.meta.env.VITE_REACT_APP_BASE_URI}/api/user`, {
         headers: {
           Authorization: window.localStorage.getItem("access_token"),
         },
@@ -100,39 +102,32 @@ function ProfilePage() {
         if (error.response.status == 401) {
           navigate("/unauthorized");
         }
-      });
+      });      
+      const userId = window.localStorage.getItem('id');
+      axios.get(`${import.meta.env.VITE_REACT_APP_BASE_URI}/api/following`, {
+          headers : {
+            Authorization : window.localStorage.getItem('access_token')
+          },
+        params : {
+          user_id : userId
+        }
+      })
+      .then(response => {
+        console.log('get review');
+        const follower = response.data;
+        const followerId : string[] = [];
+        follower.forEach((element: any) => {
+          followerId.push(element.id);
+        });
+        followerId.includes(userId||"justin010129@gmail.com") ?
+        setFollowing(true) : 
+        setFollowing(false);
+      })
+      .catch(error => {
+        console.error(error);
+      })
   }, []);
 
-  // Effect hook for get follow info
-  useEffect(() => {
-    const userId = window.localStorage.getItem('id');
-    axios.get('http://localhost:8000/api/following', {
-        headers : {
-          Authorization : window.localStorage.getItem('access_token')
-        },
-      params : {
-        user_id : userId
-      }
-    })
-    .then(response => {
-      const follower = response.data;
-      const followerId : string[] = [];
-      follower.forEach((element: any) => {
-        followerId.push(element.id);
-      });
-      followerId.includes(userId||"justin010129@gmail.com") ?
-      setFollowing(true) : 
-      setFollowing(false);
-    })
-    .catch(error => {
-      console.error(error);
-    })
-  },[]);
-
-
-
-
-  
   return (
     // 개인정보 높이 반응형 처리
     <Box
@@ -148,25 +143,23 @@ function ProfilePage() {
           width: "100%",
           height: "100%",
         }}
-      >
-        <Box sx={{marginTop : "64px", height: "357px", boxShadow: "5"}}>
-          <Box sx={{padding: "5px", height: "250px", display: "flex",justifyContent : "center", alignItems:"center"}}>
-            <Box sx={{position: "relative", width: "100%", paddingTop: "15%", flexBasis: "15%", height: "0"}}>
+        >
+        <Box sx={{marginTop : "64px", height: "358px", boxShadow: "5"}}>
+          <Box sx={{padding: "5px", height: "250px", display: "flex", justifyContent : "center", alignItems:"center"}}>
+            <Box sx={{position: "relative", paddingTop: "10%", flexBasis: "10%", height: "0"}}>
               <ProfileImage src={import.meta.env.VITE_REACT_APP_PROFILE_IMAGE_PATH} alt="ProfileImage" />
             </Box>
 
-            <Box sx={{display:"flex", flexDirection:"column", justifyContent: "center", flexBasis: "60%", pl: "4%"}}>
+            <Box sx={{display:"flex", flexDirection:"column", justifyContent: "center", flexBasis: "47%", pl: "4%"}}>
               <Box sx={{display:"flex", flexDirection:"row", justifyContent: "start"}}>
                 <Box sx={{display: "flex", flexDirection: "row", alignItems: "center", my: "8px"}}>
                   {userData.nickname ? 
-                  <Typography sx={{ fontSize : mobileScreenFontSize ? "90%" : 'none', mr: "10px"}} component="span" variant="h5">{userData.nickname}</Typography> : 
+                  <Typography sx={{ fontSize : '1.7vw', mr: "10px"}} component="span" variant="h5">{userData.nickname}</Typography> : 
                   <Skeleton sx={{mr: "10px"}} variant="rounded" width={56} height={32} />
                   }
                   {
-                    userData.id == window.localStorage.getItem('id') ? 
-                    <Button onClick={openModal} variant="contained" size="small" sx={statusButtonStyle}>
-                      編集
-                    </Button> 
+                    userData.id == window.localStorage.getItem('id') ?
+                    <Defaultbutton onClick={openModal} width="60px" height = "30px" text="編集" />
                     : 
                     following ?           
                     <Button id={userData.id||"justin010129@gmail.com"} onClick={deleteFollow} variant="contained" size="small" sx={statusButtonStyle}>
@@ -179,9 +172,12 @@ function ProfilePage() {
                 </Box>
               </Box>
               <Box>
-                <Bio children={userData.bio}/> 
+              {userData.bio ? 
+                  <Typography variant="caption" sx={{my: "7px", fontSize: "1vw"}}>{userData.bio}</Typography> : 
+                  <Skeleton sx={{mr: "10px"}} variant="rounded" width={300} height={25} />
+                  }
               </Box>
-              <Box sx={{ display: "flex", my: "5px", justifyContent: "start"}}>
+              <Box sx={{ display: "flex", my: "8px", justifyContent: "start"}}>
                 <Counter userId={userData.id||''} counterType="reviews" title="ポスト" count={followAndReview.reviews}/>
                 <Counter userId={userData.id||''} counterType="follower" title="ファロワー" count={followAndReview.followers}/>
                 <Counter userId={userData.id||''} counterType="following" title="ファロー中" count={followAndReview.followings}/>

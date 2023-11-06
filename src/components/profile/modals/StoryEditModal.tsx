@@ -1,7 +1,7 @@
 import { Box, TextField, Typography, Checkbox, Button, Modal, ButtonBase } from "@mui/material"
 import { ChangeEvent, useEffect, useState } from "react";
 import axios from "axios";
-import LoadingSpinner from "../review/LoadingSpinner";
+import LoadingSpinner from "../reviewtab/LoadingSpinner";
 import '../../../styles/loadingSpinner.css';
 import { Close } from "@mui/icons-material";
 
@@ -32,7 +32,7 @@ const StoryEditModal = ({id, open, onClose} : storyEditModalProps) => {
 
   useEffect(() => {
     axios
-    .get(`http://localhost:8000/api/review`,{
+    .get(`${import.meta.env.VITE_REACT_APP_BASE_URL}/api/review`,{
       headers : {
         Authorization : window.localStorage.getItem('access_token')
       },
@@ -48,7 +48,7 @@ const StoryEditModal = ({id, open, onClose} : storyEditModalProps) => {
       console.error(error);
     });
     axios
-    .get(`http://localhost:8000/api/storylist/${id}`, )
+    .get(`${import.meta.env.VITE_REACT_APP_BASE_URL}/api/storylist/${id}`, )
     .then(response => {
       setStoryListName(response.data.story_name);
       setStoryReviewList(response.data.reviews);
@@ -61,7 +61,7 @@ const StoryEditModal = ({id, open, onClose} : storyEditModalProps) => {
   const editSubmitFunc = () => {
     // 스토리 아이디 스토리 이름, 스토리에 들어갈 리뷰의 아이디를 바디에 포함.
     axios
-    .post("http://localhost:8000/api/storylist", {
+    .post(`${import.meta.env.VITE_REACT_APP_BASE_URL}/api/storylist`, {
       headers : {
         Authorization : window.localStorage.getItem('access_token')
       },
