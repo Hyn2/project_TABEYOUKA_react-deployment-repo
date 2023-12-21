@@ -36,7 +36,6 @@ const ReviewContainer = ({userId} : reviewContainerProps) => {
         count : count,
       }   
     });
-    console.log(response.data);
     return response.data;
   }
 

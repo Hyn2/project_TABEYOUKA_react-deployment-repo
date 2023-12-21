@@ -31,8 +31,8 @@ const Counter = ({title, count, counterType, userId} : counterProps) => {
     <>
       <MyButton disabled={(counterType == "reviews") ? true : false} onClick={openUserModal} sx={buttonStyles}>
         <Box>
-          <Typography  component= "span" sx={{ fontSize : "1vw", textDecoration: "none", color: "inherit", mr: "3px"}}>{title}</Typography>
-          <Typography  component= "span" sx={{fontSize : "0.9vw", fontWeight: "bold"}}>{count}</Typography>
+          <Typography  component= "span" sx={{ fontSize : "0.8vw", textDecoration: "none", color: "inherit", mr: "3px"}}>{title}</Typography>
+          <Typography  component= "span" sx={{fontSize : "0.7vw", fontWeight: "bold"}}>{count}</Typography>
         </Box>
       </MyButton>
       <Modal open={userModalState} sx={{ alignItems: "center", display: "flex", justifyContent: "center" }}>

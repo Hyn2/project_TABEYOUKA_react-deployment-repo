@@ -6,7 +6,7 @@ import axios from "axios";
 import EditModal from "../components/profile/modals/EditModal";
 import ProfileImage from '../components/profile/information/ProfileImage';
 import Counter from "../components/profile/information/Counter";
-import Defaultbutton from "../components/common/button/DefaultButton";
+import MyButton from "../components/common/button/ProfileButton";
 
 function ProfilePage() {
 
@@ -51,6 +51,20 @@ function ProfilePage() {
     })
     .then(()=>{
       setFollowing(true);
+    })
+  }
+
+  const destroyAccount = () => {
+    axios.delete(`${import.meta.env.VITE_REACT_APP_BASE_URI}/api/user`,{
+      params : {
+        id : window.localStorage.getItem('id'), 
+      }
+    })
+    .then((response) => {
+      console.log(response);
+      window.localStorage.clear;
+      alert('회원탈퇴가 완료되었습니다.');
+      navigate('/');
     })
   }
 
@@ -129,37 +143,28 @@ function ProfilePage() {
   }, []);
 
   return (
-    // 개인정보 높이 반응형 처리
-    <Box
-    sx={{
-      // display: "flex",
-      flexDirection: "row",
-      justifyContent: "center",
-    }}>
+    <Box id="profile" sx={{flexDirection: "row", justifyContent: "center"}}>
       <EditModal userId={userData.id||'justin010129@gmail.com'} open={modalState} onClose={closeModal} />
-      <Box
-        sx={{
-          flexBasis: mobileScreen ? "100%" : "70%",
-          width: "100%",
-          height: "100%",
-        }}
-        >
-        <Box sx={{marginTop : "64px", height: "358px", boxShadow: "5"}}>
+      <Box sx={{flexBasis: mobileScreen ? "100%" : "70%", width: "100%", height: "100%"}}>
+        <Box sx={{height: "358px", boxShadow: "5"}}>
           <Box sx={{padding: "5px", height: "250px", display: "flex", justifyContent : "center", alignItems:"center"}}>
-            <Box sx={{position: "relative", paddingTop: "10%", flexBasis: "10%", height: "0"}}>
-              <ProfileImage src={import.meta.env.VITE_REACT_APP_PROFILE_IMAGE_PATH} alt="ProfileImage" />
+            <Box sx={{position: "relative", paddingTop: "7%", flexBasis: "7%", height: "0"}}>
+              <ProfileImage src={userData.profile_image} alt="ProfileImage" />
             </Box>
-
             <Box sx={{display:"flex", flexDirection:"column", justifyContent: "center", flexBasis: "47%", pl: "4%"}}>
               <Box sx={{display:"flex", flexDirection:"row", justifyContent: "start"}}>
                 <Box sx={{display: "flex", flexDirection: "row", alignItems: "center", my: "8px"}}>
                   {userData.nickname ? 
-                  <Typography sx={{ fontSize : '1.7vw', mr: "10px"}} component="span" variant="h5">{userData.nickname}</Typography> : 
+                  <Typography sx={{ fontSize : '1.1vw', mr: "10px"}} component="span" variant="h5">{userData.nickname}</Typography> : 
                   <Skeleton sx={{mr: "10px"}} variant="rounded" width={56} height={32} />
                   }
                   {
                     userData.id == window.localStorage.getItem('id') ?
-                    <Defaultbutton onClick={openModal} width="60px" height = "30px" text="編集" />
+                    <>
+                      <MyButton onClick={openModal} sx={{":hover": {backgroundColor: "rgba(255, 164, 27, 1)", }, mx: "5px", backgroundColor: 'rgba(255, 164, 27, 0.85)', color: "black", borderRadius: "10%"}}>編集</MyButton>
+                      <MyButton onClick={destroyAccount} sx={{":hover": {backgroundColor: "rgba(221, 0, 0)", }, mx: "5px", backgroundColor: "rgba(221, 0, 0, 0.85)", color: "black", borderRadius: "10%"}}> アカウント削除 </MyButton>
+                    </>
+
                     : 
                     following ?           
                     <Button id={userData.id||"justin010129@gmail.com"} onClick={deleteFollow} variant="contained" size="small" sx={statusButtonStyle}>
@@ -173,7 +178,7 @@ function ProfilePage() {
               </Box>
               <Box>
               {userData.bio ? 
-                  <Typography variant="caption" sx={{my: "7px", fontSize: "1vw"}}>{userData.bio}</Typography> : 
+                  <Typography variant="caption" sx={{my: "7px", fontSize: "0.8vw"}}>{userData.bio}</Typography> : 
                   <Skeleton sx={{mr: "10px"}} variant="rounded" width={300} height={25} />
                   }
               </Box>

@@ -57,6 +57,7 @@ const Categories = ({id} : categoriesProps) => {
     })
     .then(response => {
       setStoryList(response.data);
+      console.log(response.data);
     })
     .catch(error => {
       console.error(error);
@@ -72,7 +73,7 @@ const Categories = ({id} : categoriesProps) => {
         <Story key={list['id']} id={list['id']} onClick={()=>{openModal({
           id : list['id'], 
           listName : list['story_name'], 
-          image : list['image']['image_url']})}} src={list['image']['image_url']} alt="storyImage" title={list['story_name']}/>
+          image : list['image']})}} src={list['image']} alt="storyImage" title={list['story_name']}/>
         ))}
       </Stack>
       {modal && (

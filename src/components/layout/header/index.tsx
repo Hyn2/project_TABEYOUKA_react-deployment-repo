@@ -3,6 +3,7 @@ import Logo from './Logo';
 import { useNavigate } from 'react-router-dom';
 import {useEffect, useState} from 'react';
 import MyPage from './MyPage';
+import MyButton from '../../common/button/ProfileButton';
 
 function Header() {
   
@@ -12,6 +13,10 @@ function Header() {
 
   const login = () => {
     Navigate('/login');
+  }
+
+  const createReview = () => {
+    Navigate('/review');
   }
 
   const logout = () => {
@@ -32,6 +37,7 @@ function Header() {
       <Container maxWidth="lg">
         <Toolbar sx={{ display : "flex" }}>
           <Logo src="/tabeyoukaLogo.png"/>
+          <Button onClick={createReview} style={{color: "black"}}>レビューを見る</Button>
           <Box sx={{ flexGrow : 1, display : "flex", justifyContent: "flex-end" }}>
             <Button onClick={(window.localStorage.getItem('access_token') == null) ? login : logout}>
               {status}
