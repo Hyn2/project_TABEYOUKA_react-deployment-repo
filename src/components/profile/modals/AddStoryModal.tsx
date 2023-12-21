@@ -1,5 +1,5 @@
 import { Box, TextField, Typography, Checkbox, Button, Modal, ButtonBase } from "@mui/material"
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import axios from "axios";
 import LoadingSpinner from "../reviewtab/LoadingSpinner";
 import '../../../styles/loadingSpinner.css'; 
@@ -43,12 +43,12 @@ const AddStoryModal = ({userId, open, onClose} : AddStoryModalProps) => {
     onClose();
   }
 
-  const storyListChange = (e : React.ChangeEvent<HTMLInputElement>) => {
+  const storyListNameChange = (e : React.ChangeEvent<HTMLInputElement>) => {
     setStoryListName(e.target.value);
   };
 
   const submitFunc = () => {
-    axios.post(`${import.meta.env.BASE_URL}/api/storylist`, {
+    axios.post(`${import.meta.env.VITE_REACT_APP_BASE_URI}/api/storylist`, {
       access_token: window.localStorage.getItem('access_token'),
       user_id: window.localStorage.getItem('id'),
       story_name : storyListName,
@@ -63,9 +63,9 @@ const AddStoryModal = ({userId, open, onClose} : AddStoryModalProps) => {
     });
   }
 
-  if(open) {
+  useEffect(()=>{
     axios
-    .get(`${import.meta.env.VITE_REACT_APP_BASE_URL}/api/review`,{
+    .get(`${import.meta.env.VITE_REACT_APP_BASE_URI}/api/review`,{
     headers : {
       Authorization : window.localStorage.getItem('access_token')
     },
@@ -79,7 +79,7 @@ const AddStoryModal = ({userId, open, onClose} : AddStoryModalProps) => {
     .catch(error => {
       console.error(error);
     });
-  }
+  }, []);
 
   return (
     <Modal open={open} onClose={onCloseModal}  sx={{ alignItems: "center", display: "flex", justifyContent: "center" }}>
@@ -92,7 +92,7 @@ const AddStoryModal = ({userId, open, onClose} : AddStoryModalProps) => {
             <Close /> 
           </ButtonBase>
           <Typography sx={{marginBottom: "25px"}} variant="subtitle1">新しいストーリー作成</Typography> 
-          <TextField onChange={storyListChange} fullWidth id="outlined-basic" label="新しいストーリー名" variant="outlined" value={storyListName} />
+          <TextField onChange={storyListNameChange} fullWidth id="outlined-basic" label="新しいストーリー名" variant="outlined" value={storyListName} />
         </Box>
         <Box sx={{ height: "500px", overflow: "scroll"}}>
           <Box sx={{ textAlign: "center", display: "flex", flexWrap: "wrap", justifyContent: "flex-start", flexDirection: review.length ? "row" : "column"}}>

@@ -37,7 +37,7 @@ const Review = ({src, reviewId, reviewData} : reviewProps) => {
   },[]);
 
   return (
-    <ButtonBase onClick={buttonClick} sx={{ position: "relative", paddingTop: "20%", width: "100%", flexBasis: "70%", boxShadow :"5", margin: "1.5%"}}>
+    <ButtonBase onClick={buttonClick} sx={{ position: "relative", paddingTop: "10%", flexBasis: "35%", boxShadow :"5", margin: "1.5%"}}>
       <Box sx={{display : "flex", 
                 position:"absolute",
                 top: 0,
@@ -45,11 +45,11 @@ const Review = ({src, reviewId, reviewData} : reviewProps) => {
                 width: "100%",
                 height: "100%"}}>
           <Box sx={{flexBasis: "30%"}}>
-                <img style={{width: "100%", height: "100%"}} src={src} alt="" />
+                <img style={{width: "100%", height: "100%"}} src={src} alt="reviewImage" />
           </Box>
-          <Box sx={{display: "flex", flexDirection: "column", justifyContent: "space-evenly" ,backgroundColor: "grey", flexGrow: "480", textAlign: "left", px:'5%'}}>
+          <Box sx={{display: "flex", flexDirection: "column", justifyContent: "space-evenly" ,backgroundColor: "white", flexGrow: "480", textAlign: "left", px:'5%'}}>
             <Box sx={{display: "flex", flexDirection: "column", justifyContent :"center"}}>
-              <Typography variant="h5" sx={{overflow: "hidden"}}>
+              <Typography variant="h5" sx={{fontSize: "1vw", overflow: "hidden"}}>
                 {restName}
               </Typography>
               {/* 글자 크기 반응형 처리 */}
@@ -58,10 +58,10 @@ const Review = ({src, reviewId, reviewData} : reviewProps) => {
               <Typography variant="subtitle1">
                 {(date2.getTime() - date.getTime())/60000 <= 1 ? '1분 전' : 
                 (date2.getTime() - date.getTime())/60000 < 60 ? `${Math.floor((date2.getTime() - date.getTime())/60000)} 분전` :
-                (date2.getTime() - date.getTime())/3600000 < 24 ? `${(date2.getTime() - date.getTime())/3600000}시간 전` : 
+                (date2.getTime() - date.getTime())/3600000 < 24 ? `${Math.floor((date2.getTime() - date.getTime())/3600000)}시간 전` : 
                 (date2.getTime() - date.getTime())/86400000 < 30 ? `${Math.floor((date2.getTime() - date.getTime())/86400000)}일 전` : 
                 Math.floor((date2.getTime() - date.getTime())/2592000000) < 12 ? `${Math.floor((date2.getTime() - date.getTime())/2592000000)}개월 전` :
-                `${Math.floor((date2.getTime() - date.getTime())/31104000000)}년 전` }
+                `${Math.floor((date2.getTime() - date.getTime())/31104000000)}년 전` } 리뷰
               </Typography>
           </Box>
           </Box>

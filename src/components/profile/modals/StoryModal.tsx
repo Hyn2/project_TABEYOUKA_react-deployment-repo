@@ -29,9 +29,9 @@ const StoryModal = ({id, open, onClose, image, storyName} : modalProps) => {
 
   useEffect(()=>{
     axios
-    .get(`${import.meta.env.VITE_REACT_APP_BASE_URL}/story?story_list_id=${id}`,{
+    .get(`${import.meta.env.VITE_REACT_APP_BASE_URI}/api/storylist/${id}`,{
       headers : {
-        Authorization : window.localStorage.getItem('access_token')
+        Authorization : window.localStorage.getItem('access_token'),
       },
     } )
     .then(response => {

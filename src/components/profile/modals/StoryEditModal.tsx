@@ -32,7 +32,7 @@ const StoryEditModal = ({id, open, onClose} : storyEditModalProps) => {
 
   useEffect(() => {
     axios
-    .get(`${import.meta.env.VITE_REACT_APP_BASE_URL}/api/review`,{
+    .get(`${import.meta.env.VITE_REACT_APP_BASE_URI}/api/review`,{
       headers : {
         Authorization : window.localStorage.getItem('access_token')
       },
@@ -48,7 +48,7 @@ const StoryEditModal = ({id, open, onClose} : storyEditModalProps) => {
       console.error(error);
     });
     axios
-    .get(`${import.meta.env.VITE_REACT_APP_BASE_URL}/api/storylist/${id}`, )
+    .get(`${import.meta.env.VITE_REACT_APP_BASE_URI}/api/storylist/${id}`, )
     .then(response => {
       setStoryListName(response.data.story_name);
       setStoryReviewList(response.data.reviews);
@@ -56,7 +56,7 @@ const StoryEditModal = ({id, open, onClose} : storyEditModalProps) => {
     .catch(error => {
       console.error(error);
     });
-  });
+  },[]);
 
   const editSubmitFunc = () => {
     // 스토리 아이디 스토리 이름, 스토리에 들어갈 리뷰의 아이디를 바디에 포함.
@@ -101,8 +101,8 @@ const StoryEditModal = ({id, open, onClose} : storyEditModalProps) => {
           <Box sx={{ textAlign : "center", display: "flex", flexWrap: "wrap", justifyContent: "flex-start", flexDirection: review.length ? "row" : "column"}}>
             {
               review.length ? 
-                review.map((review) => (
-                  <Box key={review['id']} sx={{ flexBasis: "33.3%", width: "100%", height: "0px", paddingBottom: "33.3%", backgroundImage: `url(${review['images'][0]})`, backgroundSize: "cover"}}>
+                review.map((review, index) => (
+                  <Box key={index} sx={{ flexBasis: "33.3%", width: "100%", height: "0px", paddingBottom: "33.3%", backgroundImage: `url(${review['images'][0]})`, backgroundSize: "cover"}}>
                     <Checkbox id={review['id']} onChange={checkboxHandler} checked={storyReviewList.includes(review['id'])}/>
                   </Box>
                 )) : 

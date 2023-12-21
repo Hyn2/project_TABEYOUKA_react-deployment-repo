@@ -76,8 +76,9 @@ const EditModal = (props : editModalProps) => {
       formData.append('profile_image', selectedFile);
     }
     formData.append('_method', 'patch');
+    console.log(formData);
 
-    axios.post(`${import.meta.env.BASE_URL}/api/user`, formData, {
+    axios.post(`${import.meta.env.VITE_REACT_APP_BASE_URI}/api/user`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
         Authorization : window.localStorage.getItem('access_token')
