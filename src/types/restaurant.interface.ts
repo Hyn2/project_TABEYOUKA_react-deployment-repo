@@ -198,3 +198,7 @@ export interface RestaurantHOTPP {
   wedding?: string | null;
   wifi?: string | null;
 }
+
+export interface StoreHeaderInfoProps {
+  data: Restaurant;
+}

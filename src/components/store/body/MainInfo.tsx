@@ -1,21 +1,16 @@
 import { Box, Button, useMediaQuery, useTheme } from "@mui/material";
 import { GoogleMap, LoadScript, MarkerF } from '@react-google-maps/api';
 import InformationTable from "../../ui/table";
-import { Restaurant } from "../../../types/restaurant.interface";
+import { StoreHeaderInfoProps } from "../../../types/restaurant.interface";
 
 type StoreDataType = {
   [key: string]: string;
 };
 
-interface StoreHeaderInfoProps {
-  data: Restaurant;
-}
-
 const mapContainerStyle = {
   width: '100%',
   height: '100%',
 };
-
 
 export default function MainInfo({ data } : StoreHeaderInfoProps) {
 
