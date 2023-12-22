@@ -1,21 +1,10 @@
-import { AccessTime, CreditCard, CurrencyYen, DinnerDining, LocationOn, MoreVert, Wifi } from "@mui/icons-material";
+import { CreditCard, MoreVert, Wifi } from "@mui/icons-material";
 import { Box, Container, Typography, useMediaQuery, useTheme } from "@mui/material";
-import type { Restaurant } from "../../../types/restaurant.interface";
+import { memo } from "react";
+import BasicInfo from "./BasicInfo";
+import { StoreHeaderInfoProps } from "../../../types/restaurant.interface";
 
-const mainTypoBoxStyle = {
-  width : "100%", height : "30px", display : "flex", alignItems : "center"
-}
-
-const mainTypoStyle = {
-  fontSize: "19px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap"
-}
-
-interface StoreHeaderInfoProps {
-  data: Restaurant;
-}
-
-
-export default function HeaderInfo({ data } : StoreHeaderInfoProps) {
+const HeaderInfo = memo(({ data } : StoreHeaderInfoProps) => {
   const theme = useTheme();
   const isDownMD = useMediaQuery(theme.breakpoints.down("md"));
 
@@ -63,34 +52,13 @@ export default function HeaderInfo({ data } : StoreHeaderInfoProps) {
                 )}
               </Box>
               <Box sx={{ width: isDownMD ? "100%" : "60%", height: "80%", ml: 3 }}>
-                <Box sx={{ ...mainTypoBoxStyle }}>
-                  <DinnerDining />
-                  <Typography sx={{ ...mainTypoStyle }}>
-                    {data.genre?.name}
-                  </Typography>
-                </Box>
-                <Box sx={{ ...mainTypoBoxStyle }}>
-                  <CurrencyYen />
-                  <Typography sx={{ ...mainTypoStyle }}>
-                    {`平均 ${data.budget?.name}`}
-                  </Typography>
-                </Box>
-                <Box sx={{ ...mainTypoBoxStyle }}>
-                  <AccessTime />
-                  <Typography sx={{ ...mainTypoStyle }}>
-                    {data.open}
-                  </Typography>
-                </Box>
-                <Box sx={{ ...mainTypoBoxStyle }}>
-                  <LocationOn />
-                  <Typography sx={{ ...mainTypoStyle }}>
-                    {data.access}
-                  </Typography>
-                </Box>
+                <BasicInfo data={data} />
               </Box>
             </Box>
           </Box>
         </Box>
       </Container>
   );
-}
+});
+
+export default HeaderInfo;
