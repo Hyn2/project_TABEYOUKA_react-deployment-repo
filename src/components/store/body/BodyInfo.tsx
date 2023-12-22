@@ -1,13 +1,10 @@
 import { Box } from "@mui/material";
 import MainInfo from "./MainInfo"
 import SideInfo from "./SideInfo";
-import { Restaurant } from "../../../types/restaurant.interface";
+import { memo } from "react";
+import { StoreHeaderInfoProps } from "../../../types/restaurant.interface";
 
-interface StoreHeaderInfoProps {
-  data: Restaurant;
-}
-
-export default function BodyInfo({ data } : StoreHeaderInfoProps) {
+const BodyInfo = memo(({ data } : StoreHeaderInfoProps) => {
   return (
     <Box
       sx={{
@@ -21,4 +18,6 @@ export default function BodyInfo({ data } : StoreHeaderInfoProps) {
       <SideInfo data={data} />
     </Box>
   );
-}
+});
+
+export default BodyInfo;

@@ -3,7 +3,8 @@
   import {
     LocationOnOutlined,
     DiningOutlined,
-    Search
+    Search,
+    RestaurantMenu
   } from "@mui/icons-material";
   import useToggle from "../hooks/useToggle";
   import {
@@ -15,6 +16,8 @@
   import { useEffect, useState } from "react";
   import { useSnackbar } from "notistack";
   import Footer from "../components/layout/footer";
+
+  const backgroundImage = "https://www.exploretravel.com.au/images/transform/v1/crop/frm/130854433/1b6a6656-f316-4d72-ba10-2067288e49b7.jpg/r0_138_2700_1662_w1200_h678_fmax.jpg";
   
   function MainPage() {
     const theme = useTheme();
@@ -62,7 +65,6 @@
         lat: `${latValue}`,
         lng: `${lngValue}`,
       };
-      console.log(params);
       const queryString = new URLSearchParams(params).toString();
       navigate(`/search?${queryString}`);
     };
@@ -78,10 +80,11 @@
     return (
       <>
         <Box sx={mainContainer} >
+          <img src={backgroundImage} alt="mainImg" width="0" height="0" style={{ display: "none !important" }} />
           <Typography sx={{fontSize: isDownMD ? "27px" : "48px", ...sloganTypo}} >行きたいお店を見つけてみよう！</Typography>
             <Box sx={{width: isDownMD ? "90%" : "40%", ...contentBox}} >
               <Box sx={{width: isDownMD ? "60%" : "90%", ...conditionButtonBox}} >
-                <Box sx={{width: isDownMD ? "40%" : "500px", ...modalButtonCon}}>
+                <Box sx={{...modalButtonCon}}>
                   {/* Location Modal Button*/}
                   <ModalButton
                     title={location}
@@ -98,9 +101,7 @@
                   />
                   
                 </Box>
-                <Box
-                  sx={{width: isDownMD ? "40%" : "500px", ...modalButtonCon}}
-                >
+                <Box sx={{...modalButtonCon}}>
                   {/* Category Modal Button*/}
                   <ModalButton
                     title={category}
@@ -114,9 +115,7 @@
                     setCategoryCode={setCategoryCode}
                   />
                 </Box>
-                <Box
-                  sx={{width: isDownMD ? "40%" : "500px", ...modalButtonCon}}
-                >
+                <Box sx={{...modalButtonCon}}>
                   {/* Restaurant Modal Button */}
                   <ModalButton
                     title={restaurant}
@@ -134,10 +133,17 @@
                 </Box>
               </Box>
               <Box sx={{ ...searchButtonBox }} >
-                <Button onClick={searchButtonHandler} sx={{ color: "black", flexGrow: 1, py: 1.2, }}>
-                  <Typography variant="caption" sx={{ fontSize: "24px" }}>
-                    食べに行こう!
-                  </Typography>
+                <Button onClick={searchButtonHandler} sx={{ color: "black", flexGrow: 1, py: 1.2, 
+                  "&:hover svg": {
+                    transform: "rotate(360deg) scale(1.5)",
+                    color: "#39393B",
+                  }
+                }}>
+                  <RestaurantMenu sx={{ 
+                    fontSize: "40px", 
+                    transition: "transform 1s, color 0.5s",
+                    color: "white",
+                  }} />
                 </Button>
               </Box>
             </Box>
@@ -155,7 +161,7 @@ const mainContainer : SxProps = {
   flexDirection: "column",
   justifyContent: "center",
   alignItems: "center",
-  backgroundImage: `url(${"https://www.exploretravel.com.au/images/transform/v1/crop/frm/130854433/1b6a6656-f316-4d72-ba10-2067288e49b7.jpg/r0_138_2700_1662_w1200_h678_fmax.jpg"})`,
+  backgroundImage: `url(${backgroundImage})`,
   backgroundColor: "#F5F5F5",
   height: "100vh",
   backgroundRepeat: "no-repeat",
@@ -192,18 +198,20 @@ const conditionButtonBox = {
   display: "flex",
   justifyContent: "center",
   flexDirection: "column",
+  mr: 3,
 }
 
 const searchButtonBox = {
-  width: "30%",
+  width: "20%",
   height: "100px",
   display: "flex",
   borderRadius: "20px",
-  boxShadow: "0px 0px 5px 0px rgba(0,0,0,0.2)",
-  bgcolor: "#ffae19",
+  boxShadow: "0px 3px 3px 0px rgba(0,0,0,0.3)",
+  bgcolor: "#39393B",
+  transition: "all 0.4s ease-in-out",
   "&:hover": {
-    bgcolor: "#FFA500",
-    boxShadow: "0px 3px 5px 0px rgba(0,0,0,0.6)",
+    bgcolor: "white",
+    boxShadow: "0px 2px 8px 0px rgba(0,0,0,0.6)",
     transition: "all 0.4s ease-in-out",
   }
 }
