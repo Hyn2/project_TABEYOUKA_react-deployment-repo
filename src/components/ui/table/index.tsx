@@ -1,8 +1,4 @@
-
-
-
 import { Table, TableBody, TableCell, TableContainer, TableRow, Paper, Box, Typography, useMediaQuery, useTheme } from "@mui/material";
-
 
 export default function InformationTable({ storeData, title } : { storeData : any, title : string }) {
     const theme = useTheme();
