@@ -21,7 +21,7 @@ export default function UserMap({userId} : userMapProps) {
           <Typography sx={{my: "10px"}} variant="h4">レビューを残したお店</Typography>
           <Typography sx={{my: "20px"}} variant="body1">今までレビューを残したお店を確認したり、その店のロケーションや詳しい情報まで見られる！</Typography>
         </Box>
-        <Box sx={{width: "90%", height: "80%", boxShadow: "10"}}>
+        <Box sx={{width: "90%", height: "60%", boxShadow: "10"}}>
           <Map userId={userId}></Map>
         </Box>
       </Box>

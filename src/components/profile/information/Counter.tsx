@@ -11,10 +11,10 @@ interface counterProps {
 }
 
 const buttonStyles = {
-  minWidth: 0, 
-  color: "black", 
-  padding: 0, 
-  mr: "5%"
+    minWidth: 0,
+    color: "black",
+    flexBasis: "33%",
+    padding: 0,
 }
 
 const Counter = ({title, count, counterType, userId} : counterProps) => {
@@ -29,10 +29,10 @@ const Counter = ({title, count, counterType, userId} : counterProps) => {
 
   return (
     <>
-      <MyButton disabled={(counterType == "reviews") ? true : false} onClick={openUserModal} sx={buttonStyles}>
+      <MyButton disabled={(counterType == "reviews")} onClick={openUserModal} sx={buttonStyles}>
         <Box>
-          <Typography  component= "span" sx={{ fontSize : "0.8vw", textDecoration: "none", color: "inherit", mr: "3px"}}>{title}</Typography>
-          <Typography  component= "span" sx={{fontSize : "0.7vw", fontWeight: "bold"}}>{count}</Typography>
+          <Typography sx={{ fontSize : "0.8vw", textDecoration: "none", color: "inherit"}}>{title}</Typography>
+          <Typography sx={{fontSize : "0.7vw", fontWeight: "bold"}}>{count}</Typography>
         </Box>
       </MyButton>
       <Modal open={userModalState} sx={{ alignItems: "center", display: "flex", justifyContent: "center" }}>
