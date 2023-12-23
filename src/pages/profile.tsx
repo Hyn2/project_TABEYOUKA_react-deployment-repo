@@ -149,17 +149,19 @@ function ProfilePage() {
   }
 
   return (
-      <Box >
+      <Box>
         <EditModal userId={userData.id||'justin010129@gmail.com'} open={modalState} onClose={closeModal} />
         <Grid  container sx={{ justifyContent: "center", marginTop: "3%"}}>
-          <Grid item xs={4}>
-            <Card sx={{justifyContent: "center"}}>
-              <CardContent>
-                <Box sx={{position: "relative", paddingTop: "35%", width: "35%", height: "0"}}>
-                  <ProfileImage src={userData.profile_image} alt="ProfileImage" />
+          <Grid item xs={3}>
+            <Card sx={{justifyContent: "center", display: "flex", textAlign: "center", height: "40%", width: "fit-content", padding: "7%"}}>
+              <CardContent sx={{display: "flex", flexDirection :"column", gap: "4.5%"}}>
+                <Box sx={{display: "flex", justifyContent: "center"}}>
+                  <Box sx={{position: "relative", paddingTop: "75%", width: "75%", height: "0"}}>
+                    <ProfileImage src={userData.profile_image} alt="ProfileImage" />
+                  </Box>
                 </Box>
                 {userData.nickname ?
-                    <Typography sx={{ display: "block", fontSize : "1.1vw"}} component="span" variant="h5">{userData.nickname}</Typography> :
+                    <Typography sx={{ fontSize : "1.1vw"}} component="span" variant="h5">{userData.nickname}</Typography> :
                     <Skeleton sx={{mr: "10px"}} variant="rounded" width={50} height={20} />
                 }
                 {userData.bio ?
@@ -168,10 +170,10 @@ function ProfilePage() {
                 }
                 {userData.id == window.localStorage.getItem('id') ?
                     //   내 프로필 페이지일 경우
-                    <>
-                      <MyButton size={"small"} onClick={openModal} sx={{fontSize: "0.85vw", ":hover": {backgroundColor: "rgba(255, 164, 27, 1)", }, mx: "5px", backgroundColor: 'rgba(255, 164, 27, 0.85)', color: "black", borderRadius: "10%"}}>編集</MyButton>
-                      <MyButton size={"small"} onClick={destroyAccount} sx={{fontSize: "0.85vw", ":hover": {backgroundColor: "rgba(221, 0, 0)", }, mx: "5px", backgroundColor: "rgba(221, 0, 0, 0.85)", color: "black", borderRadius: "10%"}}> アカウント削除 </MyButton>
-                    </>
+                    <Box sx={{display: "flex"}}>
+                      <MyButton size={"small"} onClick={openModal} sx={{fontSize: "0.85vw", ":hover": {backgroundColor: "rgba(255, 164, 27, 1)", transform: "scale(1.01)", }, mx: "5px", backgroundColor: 'rgba(255, 164, 27, 0.85)', color: "black", borderRadius: "10%"}}>編集</MyButton>
+                      <MyButton size={"small"} onClick={destroyAccount} sx={{fontSize: "0.85vw", ":hover": {backgroundColor: "rgba(221, 0, 0)", transform: "scale(1.01)",}, mx: "5px", backgroundColor: "rgba(221, 0, 0, 0.85)", color: "black", borderRadius: "10%"}}> アカウント削除 </MyButton>
+                    </Box>
                     :
                     following ?
                         <Button id={userData.id||"justin010129@gmail.com"} onClick={deleteFollow} variant="contained" size="small" sx={statusButtonStyle}>
@@ -181,7 +183,7 @@ function ProfilePage() {
                           ファローする
                         </Button>
                 }
-                <Box sx={{ display: "flex", my: "8px", justifyContent: "start"}}>
+                <Box sx={{ display: "flex", my: "8px", justifyContent: "center"}}>
                   <Counter userId={userData.id||''} counterType="reviews" title="ポスト" count={followAndReview.reviews}/>
                   <Counter userId={userData.id||''} counterType="follower" title="ファロワー" count={followAndReview.followers}/>
                   <Counter userId={userData.id||''} counterType="following" title="ファロー中" count={followAndReview.followings}/>
@@ -190,39 +192,43 @@ function ProfilePage() {
             </Card>
 
           </Grid>
-          <Grid item xs={6}>
-            <Tabs variant="fullWidth" value={tab} onChange={selectTab} aria-label="usertabs" sx={{
-              "& .MuiTabs-indicator": {
-                backgroundColor: "black",
-                opacity: "0.4" // 선택된 Tab의 색상을 변경
-              },
-              paddingBottom: "0.05%"
-            }}
-            >
-              <Tab label="Reviews" value={1} sx={{
-                "&.Mui-selected": {
-                  color: "black", // 선택된 탭의 글자 색 변경
-                },
-              }}/>
-              <Tab label="Map" value={2} sx={{
-                "&.Mui-selected": {
-                  color: "black", // 선택된 탭의 글자 색 변경
-                },
-              }}/>
-              <Tab label="My Logs" value={3} sx={{
-                "&.Mui-selected": {
-                  color: "black", // 선택된 탭의 글자 색 변경
-                },
-              }}/>
-            </Tabs>
+          <Grid item xs={7}>
+            <Card sx={{height: "80%"}}>
+              <CardContent>
+                <Tabs variant="fullWidth" value={tab} onChange={selectTab} aria-label="usertabs" sx={{
+                  "& .MuiTabs-indicator": {
+                    backgroundColor: "black",
+                    opacity: "0.4" // 선택된 Tab의 색상을 변경
+                  },
+                  paddingBottom: "0.05%"
+                }}
+                >
+                  <Tab label="Reviews" value={1} sx={{
+                    "&.Mui-selected": {
+                      color: "black", // 선택된 탭의 글자 색 변경
+                    },
+                  }}/>
+                  <Tab label="Map" value={2} sx={{
+                    "&.Mui-selected": {
+                      color: "black", // 선택된 탭의 글자 색 변경
+                    },
+                  }}/>
+                  <Tab label="My Logs" value={3} sx={{
+                    "&.Mui-selected": {
+                      color: "black", // 선택된 탭의 글자 색 변경
+                    },
+                  }}/>
+                </Tabs>
 
-            <TabPanel value={tab} index={1}><ReviewContainer userId={userData.id||""} /></TabPanel>
-            <TabPanel value={tab} index={2}>
-              <UserMap userId={userData.id||""} />
-            </TabPanel>
-            <TabPanel value={tab} index={3}>
-              <Categories id={userData.id||""} />
-            </TabPanel>
+                <TabPanel value={tab} index={1}><ReviewContainer userId={userData.id||""} /></TabPanel>
+                <TabPanel value={tab} index={2}>
+                  <UserMap userId={userData.id||""} />
+                </TabPanel>
+                <TabPanel value={tab} index={3}>
+                  <Categories id={userData.id||""} />
+                </TabPanel>
+              </CardContent>
+            </Card>
           </Grid>
         </Grid>
       </Box>
