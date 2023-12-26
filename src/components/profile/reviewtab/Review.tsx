@@ -1,4 +1,4 @@
-import { Box, ButtonBase, Typography } from "@mui/material";
+import {Box, ButtonBase, Rating, Typography} from "@mui/material";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import getRestaurant from "../../../api/getRestaurant";
@@ -9,6 +9,7 @@ interface reviewProps {
   reviewData : {
     restaurant : {
       id : string,
+      score: number,
     }
     created_at : string,
   },
@@ -56,6 +57,20 @@ const Review = ({src, reviewId, reviewData} : reviewProps) => {
                 {restName}
               </Typography>
               {/* 글자 크기 반응형 처리 */}
+              <Rating
+                name="rating"
+                value={reviewData.restaurant['score']}
+                readOnly
+                sx={{
+                  fontSize: "1.3rem",
+                  '@media (max-width: 780px)': {
+                    fontSize: '1rem',
+                  },
+                  '@media (max-width: 425px)': {
+                    fontSize: '0.7rem',
+                  },
+                }}
+              />
             </Box>
             <Box sx={{textAlign: "right"}}>
               <Typography variant="subtitle1">

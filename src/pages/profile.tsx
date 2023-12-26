@@ -55,17 +55,21 @@ function ProfilePage() {
   }
 
   const destroyAccount = () => {
-    axios.delete(`${import.meta.env.VITE_REACT_APP_BASE_URI}/api/user`,{
-      params : {
-        id : window.localStorage.getItem('id'), 
-      }
-    })
-    .then((response) => {
-      console.log(response);
-      window.localStorage.clear;
-      alert('회원탈퇴가 완료되었습니다.');
-      navigate('/');
-    })
+    if(confirm('退会しますか？')) {
+      axios.delete(`${import.meta.env.VITE_REACT_APP_BASE_URI}/api/user`,{
+        params : {
+          id : window.localStorage.getItem('id'),
+        }
+      })
+        .then((response) => {
+          console.log(response);
+          window.localStorage.clear;
+          alert('退会しました。');
+          navigate('/');
+        })
+    } else {
+      return
+    }
   }
 
   const deleteFollow = (event : React.MouseEvent<HTMLButtonElement>) => {
@@ -151,10 +155,17 @@ function ProfilePage() {
   return (
       <Box>
         <EditModal userId={userData.id||'justin010129@gmail.com'} open={modalState} onClose={closeModal} />
-        <Grid  container sx={{ justifyContent: "center", marginTop: "3%"}}>
-          <Grid item xs={3}>
-            <Card sx={{justifyContent: "center", display: "flex", textAlign: "center", height: "40%", width: "fit-content", padding: "7%"}}>
-              <CardContent sx={{display: "flex", flexDirection :"column", gap: "4.5%"}}>
+        <Grid container sx={{justifyContent: "center", marginTop: "3%", '@media (max-width: 770px)': {
+            flexDirection: 'column',
+            alignItems: "center",
+          }}}>
+          <Grid item xs={3} sx={{mr: "5%"}}>
+            <Card sx={{textAlign: "center", height: "fit-content", width: "fit-content", padding: "7%"}}>
+              <CardContent sx={{display: "flex", flexDirection :"column",
+                gap: "1", height: "fit-content",
+                '@media (max-width: 770px)': {
+                  flexDirection: 'row',
+                },}}>
                 <Box sx={{display: "flex", justifyContent: "center"}}>
                   <Box sx={{position: "relative", paddingTop: "75%", width: "75%", height: "0"}}>
                     <ProfileImage src={userData.profile_image} alt="ProfileImage" />
@@ -193,42 +204,38 @@ function ProfilePage() {
 
           </Grid>
           <Grid item xs={7}>
-            <Card sx={{height: "80%"}}>
-              <CardContent>
-                <Tabs variant="fullWidth" value={tab} onChange={selectTab} aria-label="usertabs" sx={{
-                  "& .MuiTabs-indicator": {
-                    backgroundColor: "black",
-                    opacity: "0.4" // 선택된 Tab의 색상을 변경
-                  },
-                  paddingBottom: "0.05%"
-                }}
-                >
-                  <Tab label="Reviews" value={1} sx={{
-                    "&.Mui-selected": {
-                      color: "black", // 선택된 탭의 글자 색 변경
-                    },
-                  }}/>
-                  <Tab label="Map" value={2} sx={{
-                    "&.Mui-selected": {
-                      color: "black", // 선택된 탭의 글자 색 변경
-                    },
-                  }}/>
-                  <Tab label="My Logs" value={3} sx={{
-                    "&.Mui-selected": {
-                      color: "black", // 선택된 탭의 글자 색 변경
-                    },
-                  }}/>
-                </Tabs>
+            <Tabs variant="fullWidth" value={tab} onChange={selectTab} aria-label="usertabs" sx={{
+              "& .MuiTabs-indicator": {
+                backgroundColor: "black",
+                opacity: "0.4" // 선택된 Tab의 색상을 변경
+              },
+              paddingBottom: "0.05%"
+            }}
+            >
+              <Tab label="Reviews" value={1} sx={{
+                "&.Mui-selected": {
+                  color: "black", // 선택된 탭의 글자 색 변경
+                },
+              }}/>
+              <Tab label="Map" value={2} sx={{
+                "&.Mui-selected": {
+                  color: "black",
+                },
+              }}/>
+              <Tab label="My Logs" value={3} sx={{
+                "&.Mui-selected": {
+                  color: "black",
+                },
+              }}/>
+            </Tabs>
 
-                <TabPanel value={tab} index={1}><ReviewContainer userId={userData.id||""} /></TabPanel>
-                <TabPanel value={tab} index={2}>
-                  <UserMap userId={userData.id||""} />
-                </TabPanel>
-                <TabPanel value={tab} index={3}>
-                  <Categories id={userData.id||""} />
-                </TabPanel>
-              </CardContent>
-            </Card>
+            <TabPanel value={tab} index={1}><ReviewContainer userId={userData.id||""} /></TabPanel>
+            <TabPanel value={tab} index={2}>
+              <UserMap userId={userData.id||""} />
+            </TabPanel>
+            <TabPanel value={tab} index={3}>
+              <Categories id={userData.id||""} />
+            </TabPanel>
           </Grid>
         </Grid>
       </Box>
