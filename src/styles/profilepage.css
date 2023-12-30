@@ -1,0 +1,23 @@
+.profile-button:hover {
+    background-color: rgba(255, 164, 27, 1);
+    transform: scale(1.05);
+}
+
+.profile-button {
+    cursor: pointer;
+    border: none;
+    padding: 3% 8%;
+    font-size: 0.7vw;
+    color: black;
+    border-radius: 10%;
+}
+
+.profile-card {
+    text-align: center;
+    height: fit-content;
+    width: 70%;
+    margin-top: 5%;
+    box-shadow: 2px 2px 2px 1.5px rgba(0, 0, 0, 0.2);
+    border-radius: 1%;
+    padding: 3%;
+}
