@@ -1,10 +1,10 @@
-import { Avatar, Box, ButtonBase, Modal, Skeleton, Typography, useMediaQuery } from "@mui/material"
+import { Avatar, Box, ButtonBase, Modal, Typography, useMediaQuery } from "@mui/material"
 import {ArrowBackIos, LocationOn, ArrowForwardIos, MoreHoriz, Close} from '@mui/icons-material';
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import MyButton from "../../common/button/ProfileButton";
 import StoryEditModal from "./StoryEditModal";
-import { EditorOnlyRead } from "../../common/CKEditor";
+// import { EditorOnlyRead } from "../../common/CKEditor";
 
 interface modalProps {
   id : number,
@@ -35,6 +35,7 @@ const StoryModal = ({id, open, onClose, image, storyName} : modalProps) => {
       },
     } )
     .then(response => {
+      console.log(response.data);
       setReview(response.data);
     })
     .catch(error => {
@@ -77,18 +78,18 @@ const StoryModal = ({id, open, onClose, image, storyName} : modalProps) => {
               <Typography sx={{ fontSize: "12px", py: "5px", marginLeft: "5px" }}>{storyName}</Typography>
               <Box sx={{ display: "flex" }}>
                 <LocationOn sx={{ color: "grey", fontSize: "15px" }} />
-                <Typography component={'a'} href={`/store?id=${review[indexCounter].restaurant.id}`} sx={{ textDecoration: "none", color: "grey", fontSize: "10px" }}>{review[indexCounter].restaurant_name}</Typography>
+                {/*<Typography component={'a'} href={`/store?id=${review[indexCounter].reviews[indexCounter].restaurant_id}`} sx={{ textDecoration: "none", color: "grey", fontSize: "10px" }}>{review[indexCounter].restaurant_name}</Typography>*/}
               </Box>
             </Box>
             <Box sx={{paddingTop : "10px",}}>
                 <ButtonBase onClick={clickMoreButton}><MoreHoriz/></ButtonBase>
             </Box>
           </Box>
-          <Box sx={{ width: "100%", height: "100%", my: "15px", borderBottom: "0.5px solid grey" }}>
+         {/* <Box sx={{ width: "100%", height: "100%", my: "15px", borderBottom: "0.5px solid grey" }}>
             {
-             review[indexCounter].images[0] ? 
+             review[indexCounter].images[0] ?
              <img style={{ width: "100%" }} src={review[indexCounter].images[0]} />
-             : 
+             :
                <Skeleton variant="rectangular" width={mobileScreen ?  250 : 400} height={mobileScreen ?  250 : 400} />
              
             }
@@ -99,7 +100,7 @@ const StoryModal = ({id, open, onClose, image, storyName} : modalProps) => {
               <EditorOnlyRead data={review[indexCounter].content}></EditorOnlyRead>
               : <Skeleton variant="text" width={mobileScreen ?  250 : 400} height={50}/>
             }
-          </Box>
+          </Box>*/}
         </Box>
         <MyButton disabled={ indexCounter == review.length-1 ? true : false} onClick={onClickButton} id="forward" variant="contained" disableTouchRipple><ArrowForwardIos /></MyButton>
         <StoryEditModal id={id} open={storyEditModal} onClose={closeEditModal}/>
