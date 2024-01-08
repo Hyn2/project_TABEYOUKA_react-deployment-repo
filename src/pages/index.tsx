@@ -102,7 +102,7 @@
                   
                 </Box>
                 <Box sx={{...modalButtonCon}}>
-                  {/* Category Modal Button*/}
+                  {/* ReviewList Modal Button*/}
                   <ModalButton
                     title={category}
                     Icon={DiningOutlined}

@@ -10,7 +10,7 @@ import ReviewContainer from "../components/profile/reviewtab/ReviewContainer.tsx
 import UserMap from "../components/profile/map/UserMap.tsx";
 import '../styles/profilepage.css';
 import AddStoryModal from "../components/profile/modals/AddStoryModal.tsx";
-import Category from "../components/profile/category/Category.tsx";
+import ReviewList from "../components/profile/reviewlist/ReviewList.tsx";
 import StoryModal from "../components/profile/modals/StoryModal.tsx";
 
 interface openModalProps {
@@ -253,7 +253,7 @@ function ProfilePage() {
               <button className="profile-button" onClick={openAddModal}>レビューリスト作成</button>
               <Stack direction="row" sx={{ my: "5px", justifyContent : "left"}} flexWrap="wrap">
                 {storyList.map((list) => (
-                  <Category key={list['id']} id={list['id']} onClick={()=>{openListModal({
+                  <ReviewList key={list['id']} id={list['id']} onClick={()=>{openListModal({
                     id : list['id'],
                     listName : list['story_name'],
                     image : list['mainImage']})}} src={list['mainImage']} title={list['story_name']}/>
