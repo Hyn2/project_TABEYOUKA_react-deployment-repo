@@ -12,7 +12,7 @@ interface reviewContainerProps {
 }
 
 const reviewContainerStyle = {
-  display: "flex", 
+  display: "flex",
   flexWrap: "wrap",
   justifyContent: "center"
 }
