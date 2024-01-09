@@ -44,7 +44,7 @@ const Review = ({src, reviewId, reviewData}: reviewProps) => {
         backgroundColor: "rgba(0, 0, 0, 0.01)",
       },
     }}>
-      <Box sx={{ position : "relative", flexBasis: "30%", height: "0", pt: "30%"}}>
+      <Box sx={{ position : "relative", flexBasis: "30%", height: "0", pt: "22%"}}>
         <img style={{ position :"absolute", top: 0, left: 0, objectFit: "cover", width: "100%", height: "100%"}} src={src} alt="reviewImage"/>
       </Box>
       <Box sx={{
