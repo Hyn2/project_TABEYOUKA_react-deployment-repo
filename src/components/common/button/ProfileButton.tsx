@@ -1,7 +1,7 @@
 import Button from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
 
-const MyButton = styled(Button)({
+const ProfileButton = styled(Button)({
   color: "black",
   backgroundColor: "transparent",
   boxShadow: "none",
@@ -11,4 +11,4 @@ const MyButton = styled(Button)({
   },
 });
 
-export default MyButton;
+export default ProfileButton;
