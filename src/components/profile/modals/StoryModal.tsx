@@ -1,10 +1,10 @@
-import { Avatar, Box, ButtonBase, Modal, Typography, useMediaQuery } from "@mui/material"
+import {Avatar, Box, ButtonBase, Modal, Skeleton, Typography, useMediaQuery} from "@mui/material"
 import {ArrowBackIos, LocationOn, ArrowForwardIos, MoreHoriz, Close} from '@mui/icons-material';
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import MyButton from "../../common/button/ProfileButton";
 import StoryEditModal from "./StoryEditModal";
-// import { EditorOnlyRead } from "../../common/CKEditor";
+import {EditorOnlyRead} from "../../common/CKEditor.tsx";
+import ProfileButton from "../../common/button/ProfileButton";
 
 interface modalProps {
   id : number,
@@ -16,12 +16,17 @@ interface modalProps {
 
 const StoryModal = ({id, open, onClose, image, storyName} : modalProps) => {
   const [review, setReview] = useState([{
-    restaurant : {
-      id : ''
-    },
-    restaurant_name: '',
-    images: [],
     content: '',
+    created_at: '',
+    id: 0,
+    like: 0,
+    restaurant_id: '',
+    restaurant_name: '',
+    review_images: [{
+      image_url: '',
+    }],
+    score: 0,
+    user_id: '',
   }]);
   const [indexCounter, setIndexCounter] = useState(0);
   const [storyEditModal, setStoryEditModal] = useState(false);
@@ -36,7 +41,7 @@ const StoryModal = ({id, open, onClose, image, storyName} : modalProps) => {
     } )
     .then(response => {
       console.log(response.data);
-      setReview(response.data);
+      setReview(response.data.reviews);
     })
     .catch(error => {
       console.error(error);
@@ -62,12 +67,12 @@ const StoryModal = ({id, open, onClose, image, storyName} : modalProps) => {
 
   // 버튼을 누를 때 마다 인덱스 값이 증가하고, 배열의 요소를 새로 렌더링 함.
   return (
-    <Modal open={open} onClose={onClose} sx={{ alignItems: "center", display: "flex", justifyContent: "center" }}>
-      <Box sx={{display: "flex"}}>
-      <MyButton disabled={ indexCounter == 0 ? true : false} onClick={onClickButton} id="back" variant="contained" disableTouchRipple><ArrowBackIos /></MyButton>
+    <Modal open={open} onClose={onClose} sx={{ alignItems: "center", display: "flex", justifyContent : "center" }}>
+      <Box sx={{display: "flex", flexBasis: "45%", justifyContent :"center"}}>
+      <ProfileButton sx={{"&:hover" : {backgroundColor : "transparent", boxShadow: "none"}}} disabled={ indexCounter == 0} onClick={onClickButton} id="back" variant="contained" disableTouchRipple><ArrowBackIos /></ProfileButton>
         <Box sx={{
           display: "flex", flexDirection: "column", flexBasis: "80%",
-          height: "80%", borderRadius: "1%", bgcolor: "white", padding: "10px"
+          height: "80%", borderRadius: "1%", backgroundColor: "white", padding: "10px"
         }}>
           <ButtonBase onClick={onClose} sx={{right :"48%"}}>
             <Close /> 
@@ -78,31 +83,30 @@ const StoryModal = ({id, open, onClose, image, storyName} : modalProps) => {
               <Typography sx={{ fontSize: "12px", py: "5px", marginLeft: "5px" }}>{storyName}</Typography>
               <Box sx={{ display: "flex" }}>
                 <LocationOn sx={{ color: "grey", fontSize: "15px" }} />
-                {/*<Typography component={'a'} href={`/store?id=${review[indexCounter].reviews[indexCounter].restaurant_id}`} sx={{ textDecoration: "none", color: "grey", fontSize: "10px" }}>{review[indexCounter].restaurant_name}</Typography>*/}
+                <Typography component={'a'} href={`/store?id=${review[indexCounter].restaurant_id}`} sx={{ textDecoration: "none", color: "grey", fontSize: "10px" }}>{review[indexCounter].restaurant_name}</Typography>
               </Box>
             </Box>
             <Box sx={{paddingTop : "10px",}}>
                 <ButtonBase onClick={clickMoreButton}><MoreHoriz/></ButtonBase>
             </Box>
           </Box>
-         {/* <Box sx={{ width: "100%", height: "100%", my: "15px", borderBottom: "0.5px solid grey" }}>
-            {
-             review[indexCounter].images[0] ?
-             <img style={{ width: "100%" }} src={review[indexCounter].images[0]} />
+          <Box sx={{ position:"relative", width: "100%", height: "0", pt: "100%", my: "15px", borderBottom: "0.5px solid grey" }}>
+           {
+             review[indexCounter].review_images[0].image_url ?
+             <img style={{ position: "absolute", width: "100%", height: "100%", top: 0, left: 0, objectFit: "cover" }} alt="review_image" src={review[indexCounter].review_images[0].image_url} />
              :
-               <Skeleton variant="rectangular" width={mobileScreen ?  250 : 400} height={mobileScreen ?  250 : 400} />
-             
+               <Skeleton variant="rectangular" sx={{position: "absolute", width: "100%", height: "100%", top: 0, left: 0 }}/>
             }
           </Box>
-          <Box>
+          <Box sx={{borderTop: "1px solid #c4c4c4"}}>
             {
               review[indexCounter].content ? 
               <EditorOnlyRead data={review[indexCounter].content}></EditorOnlyRead>
               : <Skeleton variant="text" width={mobileScreen ?  250 : 400} height={50}/>
             }
-          </Box>*/}
+          </Box>
         </Box>
-        <MyButton disabled={ indexCounter == review.length-1 ? true : false} onClick={onClickButton} id="forward" variant="contained" disableTouchRipple><ArrowForwardIos /></MyButton>
+        <ProfileButton sx={{"&:hover" : {backgroundColor : "transparent", boxShadow: "none"}}} disabled={ indexCounter == review.length - 1} onClick={onClickButton} id="forward" variant="contained" disableTouchRipple><ArrowForwardIos /></ProfileButton>
         <StoryEditModal id={id} open={storyEditModal} onClose={closeEditModal}/>
       </Box>
     </Modal> 
