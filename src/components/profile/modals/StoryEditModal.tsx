@@ -11,6 +11,10 @@ interface storyEditModalProps {
   onClose : ()=>void,
 }
 
+interface Review {
+  id : number,
+}
+
 const StoryEditModal = ({id, open, onClose} : storyEditModalProps) => {
 
   const [review, setReview] = useState([]);
@@ -51,7 +55,7 @@ const StoryEditModal = ({id, open, onClose} : storyEditModalProps) => {
     .get(`${import.meta.env.VITE_REACT_APP_BASE_URI}/api/storylist/${id}`, )
     .then(response => {
       setStoryListName(response.data.story_name);
-      setStoryReviewList(response.data.reviews);
+      setStoryReviewList(response.data.reviews.map((review: Review) => review.id));
     })
     .catch(error => {
       console.error(error);
@@ -61,7 +65,7 @@ const StoryEditModal = ({id, open, onClose} : storyEditModalProps) => {
   const editSubmitFunc = () => {
     // 스토리 아이디 스토리 이름, 스토리에 들어갈 리뷰의 아이디를 바디에 포함.
     axios
-    .post(`${import.meta.env.VITE_REACT_APP_BASE_URL}/api/storylist`, {
+    .post(`${import.meta.env.VITE_REACT_APP_BASE_URI}/api/storylist`, {
       headers : {
         Authorization : window.localStorage.getItem('access_token')
       },
@@ -70,8 +74,7 @@ const StoryEditModal = ({id, open, onClose} : storyEditModalProps) => {
       review_list : storyReviewList,
       _method: 'patch',
     })
-    .then(response => {
-      console.log(response);
+    .then(() => {
       alert("성공적으로 수정되었습니다!");
       onClose();
     })
@@ -103,7 +106,7 @@ const StoryEditModal = ({id, open, onClose} : storyEditModalProps) => {
               review.length ? 
                 review.map((review, index) => (
                   <Box key={index} sx={{ flexBasis: "33.3%", width: "100%", height: "0px", paddingBottom: "33.3%", backgroundImage: `url(${review['images'][0]})`, backgroundSize: "cover"}}>
-                    <Checkbox id={review['id']} onChange={checkboxHandler} checked={storyReviewList.includes(review['id'])}/>
+                    <Checkbox id={review['content']} onChange={checkboxHandler} checked={storyReviewList.includes(review['id'])}/>
                   </Box>
                 )) : 
                 <LoadingSpinner />
@@ -111,7 +114,7 @@ const StoryEditModal = ({id, open, onClose} : storyEditModalProps) => {
           </Box>
         </Box>
         <Box sx={{ padding: "10px", textAlign: "right"}}>
-          <Button disabled={storyReviewList.length > 0 ? false : true} onClick={editSubmitFunc} variant="text">登録</Button>
+          <Button disabled={storyReviewList.length <= 0} onClick={editSubmitFunc} variant="text">登録</Button>
         </Box>
       </Box>
     </Modal>

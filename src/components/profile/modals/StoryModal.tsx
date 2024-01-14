@@ -40,13 +40,12 @@ const StoryModal = ({id, open, onClose, image, storyName} : modalProps) => {
       },
     } )
     .then(response => {
-      console.log(response.data);
       setReview(response.data.reviews);
     })
     .catch(error => {
       console.error(error);
     });
-  },[indexCounter, storyEditModal]);
+  },[storyEditModal]);
 
   const onClickButton = (event : React.MouseEvent<HTMLButtonElement>) => {
     const dir = event.currentTarget.id;
